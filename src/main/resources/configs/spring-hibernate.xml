@@ -50,7 +50,6 @@
 				<!-- 设置数据库方言 -->
 				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
 				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-				<prop key="hibernate.current_session_context_class">${hibernate.current_session_context_class}</prop>
 			</props>
 		</property>
 	</bean>
@@ -98,7 +97,7 @@
     
     <!-- 定义切面，在 com.dao包下的所有方法中执行有关的hibernate session的事务操作 -->
     <aop:config expose-proxy="true">
-    	<!-- 只对业务逻辑层实施事务  -->
+    	<!-- 只对业务逻辑层实施事物 -->
     	<!--配置规则，满足以下规则的将拦截，http://blog.csdn.net/kkdelta/article/details/7441829  http://blog.sina.com.cn/s/blog_67aaf4440100x2pb.html -->
     	<aop:pointcut expression="execution(* com.auction.service..*.*(..))" id="txPointcut"/>
     	<!-- Advisor定义，切入点和通知分别为txPointcut、txAdvice -->

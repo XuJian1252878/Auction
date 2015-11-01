@@ -48,6 +48,7 @@ public class UserController {
     return mv;
   }
   
+  @RequestMapping(value="/add",method=RequestMethod.POST)
   public String add(@ModelAttribute("user") User user){
     userService.createUser(user);
     return "redirect:/user/list";

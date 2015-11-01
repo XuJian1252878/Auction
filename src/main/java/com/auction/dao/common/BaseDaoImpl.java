@@ -48,7 +48,7 @@ public class BaseDaoImpl<T> implements IBaseDao<T> {
   public int findCount(Class<T> entityClazz) {
     // TODO Auto-generated method stub
     // 计算对应数据库表中元组的个数
-    String hql = "select count(*) from" + entityClazz.getSimpleName() + " as c ";
+    String hql = " from " + entityClazz.getName();
     Long recordCount = (Long) sessionFactory.getCurrentSession().createQuery(hql).uniqueResult();
     return recordCount != null ? recordCount.intValue() : -1;
   }
@@ -83,7 +83,7 @@ public class BaseDaoImpl<T> implements IBaseDao<T> {
   @SuppressWarnings("unchecked")
   public List<T> findAll(Class<T> entityClazz) {
     // TODO Auto-generated method stub
-    String hql = "select * from " + entityClazz.getSimpleName() + " as c ";
+    String hql = " from " + entityClazz.getName();
     return sessionFactory.getCurrentSession().createQuery(hql).list();
   }
 
