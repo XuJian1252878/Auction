@@ -4,59 +4,55 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-  
-  <!-- 解决POST方式造成的中文乱码问题 -->
-  <!-- 
-  <filter>  
-    <filter-name>CharacterEncodingFilter</filter-name>  
-    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>  
-    <init-param>  
-        <param-name>encoding</param-name>  
-        <param-value>utf-8</param-value>  
-    </init-param>  
-  </filter>  
-  <filter-mapping>  
-      <filter-name>CharacterEncodingFilter</filter-name>  
-      <url-pattern>/*</url-pattern>  
-  </filter-mapping>
-   -->
-  
+
   <!-- 加载spring配置文件 -->
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath:/configs/spring-servlet.xml</param-value>
   </context-param>
-  
+
   <!-- spring监听 -->
   <listener>
     <listener-class>org.springframework.web.servlet.DispatcherServlet</listener-class>
   </listener>
-  
+
   <!-- jstl 中 bean属性的存取 -->
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
-  
+
   <!-- spring mvc 配置 -->
   <servlet>
     <servlet-name>Dispatcher</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <!-- 自定义spring mvc的配置文件以及名称 -->
     <init-param>
-      <!-- 默认/WEB-INF/[servlet名字]-servlet.xml加载上下文， 
-	          如果配置了contextConfigLocation参数，Z
-	          将使用classpath:/spring-servlet.xml加载上下文
-	    -->
+      <!-- 默认/WEB-INF/[servlet名字]-servlet.xml加载上下文， 如果配置了contextConfigLocation参数，Z 
+        将使用classpath:/spring-servlet.xml加载上下文 -->
       <param-name>contextConfigLocation</param-name>
-      <param-value>classpath:configs/spring-*.xml</param-value>
+      <param-value>classpath:configs/spring-servlet.xml</param-value>
     </init-param>
     <!-- 表示启动容器时初始化该Servlet -->
     <load-on-startup>1</load-on-startup>
-  
+
   </servlet>
   <!-- 拦截请求的配置,在该配置下所有请求采用名字为Dispatcher的DispatcherServlet来处理 -->
   <servlet-mapping>
     <servlet-name>Dispatcher</servlet-name>
-   <url-pattern>/</url-pattern>
+    <url-pattern>/</url-pattern>
   </servlet-mapping>
+
+  <!-- 解决POST方式造成的中文乱码问题 -->
+  <filter>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>utf-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 </web-app>

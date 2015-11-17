@@ -6,4 +6,6 @@ import com.auction.model.User;
 public interface IUserDao extends IBaseDao<User> {
   public User getUserById(Integer id);
   public int getUserCount();
+  public User getUserByEmail(String email);
+  public User getUserByName(String userName);
 }

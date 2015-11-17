@@ -17,4 +17,8 @@ public interface IUserService {
   public boolean delUserById(int id);
   
   public boolean saveUser(User user);
+  
+  public User getUserByEmail(String userName);
+  
+  public User getUserByName(String userName);
 }

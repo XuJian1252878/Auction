@@ -15,10 +15,10 @@ import com.auction.service.common.BaseService;
 @Service("userService")
 @Transactional
 public class UserService extends BaseService<User> implements IUserService {
-  
-  @Resource(name="userDao")
+
+  @Resource(name = "userDao")
   private IUserDao userDao;
-  
+
   public int getUserCount() {
     // TODO Auto-generated method stub
     return userDao.getUserCount();
@@ -31,7 +31,12 @@ public class UserService extends BaseService<User> implements IUserService {
 
   public boolean createUser(User user) {
     // TODO Auto-generated method stub
-    if(userDao.save(user) != null) {
+    // 查看数据库中有无相通名称或者注册邮箱的用户，如果有那么返回原页面重新注册
+    if (getUserByEmail(user.getEmail()) != null || getUserByName(user.getUserName()) != null) {
+      // 该用户名称或者用户邮箱已经被注册
+      return false;
+    }
+    if (userDao.save(user) != null) {
       return true;
     }
     return false;
@@ -52,4 +57,17 @@ public class UserService extends BaseService<User> implements IUserService {
     return userDao.update(user);
   }
 
+  /**
+   * 根据注册邮箱找出对应的用户 邮箱对于每个用户来说是唯一的
+   */
+  public User getUserByEmail(String email) {
+    return userDao.getUserByEmail(email);
+  }
+
+  /**
+   * 根据用户名称找出对应的用户 用户名称对每个用户来说是唯一的
+   */
+  public User getUserByName(String userName) {
+    return userDao.getUserByName(userName);
+  }
 }

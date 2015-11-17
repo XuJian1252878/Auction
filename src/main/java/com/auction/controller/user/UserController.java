@@ -1,87 +1,105 @@
 package com.auction.controller.user;
 
-import java.util.List;
-
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.auction.model.User;
+import com.auction.model.validator.UserValidator;
 import com.auction.service.IUserService;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
-  @Resource(name="userService")
+  @Resource(name = "userService")
   private IUserService userService;
-  
-  @RequestMapping(value="/count", method=RequestMethod.GET)
-  public ModelAndView userCount(){
-    int count = userService.getUserCount();
-    ModelAndView mv = new ModelAndView();
-    mv.addObject("userCount", count);
-    mv.setViewName("user/userCount");
-    return mv;
+
+  @InitBinder
+  public void initBinder(DataBinder binder) {
+    binder.setValidator(new UserValidator());
   }
-  
-  @RequestMapping(value="/list", method=RequestMethod.GET)
-  public ModelAndView getUserList(){
-    List<User> users = userService.getAllUser();
-    ModelAndView mv = new ModelAndView();
-    System.out.println("log========table 'user' all records: " + users.size());
-    mv.addObject("userList", users);
-    mv.setViewName("user/List");
-    return mv;
+
+  @RequestMapping(value = "/register", method = RequestMethod.GET)
+  public String register(Model model) {
+    // 用model的attribute存住，然后才能用@ModelAttribute标签取出。
+    model.addAttribute("registerUser", new User());
+    return "user/register";
   }
-  
-  @RequestMapping(value="/add",method=RequestMethod.GET)
-  public ModelAndView getAdd(){
-    ModelAndView mv = new ModelAndView();
-    mv.setViewName("user/add");
-    return mv;
+
+  /**
+   * 注册表单上传时，进行处理的register函数
+   * 
+   * @param user
+   * @param result
+   * @return
+   */
+  @RequestMapping(value = "/register", method = RequestMethod.POST)
+  public String register(@Valid @ModelAttribute("registerUser") User user, BindingResult result) {
+    // As a result of data binding there may be errors such as missing required
+    // fields or type conversion errors.
+    if (result.hasErrors()) {
+      return "/user/register";// 如果注册过程中出现错误，那么返回原来的页面。
+    }
+    // 注册信息符合要求，写入数据库
+    if (userService.createUser(user)) {
+      return "redirect:/index";
+    }
+    result.rejectValue("userName", "register.user.name.already.exist");
+    return "/user/register";
   }
-  
-  @RequestMapping(value="/add",method=RequestMethod.POST)
-  public String add(@ModelAttribute("user") User user){
-    userService.createUser(user);
-    return "redirect:/user/list";
+
+  /**
+   * 用户进入登陆页面的时候
+   * 
+   * @param model
+   * @return
+   */
+  @RequestMapping(value = "/login", method = RequestMethod.GET)
+  public String Login(Model model) {
+    model.addAttribute("loginUser", new User());
+    return "/user/login";
   }
-  
-  @RequestMapping(value="/show/{userid}",method=RequestMethod.GET)
-  public ModelAndView show(@PathVariable int userid){
-    User user = userService.findUserById(userid);
-    ModelAndView mv = new ModelAndView();
-    mv.addObject("user", user);
-    mv.setViewName("user/detail");
-    return mv;
-  }
-  
-  @RequestMapping(value="/del/{userid}",method=RequestMethod.GET)
-  public String del(@PathVariable int userid){
-    userService.delUserById(userid);
-    return "redirect:/user/list";
-  }
-  
-  //对用户的数据信息进行编辑。
-  @RequestMapping(value="/edit/{userid}",method=RequestMethod.GET)
-  public ModelAndView getEdit(@PathVariable int userid, Model model){
-    User user = userService.findUserById(userid);
-    model.addAttribute("userAttribute", user);
-    ModelAndView mv = new ModelAndView();
-    mv.setViewName("user/edit");
-    return mv;
-  }
-  
-  @RequestMapping(value="/save/{userid}",method=RequestMethod.POST)
-  public String saveEdit(@ModelAttribute("userAttribute") User user, @PathVariable int userid){
-    userService.saveUser(user);
-    return "redirect:/user/list";
+
+  /**
+   * 用户登录函数
+   * 
+   * @param user
+   * @param result
+   * @param httpSession
+   * @return
+   */
+  @RequestMapping(value = "/login", method = RequestMethod.POST)
+  public String Login(@ModelAttribute("loginUser") User user, BindingResult result, HttpSession httpSession) {
+    if (result.hasErrors()) {
+      System.out.println("raise error");
+      return "/user/login";
+    }
+    // 因为前端的html代码中是按照userName传到后台的。
+    String userNameOrEmail = user.getUserName();
+    User loginUser = userService.getUserByEmail(userNameOrEmail);
+    if (loginUser == null) {
+      loginUser = userService.getUserByName(userNameOrEmail);
+      if (loginUser == null) {
+        result.rejectValue("userName", "login.user.name.notexist");
+        return "/user/login";
+      }
+    }
+    // 查看登陆密码是否正确
+    if (!user.getPassword().equals(loginUser.getPassword())) {
+      result.rejectValue("password", "login.user.password.error");
+      return "/user/login";
+    }
+    // 应该还要在Session中设置User http://www.tuicool.com/articles/m2iimaa
+    httpSession.setAttribute("LOGINUSER", loginUser);
+    return "/index";
   }
 }
