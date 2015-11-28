@@ -14,6 +14,10 @@
     <mysql.connector.version>5.1.31</mysql.connector.version>
     <aspectj.version>1.7.4</aspectj.version>
     <junit.version>3.8.1</junit.version>
+    <jstl.version>1.2</jstl.version>
+    <taglib.standard.version>1.1.2</taglib.standard.version>
+    <validation.api.version>1.0.0.GA</validation.api.version>
+    <hibernate.validator.version>4.3.2.Final</hibernate.validator.version>
     <!-- http://blog.csdn.net/testcs_dn/article/details/45583791 -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -112,22 +116,30 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- JSTL -->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
-      <version>1.2</version>
+      <version>${jstl.version}</version>
+    </dependency>
+
+    <!-- 在jsp中获得list的长度 -->
+    <dependency>
+      <groupId>taglibs</groupId>
+      <artifactId>standard</artifactId>
+      <version>${taglib.standard.version}</version>
     </dependency>
 
     <!-- JSR 303 with Hibernate Validator -->
     <dependency>
       <groupId>javax.validation</groupId>
       <artifactId>validation-api</artifactId>
-      <version>1.0.0.GA</version>
+      <version>${validation.api.version}</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>4.3.2.Final</version>
+      <version>${hibernate.validator.version}</version>
     </dependency>
 
   </dependencies>

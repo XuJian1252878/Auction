@@ -15,7 +15,7 @@
 <title>商品类别管理</title>
 </head>
 <body>
-  需要添加商品类别信息？点击<a href="admin/category/add?pageNo=${categoryPageNo}">添加</a>商品类别<br/>
+  需要添加商品类别信息？点击<a href="admin/category/add?pageNo=${pageNo}">添加</a>商品类别<br/>
   <label>商品类别信息如下：</label><br/>
   <table>
     <tr>
@@ -30,7 +30,7 @@
       <td>${category.cdesc}</td>
       <td><a href="">查看详情</a></td>
       <td><a href="">编辑</a></td>
-      <td><a href="">删除</a></td>
+      <td><a href="admin/category/delete_${category.id }?pageNo=${pageNo}">删除</a></td>
     </tr>
     </c:forEach>
   </table>

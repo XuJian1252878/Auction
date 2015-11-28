@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
@@ -45,20 +46,25 @@ public class Category {
 
   @Column(name = "cdesc", length = 256)
   private String cdesc;
+  
+  // 商品的类别信息，一级类别为1，二级类别为2，最多为2级类别。
+  @Transient
+  private int levelInfo;
 
   /*
    * 一对多关联关系 级联关系：cascade=CascadeType.ALL 延迟加载：fetch = FetchType.LAZY
-   * 映射：mappedBy = "category" ,
+   * 映射：mappedBy = "category" ,  mappped 后面跟的是 管理映射关系中的 变量的名称
+   * 从下面的parentCategpry就可以看出这一点。
    * 这里的category是product中的一个成员变量。指明category不负责级联关系，而是student负责级联关系。
    */
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
   private Set<Product> products = new HashSet<Product>();
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
   @JoinColumn(name = "category_id")
-  private Category category;
+  private Category parentCategory;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
+  @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "parentCategory")
   private Set<Category> categories = new HashSet<Category>();
 
   public Integer getId() {
@@ -89,16 +95,16 @@ public class Category {
     return products;
   }
 
+  public Category getParentCategory() {
+    return parentCategory;
+  }
+
+  public void setParentCategory(Category parentCategory) {
+    this.parentCategory = parentCategory;
+  }
+
   public void setProducts(Set<Product> products) {
     this.products = products;
-  }
-
-  public Category getCategory() {
-    return category;
-  }
-
-  public void setCategory(Category category) {
-    this.category = category;
   }
 
   public Set<Category> getCategories() {
@@ -107,6 +113,14 @@ public class Category {
 
   public void setCategories(Set<Category> categories) {
     this.categories = categories;
+  }
+
+  public int getLevelInfo() {
+    return levelInfo;
+  }
+
+  public void setLevelInfo(int levelInfo) {
+    this.levelInfo = levelInfo;
   }
 
 }

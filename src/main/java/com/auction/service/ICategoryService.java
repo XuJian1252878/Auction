@@ -25,4 +25,18 @@ public interface ICategoryService {
    * @return
    */
   public boolean newCategory(Category category);
+  
+  /**
+   * 根据类别id删除商品类别信息
+   * @param categoryId
+   * @return
+   */
+  public boolean deleteCategory(int categoryId);
+  
+  /**
+   * 找出所有符合条件的父类别信息，在这里假设最多只能有两层类别，
+   * 这个函数实际上就是需要找出所有的一级类别。
+   * @return
+   */
+  public List<Category> getParentCategories();
 }

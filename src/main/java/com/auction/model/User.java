@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
@@ -42,6 +43,7 @@ public class User {
   @Column(name = "password", length = 16)
   private String password;
 
+  @Transient
   private String confirmPassword;
 
   @Column(name = "email", length = 50)

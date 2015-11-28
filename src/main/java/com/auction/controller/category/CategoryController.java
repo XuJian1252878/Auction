@@ -55,7 +55,7 @@ public class CategoryController {
     List<Category> categories = categoryService.loadPart(pageNo, PAGESIZE);
     mv.addObject("categories", categories);
     // 记录当前的页码信息
-    mv.addObject("categoryPageNo", pageNo);
+    mv.addObject("pageNo", pageNo);
     mv.setViewName("admin/category/list");
     return mv;
   }
@@ -63,7 +63,11 @@ public class CategoryController {
   @RequestMapping(value = "/add", method = RequestMethod.GET)
   public String add(@RequestParam("pageNo") int pageNo, Model model) {
     model.addAttribute("category", new Category());
-    model.addAttribute("categoryPageNo", pageNo);
+    model.addAttribute("pageNo", pageNo);
+    // 首先要获得当前所有的类别列表
+    List<Category> parentCategoryList = categoryService.getParentCategories();
+    // 添加一级类别信息
+    model.addAttribute("parentCategoryList", parentCategoryList);
     System.out.println("get_add" + pageNo);
     return "admin/category/add";
   }
@@ -71,18 +75,34 @@ public class CategoryController {
   @RequestMapping(value = "/add", method = RequestMethod.POST)
   public String add(@Valid @ModelAttribute("category") Category category, BindingResult result,
       @RequestParam("pageNo") int pageNo, Model model) {
-    // 防止出现错误，跳回原界面（由于return的是"admin/category/add"，所以参数失效），再次提交，页码信息丢失的情况。
-    model.addAttribute("categoryPageNo", pageNo);
+    // 首先如果用户添加的是一级标签，那么将这个一级标签的parentCategory设置为null。
+    if (category.getParentCategory().getId() == -1) {
+      System.out.println("添加类别为一级标签");
+      category.setParentCategory(null);
+    }
     System.out.println(model.toString());
     if (result.hasErrors()) {
+      model.addAttribute("pageNo", pageNo);
       System.out.print("post_add_error" + pageNo);
       return "admin/category/add";
     }
     if (categoryService.newCategory(category)) {
+      // 而redirect后的是url，是会经过controller处理的。
       return "redirect:/admin/category/list/" + pageNo;
     } else {
+      // 防止出现错误，跳回原界面（由于return的是"admin/category/add"，所以参数失效），再次提交，页码信息丢失的情况。
+      model.addAttribute("pageNo", pageNo);
       result.rejectValue("name", "category.name.already.exist");
+      // 仅仅指明跳转到哪一个页面的jsp路径，而不经过controller的处理。所以原来的信息得以保存。
       return "admin/category/add";
     }
+  }
+
+  // 删除商品类别
+  @RequestMapping(value = "/delete_{categoryId}", method = RequestMethod.GET)
+  public String delete(@PathVariable int categoryId, @RequestParam int pageNo, Model model) {
+    // 先省略判断categoryId是否合法的逻辑。
+    categoryService.deleteCategory(categoryId);
+    return "redirect:/admin/category/list/" + pageNo;
   }
 }

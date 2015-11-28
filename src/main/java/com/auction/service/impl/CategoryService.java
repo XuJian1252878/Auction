@@ -43,4 +43,22 @@ public class CategoryService extends BaseService<Category> implements ICategoryS
     return true;
   }
 
+  public boolean deleteCategory(int categoryId) {
+    // TODO Auto-generated method stub
+    return categoryDao.delete(Category.class, categoryId);
+  }
+
+  public List<Category> getParentCategories() {
+    // TODO Auto-generated method stub
+    // 首先取出所有的category
+    List<Category> categories = categoryDao.findAll(Category.class);
+    for (Category category : categories) {
+      // 找到第一级类别
+      if (category.getParentCategory() != null) {
+        categories.remove(category);
+      }
+    }
+    return categories;
+  }
+
 }
