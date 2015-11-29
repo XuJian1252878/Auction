@@ -57,14 +57,14 @@ public class Category {
    * 从下面的parentCategpry就可以看出这一点。
    * 这里的category是product中的一个成员变量。指明category不负责级联关系，而是student负责级联关系。
    */
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
+  @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "category")
   private Set<Product> products = new HashSet<Product>();
 
-  @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+  @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
   @JoinColumn(name = "category_id")
   private Category parentCategory;
 
-  @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "parentCategory")
+  @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "parentCategory")
   private Set<Category> categories = new HashSet<Category>();
 
   public Integer getId() {

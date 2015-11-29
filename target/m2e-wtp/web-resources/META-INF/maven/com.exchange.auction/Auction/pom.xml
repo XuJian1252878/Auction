@@ -18,6 +18,7 @@
     <taglib.standard.version>1.1.2</taglib.standard.version>
     <validation.api.version>1.0.0.GA</validation.api.version>
     <hibernate.validator.version>4.3.2.Final</hibernate.validator.version>
+    <commons.fileupload.version>1.3.1</commons.fileupload.version>
     <!-- http://blog.csdn.net/testcs_dn/article/details/45583791 -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -140,6 +141,13 @@
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-validator</artifactId>
       <version>${hibernate.validator.version}</version>
+    </dependency>
+
+    <!-- file upload -->
+    <dependency>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
+      <version>${commons.fileupload.version}</version>
     </dependency>
 
   </dependencies>

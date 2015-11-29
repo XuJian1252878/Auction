@@ -39,4 +39,18 @@ public interface ICategoryService {
    * @return
    */
   public List<Category> getParentCategories();
+  
+  /**
+   * 根据id信息取出category的实体
+   * @param categoryId
+   * @return 实体存在，那么返回对应id的实体，实体不存在，那么放回null
+   */
+  public Category getCategory(int categoryId);
+  
+  /**
+   * 更新商品类别信息
+   * @param category
+   * @return
+   */
+  public boolean updateCategory(Category category);
 }

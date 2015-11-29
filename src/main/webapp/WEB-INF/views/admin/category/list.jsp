@@ -28,8 +28,8 @@
       <td>${category.id}</td>
       <td>${category.name}</td>
       <td>${category.cdesc}</td>
-      <td><a href="">查看详情</a></td>
-      <td><a href="">编辑</a></td>
+      <td><a href="admin/category/edit/0_${category.id }?pageNo=${pageNo}">查看详情</a></td>
+      <td><a href="admin/category/edit/1_${category.id }?pageNo=${pageNo}">编辑</a></td>
       <td><a href="admin/category/delete_${category.id }?pageNo=${pageNo}">删除</a></td>
     </tr>
     </c:forEach>

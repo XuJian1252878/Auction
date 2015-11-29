@@ -61,4 +61,16 @@ public class CategoryService extends BaseService<Category> implements ICategoryS
     return categories;
   }
 
+  public Category getCategory(int categoryId) {
+    // TODO Auto-generated method stub
+    // session 的get方法返回对应的实体或者null。
+    return categoryDao.get(Category.class, categoryId);
+  }
+
+  public boolean updateCategory(Category category) {
+    // TODO Auto-generated method stub
+    // 这里一直是返回true的，因为session的update方法返回的是void。
+    return categoryDao.update(category);
+  }
+
 }

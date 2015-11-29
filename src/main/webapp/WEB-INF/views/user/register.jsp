@@ -11,7 +11,7 @@
 </head>
 <body>
   <!-- 用户注册表单 -->
-  <form:form modelAttribute="registerUser" action="register"
+  <form:form modelAttribute="registerUser" action="register" enctype="multipart/form-data"
     method="post">
     <form:label for="userName" path="userName">注册用户名：</form:label>
     <form:input path="userName" type="text" />
@@ -36,6 +36,10 @@
     <form:label for="address" path="address">用户地址：</form:label>
     <form:input path="address" type="text" />
     <form:errors path="address" />
+    <br />
+    <form:label path="avatarFile">请选择头像图片：</form:label>
+    <form:input type="file" path="avatarFile" />
+    <form:errors path="avatarFile" />
     <br />
     <input type="submit" value="注册新用户" />
   </form:form>

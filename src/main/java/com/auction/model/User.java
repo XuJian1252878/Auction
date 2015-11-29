@@ -15,6 +15,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Table(name = "USER")
@@ -49,10 +50,17 @@ public class User {
   @Column(name = "email", length = 50)
   private String email;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+  // 用户上传的头像文件在服务器中的路径信息
+  @Column(name = "avatarPath")
+  private String avatarPath;
+
+  @Transient
+  private MultipartFile avatarFile;
+
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
   private Set<Comment> comment = new HashSet<Comment>();
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+  @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "user")
   private Set<Bid> bids = new HashSet<Bid>();
 
   public Integer getId() {
@@ -109,6 +117,22 @@ public class User {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public String getAvatarPath() {
+    return avatarPath;
+  }
+
+  public void setAvatarPath(String avatarPath) {
+    this.avatarPath = avatarPath;
+  }
+
+  public MultipartFile getAvatarFile() {
+    return avatarFile;
+  }
+
+  public void setAvatarFile(MultipartFile avatarFile) {
+    this.avatarFile = avatarFile;
   }
 
   public Set<Comment> getComment() {

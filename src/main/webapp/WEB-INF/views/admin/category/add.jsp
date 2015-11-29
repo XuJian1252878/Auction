@@ -43,7 +43,7 @@
     <form:errors path="name" />
     <br />
     <form:label path="cdesc">商品类别描述：</form:label>
-    <form:input path="cdesc" />
+    <form:textarea path="cdesc" />
     <form:errors path="cdesc" />
     <br />
     <input type="submit" value="创建新类别" />

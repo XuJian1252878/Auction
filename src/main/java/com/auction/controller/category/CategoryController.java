@@ -105,4 +105,26 @@ public class CategoryController {
     categoryService.deleteCategory(categoryId);
     return "redirect:/admin/category/list/" + pageNo;
   }
+  
+  // 更新商品类别信息 进入页面
+  // viewOrEdit 是0那么表示为查看，1表示为编辑
+  @RequestMapping(value={"/edit/{viewOrEdit}_{categoryId}", "/view/{viewOrEdit}_{categoryId}"}, method = RequestMethod.GET)
+  public String edit(@PathVariable("viewOrEdit") int viewOrEdit, @PathVariable("categoryId") int categoryId, @RequestParam int pageNo, Model model) {
+    Category category = categoryService.getCategory(categoryId);
+    model.addAttribute("pageNo", pageNo);
+    model.addAttribute("viewOrEdit", viewOrEdit);
+    if (category == null) {
+      return "admin/category/edit";
+    }
+    // 设置页面相关的内容信息
+    model.addAttribute("category", category);
+    return "admin/category/edit";
+  }
+  
+  // 更新商品类别信息 条件商品类别信息
+  @RequestMapping(value="/edit", method=RequestMethod.POST)
+  public String edit(@Valid @ModelAttribute("category") Category category, @RequestParam int pageNo, BindingResult result) {
+    categoryService.updateCategory(category);
+    return "redirect:/admin/category/list/" + pageNo;
+  }
 }
