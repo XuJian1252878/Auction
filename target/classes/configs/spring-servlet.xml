@@ -33,6 +33,7 @@
   <mvc:resources location="/styles/" mapping="/styles/**"></mvc:resources>
   <mvc:resources location="/scripts/" mapping="/scripts/**"></mvc:resources>
   <mvc:resources location="/images/" mapping="/images/**"></mvc:resources>
+  <mvc:resources location="/template/" mapping="/template/**"></mvc:resources>
   <!-- 定义视图解析器 -->
   <bean
     class="org.springframework.web.servlet.view.InternalResourceViewResolver">
