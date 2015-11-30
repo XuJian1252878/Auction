@@ -1,21 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ include file="../../../template/header.jsp"%>
-<%-- 
-<p>
-  还没有账号？请先<a href="user/register">注册</a>！
-</p>
-<form:form action="login" modelAttribute="loginUser" method="post">
-  <form:label for="userName" path="userName">用户名称/邮箱：</form:label>
-  <form:input path="userName" type="text" />
-  <form:errors path="userName" />
-  <br />
-  <form:label for="password" path="password">登陆密码：</form:label>
-  <form:input path="password" type="password" />
-  <form:errors path="password" />
-  <br />
-  <input type="submit" value="用户登录" />
-</form:form>
---%>
 
 <link href="styles/login.css" rel="stylesheet">
 <script src="scripts/login.js"></script>
@@ -32,9 +16,6 @@
         </div>
       </div>
       <div class="wrap">
-        <p class="form-title">
-          还没有账号？请先<a href="user/register">注册</a>！
-        </p>
         <p class="form-title">Sign In</p>
         <form:form class="login" action="user/login"
           modelAttribute="loginUser" method="post">
@@ -47,11 +28,9 @@
             class="btn btn-success btn-sm" />
           <div class="remember-forgot">
             <div class="row">
-              <div class="col-md-6">
-                <div class="checkbox">
-                  <label> <input type="checkbox" /> Remember Me
-                  </label>
-                </div>
+              <div class="col-md-6 remember-me">
+                <input type="checkbox" id="rememberMe" /> <label
+                  for="rememberMe">Remember Me</label>
               </div>
               <div class="col-md-6 forgot-pass-content">
                 <a href="javascription:void(0)" class="forgot-pass">Forgot
