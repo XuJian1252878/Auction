@@ -2,7 +2,7 @@
 <%@ include file="../../../template/header.jsp"%>
 
 <link href="styles/login.css" rel="stylesheet">
-<script src="scripts/login.js"></script>
+<script type="text/javascript" src="scripts/login.js"></script>
 
 <div class="container">
   <div class="row">
@@ -28,9 +28,11 @@
             class="btn btn-success btn-sm" />
           <div class="remember-forgot">
             <div class="row">
-              <div class="col-md-6 remember-me">
-                <input type="checkbox" id="rememberMe" /> <label
-                  for="rememberMe">Remember Me</label>
+              <div class="col-md-6">
+                <div class="checkbox">
+                  <label> <input type="checkbox" /> Remember Me
+                  </label>
+                </div>
               </div>
               <div class="col-md-6 forgot-pass-content">
                 <a href="javascription:void(0)" class="forgot-pass">Forgot
