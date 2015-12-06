@@ -1,11 +1,7 @@
 package com.auction.controller.user;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import javax.annotation.Resource;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -19,7 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.auction.controller.IPTimeStamp;
+import com.auction.controller.ImageTool;
 import com.auction.model.User;
 import com.auction.model.validator.UserValidator;
 import com.auction.service.IUserService;
@@ -36,28 +32,7 @@ public class UserController {
     binder.setValidator(new UserValidator());
   }
 
-  private ServletContext getServletContext(HttpServletRequest request) {
-    // WebApplicationContext webApplicationContext =
-    // ContextLoader.getCurrentWebApplicationContext();
-    // return webApplicationContext.getServletContext();
-    return request.getSession().getServletContext();
-  }
 
-  // 获得上传图像文件的相对路径（相对于项目根目录）
-  private String genAvatarFileName(HttpServletRequest request, String oriFileName) {
-    StringBuilder stringBuilder = new StringBuilder();
-    // 获得文件的后缀名称。
-    String[] fileNameSplitInfo = oriFileName.split("\\.");
-    String suffix = "jpg";
-    if (fileNameSplitInfo.length >= 1) {
-      suffix = fileNameSplitInfo[fileNameSplitInfo.length - 1];
-    }
-    // 获得格式化的文件名称
-    stringBuilder.append(new IPTimeStamp(request.getRemoteAddr()).getIpTimeRand());
-    stringBuilder.append("." + suffix);
-    String avatarFilePath = "images" + File.separator + "avatar" + File.separator + stringBuilder.toString();
-    return avatarFilePath;
-  }
 
   @RequestMapping(value = "/register", method = RequestMethod.GET)
   public String register(Model model) {
@@ -83,21 +58,14 @@ public class UserController {
       return "/user/register";// 如果注册过程中出现错误，那么返回原来的页面。
     }
     // 首先获得图片将要保存在的路径信息。
-    String avatarFilePath = this.genAvatarFileName(request, user.getAvatarFile().getOriginalFilename());
+    String avatarFilePath = ImageTool.genAvatarFileName(request, user.getAvatarFile().getOriginalFilename());
     // image 引用的时候要 / 的格式才能引用出来
     user.setAvatarPath(avatarFilePath);
-    // 写文件的时候需要注意当前系统的文件路径分隔符。写入服务器中的对应目录下。
-    String avatarCorePath = this.getServletContext(request).getRealPath("/") + avatarFilePath;
     // 注册信息符合要求，写入数据库
     if (userService.createUser(user)) {
       // 此时开始写入图片信息
-      byte[] bytes;
-      try {
-        bytes = user.getAvatarFile().getBytes();
-        // 创建新文件的输出流。
-        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(avatarCorePath)));
-        stream.write(bytes);
-        stream.close();
+      try{
+        ImageTool.saveAvatarImgFile(request, user.getAvatarFile(), result);
       } catch (IOException e) {
         // TODO Auto-generated catch block
         result.rejectValue("avatarFile", "register.user.avatar.upload.failed");

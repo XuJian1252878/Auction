@@ -1,5 +1,6 @@
 package com.auction.model;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,10 +12,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 @Entity
@@ -46,6 +50,14 @@ public class User {
 
   @Transient
   private String confirmPassword;
+
+  @Column(name = "sex")
+  private Integer sex;
+
+  @Column(name = "birthday")
+  @DateTimeFormat(pattern="yyyy-MM-dd")
+  @Temporal(TemporalType.DATE)
+  private Date birthday;
 
   @Column(name = "email", length = 50)
   private String email;
@@ -83,8 +95,24 @@ public class User {
     return age;
   }
 
+  public Integer getSex() {
+    return sex;
+  }
+
+  public void setSex(Integer sex) {
+    this.sex = sex;
+  }
+
   public void setAge(Integer age) {
     this.age = age;
+  }
+
+  public Date getBirthday() {
+    return birthday;
+  }
+
+  public void setBirthday(Date birthday) {
+    this.birthday = birthday;
   }
 
   public String getAddress() {
