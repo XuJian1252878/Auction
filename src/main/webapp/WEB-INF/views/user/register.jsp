@@ -127,14 +127,16 @@
         <p>Please update your profile for more security.</p>
         <div class="form-group">
           <form:label for="userName" path="userName">用户名<span
-            class="glyphicon glyphicon-user"> </span></form:label>
+              class="glyphicon glyphicon-user"> </span>
+          </form:label>
           <form:input path="userName" id="userName" name="userName"
             type="text" class="form-control" />
           <form:errors path="userName"></form:errors>
         </div>
         <div class="form-group">
           <form:label for="email" path="email">注册邮箱<span
-            class="glyphicon glyphicon-user"> </span></form:label>
+              class="glyphicon glyphicon-user"> </span>
+          </form:label>
           <form:input path="email" id="email" name="email" type="text"
             class="form-control" />
           <form:errors path="email"></form:errors>
@@ -145,13 +147,15 @@
           <form:select id="sex" path="sex" class="form-control">
             <form:option id="Male" value="0" style="color: red">Male</form:option>
             <form:option id="FeMale" value="1" style="color: green">Female</form:option>
-            <form:option id="NotInterested" value="-1" style="color: blue">Not
+            <form:option id="NotInterested" value="-1"
+              style="color: blue">Not
               interested</form:option>
           </form:select>
         </div>
         <div class="form-group">
           <form:label for="age" path="age">年龄<span
-            class="glyphicon glyphicon-user"> </span></form:label>
+              class="glyphicon glyphicon-user"> </span>
+          </form:label>
           <form:input path="age" id="age" name="age" type="text"
             class="form-control" />
           <form:errors path="age"></form:errors>
@@ -237,7 +241,8 @@
         <br />
         <div class="form-group">
           <form:label path="avatarFile">请选择头像图片：</form:label>
-          <form:input id="img" type="file" path="avatarFile" accept="image/*" />
+          <form:input id="img" type="file" path="avatarFile"
+            accept="image/*" />
           <form:errors path="avatarFile" />
         </div>
         <br />
@@ -271,7 +276,8 @@
           <div class="row">
             <div
               class="col-xs-col-3 col-xs-offset-5 col-md-col-3 col-md-offset-5">
-              <input type="submit" class="btn-success btn-lg" value="Register" />
+              <input type="submit" class="btn-success btn-lg"
+                value="Register" />
             </div>
           </div>
         </div>

@@ -21,10 +21,17 @@
 <base href="<%=basePath%>">
 <link rel="icon" href="images/icon/favicon.ico">
 
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="template/jquery/jquery-1.11.3.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="template/bootstrap-3.3.6/js/bootstrap.min.js"></script>
 <!-- Bootstrap core CSS -->
 <link href="template/bootstrap-3.3.6/css/bootstrap.min.css"
   rel="stylesheet">
 
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="scripts/ie10-viewport-bug-workaround.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <link href="styles/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
