@@ -19,6 +19,9 @@ public interface IBaseDao<T> {
   // 更新一个实体
   boolean update(T entity);
 
+  // 更新一个实体
+  boolean merge(T entity);
+
   // 删除一个实体
   boolean delete(T entity);
 

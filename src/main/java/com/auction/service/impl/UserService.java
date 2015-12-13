@@ -70,4 +70,18 @@ public class UserService extends BaseService<User> implements IUserService {
   public User getUserByName(String userName) {
     return userDao.getUserByName(userName);
   }
+
+  public boolean updateUser(User user) {
+    // TODO Auto-generated method stub
+    if (userDao.getUserById(user.getId()) == null) {
+      return false;
+    }
+    // org.hibernate.NonUniqueObjectException: A different object with the same identifier value was already associated with the session
+    // http://fatkun.com/2011/04/org-hibernate-nonuniqueobjectexception.html
+    // http://www.stevideter.com/2008/12/07/saveorupdate-versus-merge-in-hibernate/
+    // userDao.update(user);
+    // 留下一个坑，外键元素会不会丢失，因为没有 cascade = "merge" 的声明
+    userDao.merge(user);
+    return true;
+  }
 }

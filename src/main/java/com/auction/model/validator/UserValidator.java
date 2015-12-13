@@ -29,11 +29,11 @@ public class UserValidator implements Validator {
       errors.rejectValue("age", "register.user.age.scope");
     }
     // 密码和确认密码需要相同
-    if (user.getPassword() != null && !user.getPassword().equals(user.getConfirmPassword())) {
+    if (user.getId() == null && user.getPassword() != null && !user.getPassword().equals(user.getConfirmPassword())) {
       errors.rejectValue("confirmPassword", "register.user.pwd.notsame");
     }
     // 检查上传文件的扩展名称，文件其大小信息
-    if (user.getAvatarFile() == null || user.getAvatarFile().getSize() == 0) {
+    if (user.getId() == null && user.getAvatarFile() == null || user.getAvatarFile().getSize() == 0) {
       errors.rejectValue("avatarFile", "register.user.no.avatar.file");
       return;
     } else if (user.getAvatarFile() != null && user.getAvatarFile().getSize() > 1024 * 1024) {

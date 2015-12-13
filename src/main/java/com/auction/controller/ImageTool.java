@@ -92,7 +92,7 @@ public class ImageTool {
     return false;
   }
 
-  public static String saveAvatarImgFile(HttpServletRequest request, MultipartFile oriImgFile, BindingResult result)
+  public static String saveAvatarImgFile(HttpServletRequest request, MultipartFile oriImgFile, BindingResult result, String avatarFilePath)
       throws IOException {
     // 首先检查关于图片裁剪的信息
     int x1 = Integer.parseInt(request.getParameter("x1"));
@@ -102,8 +102,7 @@ public class ImageTool {
     int imgWidth = Integer.parseInt(request.getParameter("imgWidth"));
     int imgHeight = Integer.parseInt(request.getParameter("imgHeight"));
     // 获取头像文件的存取路径。// 写文件的时候需要注意当前系统的文件路径分隔符。写入服务器中的对应目录下。
-    String avatarCorePath = getServletContext(request).getRealPath("/")
-        + genAvatarFileName(request, oriImgFile.getOriginalFilename());
+    String avatarCorePath = getServletContext(request).getRealPath("/") + avatarFilePath;
     if (x1 == -1 || y1 == -1 || x2 == -1 || y2 == -1 || imgWidth == -1 || imgHeight == -1) {
       // 说明用户没有进行裁剪操作。
       // 此时开始写入图片信息

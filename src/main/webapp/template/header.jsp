@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-  pageEncoding="UTF-8" isELIgnored="false"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -27,8 +26,9 @@
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="template/bootstrap-3.3.6/js/bootstrap.min.js"></script>
 <!-- Bootstrap core CSS -->
-<link href="template/bootstrap-3.3.6/css/bootstrap.min.css"
-  rel="stylesheet">
+<link href="template/bootstrap-3.3.6/css/bootstrap.min.css" rel="stylesheet">
+<!-- font-awesome 各种图标 -->
+<link rel="stylesheet" href="template/font-awesome-4.5.0/css/font-awesome.min.css">
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="scripts/ie10-viewport-bug-workaround.js"></script>
@@ -56,6 +56,7 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
 <link href="styles/sitenavbar.css" rel="stylesheet">
 </head>
 <body>
@@ -63,11 +64,9 @@
   <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed"
-        data-toggle="collapse" data-target="#navbar"
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
         aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span> <span
-          class="icon-bar"></span> <span class="icon-bar"></span> <span
+        <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span
           class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="#">Project name</a>
@@ -79,10 +78,8 @@
         <li><a href="#contact">Contact</a></li>
         <c:choose>
           <c:when test="${sessionScope.LOGINUSER != null }">
-            <li class="dropdown"><a href="#"
-              class="dropdown-toggle" data-toggle="dropdown"
-              role="button" aria-haspopup="true" aria-expanded="false">Dropdown
-                <span class="caret"></span>
+            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+              aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span>
             </a>
               <ul class="dropdown-menu">
                 <li><a href="#">Action</a></li>
@@ -91,14 +88,14 @@
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Nav header</li>
                 <li><a href="#">Separated link</a></li>
-                <li><a href="#">One more separated link</a></li>
+                <li><a href="user/profile"><i class="glyphicon glyphicon-cog"></i> 个人信息</a></li>
+                <li role="seperator" class="divider"></li>
+                <li><a href="user/logout"><i class="glyphicon glyphicon-off"></i> 注销</a></li>
               </ul></li>
           </c:when>
           <c:otherwise>
-            <li><a href="user/login"
-              class="btn btn-link btn-sm active">登陆</a></li>
-            <li><a href="user/register"
-              class="btn btn-link btn-sm active">注册</a></li>
+            <li><a href="user/login" class="btn btn-link btn-sm active">登陆</a></li>
+            <li><a href="user/register" class="btn btn-link btn-sm active">注册</a></li>
           </c:otherwise>
         </c:choose>
       </ul>

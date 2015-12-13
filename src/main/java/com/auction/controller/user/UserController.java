@@ -1,5 +1,6 @@
 package com.auction.controller.user;
 
+import java.io.File;
 import java.io.IOException;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -14,16 +15,20 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.auction.controller.ImageTool;
 import com.auction.model.User;
 import com.auction.model.validator.UserValidator;
 import com.auction.service.IUserService;
+import com.auction.service.impl.UserService;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
+  private static final String LOGINUSER = "LOGINUSER";
+  
   @Resource(name = "userService")
   private IUserService userService;
 
@@ -31,8 +36,6 @@ public class UserController {
   public void initBinder(DataBinder binder) {
     binder.setValidator(new UserValidator());
   }
-
-
 
   @RequestMapping(value = "/register", method = RequestMethod.GET)
   public String register(Model model) {
@@ -64,8 +67,8 @@ public class UserController {
     // 注册信息符合要求，写入数据库
     if (userService.createUser(user)) {
       // 此时开始写入图片信息
-      try{
-        ImageTool.saveAvatarImgFile(request, user.getAvatarFile(), result);
+      try {
+        ImageTool.saveAvatarImgFile(request, user.getAvatarFile(), result, avatarFilePath);
       } catch (IOException e) {
         // TODO Auto-generated catch block
         result.rejectValue("avatarFile", "register.user.avatar.upload.failed");
@@ -120,7 +123,88 @@ public class UserController {
       return "/user/login";
     }
     // 应该还要在Session中设置User http://www.tuicool.com/articles/m2iimaa
-    httpSession.setAttribute("LOGINUSER", loginUser);
+    httpSession.setAttribute(LOGINUSER, loginUser);
     return "/index";
+  }
+
+  /**
+   * 
+   * @param httpSession
+   * @return
+   */
+  @RequestMapping(value = "/logout")
+  public String logout(HttpSession httpSession) {
+    if (httpSession.getAttribute(LOGINUSER) != null) {
+      httpSession.setAttribute(LOGINUSER, null);
+    }
+    return "redirect:/index";
+  }
+  
+  /**
+   * 
+   * @param httpSession
+   * @return
+   */
+  @RequestMapping(value="/profile", method=RequestMethod.GET)
+  public ModelAndView userProfile(HttpSession httpSession) {
+    ModelAndView mv = new ModelAndView();
+    mv.addObject("loginUser", httpSession.getAttribute(LOGINUSER));
+    mv.setViewName("/user/profile");
+    return mv;
+  }
+  
+  /**
+   * 
+   * @param user
+   * @param result
+   * @param httpSession
+   * @param request
+   * @return
+   */
+  @RequestMapping(value = "/profile", method = RequestMethod.POST)
+  public ModelAndView updateProfile(@Valid @ModelAttribute("loginUser") User user, BindingResult result,
+      HttpSession httpSession, HttpServletRequest request) {
+    ModelAndView mv = new ModelAndView();
+    User oriUser = (User)httpSession.getAttribute(LOGINUSER);
+    if (result.hasErrors()) {
+      mv.addObject("loginUser", oriUser);
+      return mv;
+    }
+
+    // 开始更新用户的信息
+    String avatarFilePath = ImageTool.genAvatarFileName(request, user.getAvatarFile().getOriginalFilename());
+    if (user.getAvatarFile() != null) { // 说明用户更改了头像信息
+      user.setAvatarPath(avatarFilePath);
+    }
+
+    if (userService.updateUser(user) == false) {
+      result.rejectValue("id", "profile.user.not.exists");
+      mv.addObject("loginUser", oriUser);
+      return mv;
+    }
+    if (user.getAvatarFile() != null) {
+      // 删除原来的头像文件
+      String oriAvatarPath = request.getSession().getServletContext().getRealPath("/") + oriUser.getAvatarPath();
+      File avatarFile = new File(oriAvatarPath);
+      if (avatarFile.exists() && avatarFile.isFile()) {
+        avatarFile.delete(); // 删除原来的头像文件。
+      }
+      try {
+        ImageTool.saveAvatarImgFile(request, user.getAvatarFile(), result, avatarFilePath);
+      } catch (IOException e) {
+        result.rejectValue("avatarFile", "register.user.avatar.upload.failed");
+        e.printStackTrace();
+      }
+    }
+    // 更新session中的登陆用户信息
+    User newUser = userService.findUserById(user.getId());
+    if (newUser == null) {
+      result.rejectValue("id", "profile.user.id.not.exist");
+      mv.addObject("loginUser", oriUser);
+      return mv;
+    }
+    httpSession.setAttribute(LOGINUSER, newUser);
+    mv.setViewName("/user/profile");
+    return mv;
   }
 }

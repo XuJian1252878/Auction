@@ -127,4 +127,13 @@ public class BaseDaoImpl<T> implements IBaseDao<T> {
     List<T> resultList = query.list();
     return resultList;
   }
+
+/**
+ * 
+ */
+  public boolean merge(T entity) {
+    // TODO Auto-generated method stub
+    sessionFactory.getCurrentSession().merge(entity);
+    return true;
+  }
 }

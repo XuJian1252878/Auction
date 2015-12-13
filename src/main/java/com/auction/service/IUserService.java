@@ -12,6 +12,8 @@ public interface IUserService {
   
   public boolean createUser(User user);
   
+  public boolean updateUser(User user);
+  
   public User findUserById(int id);
   
   public boolean delUserById(int id);
