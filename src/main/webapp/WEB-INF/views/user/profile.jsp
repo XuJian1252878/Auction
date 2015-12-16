@@ -30,88 +30,91 @@
     <div class="container">
       <div class="row">
         <form:form modelAttribute="loginUser" action="user/profile" enctype="multipart/form-data" method="post">
-          <div class="row container">
-            <div class="col-xs-12 col-sm-8 col-md-8">
-              <h2>个人信息</h2>
-              <form:input path="id" type="hidden" />
-              <form:errors path="id" />
-              <form:input path="birthday" type="hidden" />
-              <form:input path="password" type="hidden" />
-              <div class="row">
-                <div class="col-md-6">
-                  <strong>用户名: </strong>
-                  <form:input path="userName" />
-                  <form:errors path="userName" />
+          <div class="well well-lg">
+            <div class="row container">
+              <div class="col-xs-12 col-sm-8 col-md-8">
+                <h2>个人信息</h2>
+                <form:input path="id" type="hidden" />
+                <form:errors path="id" />
+                <form:input path="birthday" type="hidden" />
+                <form:input path="password" type="hidden" />
+                <div class="row">
+                  <div class="col-md-6">
+                    <strong>用户名: </strong>
+                    <form:input path="userName" />
+                    <form:errors path="userName" />
+                  </div>
+                  <div class="col-md-6">
+                    <strong>邮箱：</strong>
+                    <form:input path="email" />
+                    <form:errors path="email" />
+                  </div>
                 </div>
-                <div class="col-md-6">
-                  <strong>邮箱：</strong>
-                  <form:input path="email" />
-                  <form:errors path="email" />
+                <br /> <br />
+                <div class="row">
+                  <div class="col-md-6">
+                    <strong>年龄: </strong>
+                    <form:input path="age" />
+                    <form:errors path="age" />
+                  </div>
+                  <div class="col-md-6">
+                    <strong>性别：</strong>
+                    <form:select id="sex" path="sex">
+                      <form:option id="Male" value="0" style="color: red">Male</form:option>
+                      <form:option id="FeMale" value="1" style="color: green">Female</form:option>
+                      <form:option id="NotInterested" value="-1" style="color: blue">Not interested</form:option>
+                    </form:select>
+                  </div>
+                </div>
+                <br /> <br />
+                <div class="row">
+                  <div class="col-md-6">
+                    <strong>地址：</strong>
+                    <form:input path="address" />
+                    <form:errors path="address" />
+                  </div>
                 </div>
               </div>
-              <br /> <br />
-              <div class="row">
-                <div class="col-md-6">
-                  <strong>年龄: </strong>
-                  <form:input path="age" />
-                  <form:errors path="age" />
-                </div>
-                <div class="col-md-6">
-                  <strong>性别：</strong>
-                  <form:select id="sex" path="sex">
-                    <form:option id="Male" value="0" style="color: red">Male</form:option>
-                    <form:option id="FeMale" value="1" style="color: green">Female</form:option>
-                    <form:option id="NotInterested" value="-1" style="color: blue">Not interested</form:option>
-                  </form:select>
-                </div>
-              </div>
-              <br /> <br />
-              <div class="row">
-                <div class="col-md-6">
-                  <strong>地址：</strong>
-                  <form:input path="address" />
-                  <form:errors path="address" />
-                </div>
+              <div class="col-xs-12 col-sm-4 col-md-4 text-center">
+                <figure>
+                  <img src="${loginUser.avatarPath }" alt="用户头像" class="img-circle img-responsive">
+                </figure>
               </div>
             </div>
-            <div class="col-xs-12 col-sm-4 col-md-4 text-center">
-              <figure>
-                <img src="${loginUser.avatarPath }" alt="用户头像" class="img-circle img-responsive">
-              </figure>
-            </div>
-          </div>
 
-          <br />
-          <br />
-          
-          <div class="row container">
-            <div class="form-group">
-              <form:input id="img" type="file" path="avatarFile" class="btn-info" accept="image/*" title="更改头像" onclick="displayAvatarSelectDiv()" />
-              <form:errors path="avatarFile" />
-            </div>
-            <div id="updateAvatarDiv" style="display: none;" class="col-xs-12 col-sm-12 col-md-12">
-              <br /> <br />
+
+            <br /> <br />
+
+            <div class="row container">
               <div class="form-group">
-                <div class="container">
-                  <div class="row">
-                    <div id="uploadImgDiv" class="col-md-8">
-                      <img id="uploadImg" src="#" alt="头像图片" /> <br />
-                      <button id="cutImgBtn" style="display: none;" value="裁剪" onclick="cutImg()" type="button">裁剪</button>
-                      <input type="hidden" name="x1" value="-1" /> <input type="hidden" name="y1" value="-1" /> <input
-                        type="hidden" name="x2" value="-1" /> <input type="hidden" name="y2" value="-1" /> <input
-                        type="hidden" name="imgWidth" value="-1" /> <input type="hidden" name="imgHeight" value="-1" />
-                    </div>
-                    <label for="previewImgDiv">图片预览</label>
-                    <div id="previewImgDiv" class="col-md-4">
-                      <img id="previewImg" src="#" style="poition: relative;" />
+                <form:input id="img" type="file" path="avatarFile" class="btn-info" accept="image/*" title="更改头像"
+                  onclick="displayAvatarSelectDiv()" />
+                <form:errors path="avatarFile" />
+              </div>
+              <div id="updateAvatarDiv" style="display: none;" class="col-xs-12 col-sm-12 col-md-12">
+                <br /> <br />
+                <div class="form-group">
+                  <div class="container">
+                    <div class="row">
+                      <div id="uploadImgDiv" class="col-md-8">
+                        <img id="uploadImg" src="#" alt="头像图片" /> <br />
+                        <button id="cutImgBtn" style="display: none;" value="裁剪" onclick="cutImg()" type="button">裁剪</button>
+                        <input type="hidden" name="x1" value="-1" /> <input type="hidden" name="y1" value="-1" /> <input
+                          type="hidden" name="x2" value="-1" /> <input type="hidden" name="y2" value="-1" /> <input
+                          type="hidden" name="imgWidth" value="-1" /> <input type="hidden" name="imgHeight" value="-1" />
+                      </div>
+                      <label for="previewImgDiv">图片预览</label>
+                      <div id="previewImgDiv" class="col-md-4">
+                        <img id="previewImg" src="#" style="poition: relative;" />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <div class="col-xs-12 col-xs-offset-5 col-md-12 col-md-offset-5 col-sm-12 col-sm-offset-5">
+                <input type="submit" class="btn-success btn-lg" value="更新用户信息" />
+              </div>
             </div>
-          </div>
-          <div class="col-xs-12 col-xs-offset-5 col-md-12 col-md-offset-5 col-sm-12 col-sm-offset-5">
-            <input type="submit" class="btn-success btn-lg" value="更新用户信息" />
           </div>
         </form:form>
         <br />
@@ -157,7 +160,7 @@
               </button>
               <ul class="dropdown-menu text-left" role="menu">
                 <li><a href="#"><span class="fa fa-envelope pull-right"></span> Send an email </a></li>
-                <li><a href="#"><span class="fa fa-list pull-right"></span> Add or remove from a list </a></li>
+                <li><a href="user/transaction"><span class="fa fa-list pull-right"></span> 查看交易信息 </a></li>
                 <li class="divider"></li>
                 <li><a href="#"><span class="fa fa-warning pull-right"></span>Report this user for spam</a></li>
                 <li class="divider"></li>

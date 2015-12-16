@@ -21,7 +21,6 @@ import com.auction.controller.ImageTool;
 import com.auction.model.User;
 import com.auction.model.validator.UserValidator;
 import com.auction.service.IUserService;
-import com.auction.service.impl.UserService;
 
 @Controller
 @RequestMapping("/user")
@@ -204,7 +203,20 @@ public class UserController {
       return mv;
     }
     httpSession.setAttribute(LOGINUSER, newUser);
+    mv.addObject("loginUser", newUser);
     mv.setViewName("/user/profile");
+    return mv;
+  }
+
+  /**
+   * 返回用户的交易记录页面
+   * 
+   * @return
+   */
+  @RequestMapping(value = "/transaction", method = RequestMethod.GET)
+  public ModelAndView userTransaction() {
+    ModelAndView mv = new ModelAndView();
+
     return mv;
   }
 }

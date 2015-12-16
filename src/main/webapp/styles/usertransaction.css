@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+
+.fade {
+  opacity: 0;
+  -webkit-transition: opacity 2.25s linear;
+  -moz-transition: opacity 2.25s linear;
+  -ms-transition: opacity 2.25s linear;
+  -o-transition: opacity 2.25s linear;
+  transition: opacity 2.25s linear;
+}
