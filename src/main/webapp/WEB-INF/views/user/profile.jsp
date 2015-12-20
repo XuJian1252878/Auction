@@ -2,7 +2,6 @@
 <%@ include file="../../../template/header.jsp"%>
 
 <link rel="stylesheet" type="text/css" href="template/imgareaselect/css/imgareaselect-default.css" />
-<script type="text/javascript" src="template/imgareaselect/scripts/jquery.min.js"></script>
 <script type="text/javascript" src="template/imgareaselect/scripts/jquery.imgareaselect.pack.js"></script>
 <script type="text/javascript" src="scripts/cutimg.js"></script>
 <script type="text/javascript" src="scripts/bootstrap.file-input.js"></script>

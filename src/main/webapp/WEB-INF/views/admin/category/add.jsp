@@ -28,11 +28,11 @@
       </c:when>
       <c:otherwise>
         <form:option value="-1" label="请选择父类别："></form:option>
+        <c:forEach var="parentCategory" items="${parentCategoryList }">
+          <form:option value="${parentCategory.id }" label="${parentCategory.name }"></form:option>
+        </c:forEach>
       </c:otherwise>
     </c:choose>
-    <c:forEach var="parentCategory" items="${parentCategoryList }">
-      <form:option value="${parentCategory.id }" label="${parentCategory.name }"></form:option>
-    </c:forEach>
   </form:select>
   <br />
   <form:label path="name">商品类别名称：</form:label>

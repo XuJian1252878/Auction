@@ -62,7 +62,8 @@ public class Category {
    * 一对多关联关系 级联关系：cascade=CascadeType.ALL 延迟加载：fetch = FetchType.LAZY
    * 映射：mappedBy = "category" ,  mappped 后面跟的是 管理映射关系中的 变量的名称
    * 从下面的parentCategpry就可以看出这一点。
-   * 这里的category是product中的一个成员变量。指明category不负责级联关系，而是student负责级联关系。
+   * parentCategory是Category类中的一个变量，mappedBy = "parentCategory" 表示由Category类中的parentCategory类负责级联关系。
+   * 这里的category是Product类中的一个成员变量。指明Category类不负责级联关系，而是Product类中的category变量负责级联关系。
    */
   @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "category")
   private Set<Product> products = new HashSet<Product>();

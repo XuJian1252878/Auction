@@ -20,14 +20,13 @@ import org.springframework.web.servlet.ModelAndView;
 import com.auction.model.User;
 import com.auction.model.validator.UserValidator;
 import com.auction.service.IUserService;
+import com.auction.util.ConstantUtil;
 import com.auction.util.ImageUtil;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
-  private static final String LOGINUSER = "LOGINUSER";
-  
   @Resource(name = "userService")
   private IUserService userService;
 
@@ -64,7 +63,7 @@ public class UserController {
     // image 引用的时候要 / 的格式才能引用出来
     user.setAvatarPath(avatarFilePath);
     // 注册信息符合要求，写入数据库
-    if (userService.canCreateUser(user)) {
+    if (userService.existsUser(user)) {
       // 此时开始写入图片信息
       try {
         ImageUtil.saveImgFile(request, user.getAvatarFile(), result, avatarFilePath);
@@ -123,7 +122,7 @@ public class UserController {
       return "/user/login";
     }
     // 应该还要在Session中设置User http://www.tuicool.com/articles/m2iimaa
-    httpSession.setAttribute(LOGINUSER, loginUser);
+    httpSession.setAttribute(ConstantUtil.LOGINUSER, loginUser);
     return "/index";
   }
 
@@ -134,8 +133,8 @@ public class UserController {
    */
   @RequestMapping(value = "/logout")
   public String logout(HttpSession httpSession) {
-    if (httpSession.getAttribute(LOGINUSER) != null) {
-      httpSession.setAttribute(LOGINUSER, null);
+    if (httpSession.getAttribute(ConstantUtil.LOGINUSER) != null) {
+      httpSession.setAttribute(ConstantUtil.LOGINUSER, null);
     }
     return "redirect:/index";
   }
@@ -148,7 +147,7 @@ public class UserController {
   @RequestMapping(value="/profile", method=RequestMethod.GET)
   public ModelAndView userProfile(HttpSession httpSession) {
     ModelAndView mv = new ModelAndView();
-    mv.addObject("loginUser", httpSession.getAttribute(LOGINUSER));
+    mv.addObject("loginUser", httpSession.getAttribute(ConstantUtil.LOGINUSER));
     mv.setViewName("/user/profile");
     return mv;
   }
@@ -165,7 +164,7 @@ public class UserController {
   public ModelAndView updateProfile(@Valid @ModelAttribute("loginUser") User user, BindingResult result,
       HttpSession httpSession, HttpServletRequest request) {
     ModelAndView mv = new ModelAndView();
-    User oriUser = (User)httpSession.getAttribute(LOGINUSER);
+    User oriUser = (User)httpSession.getAttribute(ConstantUtil.LOGINUSER);
     if (result.hasErrors()) {
       mv.addObject("loginUser", oriUser);
       return mv;
@@ -203,7 +202,7 @@ public class UserController {
       mv.addObject("loginUser", oriUser);
       return mv;
     }
-    httpSession.setAttribute(LOGINUSER, newUser);
+    httpSession.setAttribute(ConstantUtil.LOGINUSER, newUser);
     mv.addObject("loginUser", newUser);
     mv.setViewName("/user/profile");
     return mv;
@@ -217,7 +216,6 @@ public class UserController {
   @RequestMapping(value = "/transaction", method = RequestMethod.GET)
   public ModelAndView userTransaction() {
     ModelAndView mv = new ModelAndView();
-
     return mv;
   }
 }

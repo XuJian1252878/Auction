@@ -83,7 +83,7 @@ public class UserService extends BaseService<User> implements IUserService {
   /**
    * 判断新用户是否符合注册条件，用户名和注册邮箱都唯一。
    */
-  public boolean canCreateUser(User user) {
+  public boolean existsUser(User user) {
     // TODO Auto-generated method stub
     // 查看数据库中有无相通名称或者注册邮箱的用户，如果有那么返回原页面重新注册
     if (getUserByEmail(user.getEmail()) != null || getUserByName(user.getUserName()) != null) {

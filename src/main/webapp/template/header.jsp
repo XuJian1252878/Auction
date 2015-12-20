@@ -23,21 +23,22 @@
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="template/jquery/jquery-1.11.3.min.js"></script>
 
+<!-- DateTimePicker plugin -->
+<script src="template/moment/moment.js"></script>
+
+<!-- Bootstrap plugins -->
+<script src="template/bootstrap-3.3.6/js/transition.js"></script>
+<script src="template/bootstrap-3.3.6/js/collapse.js"></script>
+
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="template/bootstrap-3.3.6/js/bootstrap.min.js"></script>
 <!-- Bootstrap core CSS -->
 <link href="template/bootstrap-3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
 <!-- font-awesome 各种图标 -->
 <link rel="stylesheet" href="template/font-awesome-4.5.0/css/font-awesome.min.css">
 
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="scripts/ie10-viewport-bug-workaround.js"></script>
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<link href="styles/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
-<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-<script src="scripts/ie-emulation-modes-warning.js"></script>
 
 <%-- 
 <!--Import materialize.css must after bootstrap-->
@@ -77,7 +78,7 @@
         <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact</a></li>
         <c:choose>
-          <c:when test="${sessionScope.LOGINUSER != null }">
+          <c:when test="${sessionScope.loginuser != null }">
             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
               aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span>
             </a>
@@ -87,7 +88,7 @@
                 <li><a href="#">Something else here</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Nav header</li>
-                <li><a href="#">Separated link</a></li>
+                <li><a href="user/transaction"><i class="fa fa-credit-card-alt"></i> 我的交易</a></li>
                 <li><a href="user/profile"><i class="glyphicon glyphicon-cog"></i> 个人信息</a></li>
                 <li role="seperator" class="divider"></li>
                 <li><a href="user/logout"><i class="glyphicon glyphicon-off"></i> 注销</a></li>

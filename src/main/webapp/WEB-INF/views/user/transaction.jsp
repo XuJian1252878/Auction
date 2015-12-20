@@ -4,13 +4,16 @@
 <link href="styles//usertransaction.css" rel="stylesheet">
 
 <div class="container">
+  <p>
+    <label>我的交易记录</label>
+  </p>
+  <br /> <br />
   <div class="row">
     <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
       <ul class="nav nav-pills nav-justified">
-        <li class="active"><a href="#tab_a" data-toggle="pill">Pill A</a></li>
-        <li><a href="#tab_b" data-toggle="pill">Pill B</a></li>
-        <li><a href="#tab_c" data-toggle="pill">Pill C</a></li>
-        <li><a href="#tab_d" data-toggle="pill">Pill D</a></li>
+        <li class="active"><a href="#tab_a" data-toggle="pill">竞价记录</a></li>
+        <li><a href="#tab_b" data-toggle="pill">正在进行</a></li>
+        <li><a href="#tab_c" data-toggle="pill">已经完成</a></li>
       </ul>
       <div class="tab-content">
         <div id="tab_a" class="tab-pane fade in active">
@@ -25,11 +28,17 @@
           <h4>Pane C</h4>
           <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
         </div>
-        <div id="tab_d" class="tab-pane fade">
-          <h4>Pane D</h4>
-          <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
-        </div>
       </div>
+    </div>
+  </div>
+</div>
+<br />
+<br />
+<br />
+<div class="contanner">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-5 col-sm-10 col-sm-offset-5 col-xs-10 col-xs-offset-5">
+      <a class="btn-success btn-lg" href="product/upload" role="button">上传我的旧物信息</a>
     </div>
   </div>
 </div>

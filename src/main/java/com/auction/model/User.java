@@ -75,6 +75,9 @@ public class User {
   @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "user")
   private Set<Bid> bids = new HashSet<Bid>();
 
+  @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, mappedBy = "user")
+  private Set<Product> products = new HashSet<Product>();
+
   public Integer getId() {
     return id;
   }
@@ -177,6 +180,14 @@ public class User {
 
   public void setBids(Set<Bid> bids) {
     this.bids = bids;
+  }
+
+  public Set<Product> getProducts() {
+    return products;
+  }
+
+  public void setProducts(Set<Product> products) {
+    this.products = products;
   }
 
 }

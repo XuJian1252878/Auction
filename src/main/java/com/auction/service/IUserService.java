@@ -10,7 +10,7 @@ public interface IUserService {
   
   public List<User> getAllUser();
   
-  public boolean canCreateUser(User user);
+  public boolean existsUser(User user);
   
   public boolean createUser(User user);
   
