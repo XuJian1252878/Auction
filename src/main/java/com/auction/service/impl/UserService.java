@@ -31,11 +31,6 @@ public class UserService extends BaseService<User> implements IUserService {
 
   public boolean createUser(User user) {
     // TODO Auto-generated method stub
-    // 查看数据库中有无相通名称或者注册邮箱的用户，如果有那么返回原页面重新注册
-    if (getUserByEmail(user.getEmail()) != null || getUserByName(user.getUserName()) != null) {
-      // 该用户名称或者用户邮箱已经被注册
-      return false;
-    }
     if (userDao.save(user) != null) {
       return true;
     }
@@ -82,6 +77,19 @@ public class UserService extends BaseService<User> implements IUserService {
     // userDao.update(user);
     // 留下一个坑，外键元素会不会丢失，因为没有 cascade = "merge" 的声明
     userDao.merge(user);
+    return true;
+  }
+
+  /**
+   * 判断新用户是否符合注册条件，用户名和注册邮箱都唯一。
+   */
+  public boolean canCreateUser(User user) {
+    // TODO Auto-generated method stub
+    // 查看数据库中有无相通名称或者注册邮箱的用户，如果有那么返回原页面重新注册
+    if (getUserByEmail(user.getEmail()) != null || getUserByName(user.getUserName()) != null) {
+      // 该用户名称或者用户邮箱已经被注册
+      return false;
+    }
     return true;
   }
 }

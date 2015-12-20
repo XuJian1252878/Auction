@@ -5,8 +5,9 @@
 <script type="text/javascript" src="template/imgareaselect/scripts/jquery.min.js"></script>
 <script type="text/javascript" src="template/imgareaselect/scripts/jquery.imgareaselect.pack.js"></script>
 <link href="/styles/register.css" rel="stylesheet">
-<script type="text/javascript" src="scripts/cutavatarimg.js"></script>
+<script type="text/javascript" src="scripts/cutimg.js"></script>
 <script type="text/javascript" src="scripts/register.js"></script>
+<script type="text/javascript" src="scripts/bootstrap.file-input.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?signed_in=true&libraries=places&callback=initAutocomplete" async
   defer></script>
 
@@ -21,6 +22,17 @@
       activeEl = $(".btn-nav").index(this);
     });
   });
+  
+  $(document).ready(function() {
+    $('input[type=file]').bootstrapFileInput();
+  });
+  
+  function displayAvatarSelectDiv() {
+    var updateAvatarDiv = document.getElementById("uploadAvatarDiv");
+    if (updateAvatarDiv.style.display == 'none') {
+      updateAvatarDiv.style.display = 'block';
+    }
+  }
 </script>
 
 <%-- 
@@ -215,26 +227,29 @@
         <br />
         <br />
         <div class="form-group">
-          <form:label path="avatarFile">请选择头像图片：</form:label>
-          <form:input id="img" type="file" path="avatarFile" accept="image/*" />
+          <form:input id="img" type="file" class="btn-info" path="avatarFile" accept="image/*" title="请选择头像图片" onclick="displayAvatarSelectDiv()" />
           <form:errors path="avatarFile" />
         </div>
         <br />
         <br />
-        <div class="form-group">
-          <div class="container">
-            <div class="row">
-              <div id="uploadImgDiv" class="col-md-6">
-                <img id="uploadImg" src="#" alt="测试预览图片"> <br /> <br />
-                <!-- 加上type="button" ，可以防止点击button的时候自动提交。 -->
-                <button id="cutImgBtn" style="display: none;" value="裁剪" onclick="cutImg()" type="button">裁剪</button>
-                <input type="hidden" name="x1" value="-1"> <input type="hidden" name="y1" value="-1"> <input
-                  type="hidden" name="x2" value="-1"> <input type="hidden" name="y2" value="-1"> <input
-                  type="hidden" name="imgWidth" value="-1"> <input type="hidden" name="imgHeight" value="-1">
-              </div>
-              <label for="previewImgDiv">图片预览</label>
-              <div id="previewImgDiv" class="col-md-6">
-                <img id="previewImg" src="#" style="position: relative;" />
+        <div id="uploadAvatarDiv" style="display: none;">
+          <div class="form-group">
+            <div class="container">
+              <div class="row">
+                <div id="uploadImgDiv" class="col-md-6">
+                  <img id="uploadImg" src="#" alt="测试预览图片"> <br /> <br />
+                  <!-- 加上type="button" ，可以防止点击button的时候自动提交。 -->
+                  <button id="cutImgBtn" class="btn-info btn-sm" style="display: none;" value="裁剪" onclick="cutImg()"
+                    type="button">裁剪</button>
+                  <input type="hidden" name="x1" value="-1"> <input type="hidden" name="y1" value="-1">
+                  <input type="hidden" name="x2" value="-1"> <input type="hidden" name="y2" value="-1">
+                  <input type="hidden" name="imgWidth" value="-1"> <input type="hidden" name="imgHeight"
+                    value="-1">
+                </div>
+                <label for="previewImgDiv">图片预览</label>
+                <div id="previewImgDiv" class="col-md-6">
+                  <img id="previewImg" src="#" style="position: relative;" />
+                </div>
               </div>
             </div>
           </div>

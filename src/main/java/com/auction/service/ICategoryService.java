@@ -8,10 +8,10 @@ public interface ICategoryService {
   /**
    * 根据分页信息存取category实体
    * @param pageNo
-   * @param pageSize
+   * @param pageSize 如果pageNo值和pageSize的值同时为-1， 那么表示返回全部的结果。
    * @return List<Category>
    */
-  public List<Category> loadPart(int pageNo, int pageSize);
+  public List<Category> loadCategory(int pageNo, int pageSize);
   
   /**
    * 统计 category 记录的总数

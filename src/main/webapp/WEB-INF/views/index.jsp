@@ -153,101 +153,29 @@
         </h2>
       </div>
     </div>
-    <!-- /.col-lg-12 -->
-    <!-- /.col-lg-4 -->
-    <div class="gallery">
-      <div class="col-lg-4">
-        <a href="#"><img src="images/test/image1.png" width="240" height="240" alt="image" /></a>
-        <div class="overlay">
-          <h4>女装·男装</h4>
-          <p>
-            <span>精选女装</span> 、<span>连衣裙</span>、<span>裤装</span>、<span>男装</span>、<span>T恤</span>、<span>衬衫</span>、<span>休闲裤</span>
-          </p>
-          <a href="#">查看商品信息</a>
+    <c:choose>
+      <c:when test="${categoryList == null }">
+        <label>暂无商品类别信息</label>
+      </c:when>
+      <c:otherwise>
+        <!-- /.col-lg-4 -->
+        <div class="gallery">
+          <c:forEach var="category" items="${categoryList }">
+            <div class="col-lg-4">
+              <a href="#"><img src="images/test/image${category.id }.png" width="240" height="240" alt="image" /></a>
+              <div class="overlay">
+                <h4>${categoey.name }</h4>
+                <p>
+                  <span>${category.cdesc }</span>
+                </p>
+                <a href="#">查看商品信息</a>
+              </div>
+            </div>
+          </c:forEach>
         </div>
-      </div>
-      <div class="col-lg-4">
-        <a href="#"><img src="images/test/image2.png" width="240" height="240" alt="image" /></a>
-        <div class="overlay">
-          <h4>鞋·箱包</h4>
-          <p>
-            <span>女鞋</span>、<span>男鞋</span>、<span>豆豆鞋</span>、<span>女包</span>、<span>男包</span>、<span>旅行箱</span>、<span>帽子</span>
-          </p>
-          <a href="#">查看商品信息</a>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <a href="#"><img src="images/test/image3.png" width="240" height="240" alt="image" /></a>
-        <div class="overlay">
-          <h4>运动户外</h4>
-          <p>
-            <span>运动鞋</span>、<span>运动服</span>、<span>健身用品</span>、<span>骑行运动</span>、<span>户外运动</span>
-          </p>
-          <a href="#">查看商品信息</a>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <a href="#"><img src="images/test/image4.png" width="240" height="240" alt="image" /></a>
-        <div class="overlay">
-          <h4>珠宝配饰</h4>
-          <p>
-            <span>珠宝首饰</span>、<span>时尚饰品</span>、<span>品质手表</span>、<span>眼镜配饰</span>、<span>投资珠宝</span>、<span>男人饰品</span>
-          </p>
-          <a href="#">查看商品信息</a>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <a href="#"><img src="images/test/image5.png" width="240" height="240" alt="image" /></a>
-        <div class="overlay">
-          <h4>手机数码</h4>
-          <p>
-            <span>手机</span>、<span>相机单反</span>、<span>笔记本</span>、<span>平板电脑</span>、<span>电脑</span>、<span>配件</span>
-          </p>
-          <a href="#">查看商品信息</a>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <a href="#"><img src="images/test/image6.png" width="240" height="240" alt="image" /></a>
-        <div class="overlay">
-          <h4>家电办公</h4>
-          <p>
-            <span>大家电</span>、<span>厨房电器</span>、<span>生活电器</span>、<span>个护电器</span>、<span>办公耗材</span>、<span>电教学习</span>
-          </p>
-          <a href="#">查看商品信息</a>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <a href="#"><img src="images/test/image7.png" width="240" height="240" alt="image" /></a>
-        <div class="overlay">
-          <h4>护肤彩妆</h4>
-          <p>
-            <span>美容护肤</span>、<span>强效保养</span>、<span>超值彩妆</span>、<span>夏日护理</span>、<span>男士护肤</span>、<span>大牌香水</span>
-          </p>
-          <a href="#">查看商品信息</a>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <a href="#"><img src="images/test/image8.png" alt="image" /></a>
-        <div class="overlay">
-          <h4>母婴用品</h4>
-          <p>
-            <span>童装童鞋</span>、<span>婴童用品</span>、<span>奶粉辅食</span>、<span>益智玩具</span>、<span>孕产必备</span>
-          </p>
-          <a href="#">查看商品信息</a>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <a href="#"><img src="images/test/image9.png" alt="image" /></a>
-        <div class="overlay">
-          <h4>家居家纺</h4>
-          <p>
-            <span>床上用品</span>、<span>居家布艺</span>、<span>客厅家具</span>、<span>卧室家具</span>、<span>家居饰品</span>、<span>特色工艺</span>
-          </p>
-          <a href="#">查看商品信息</a>
-        </div>
-      </div>
-    </div>
-    <!-- /.col-lg-4 -->
+        <!-- /.col-lg-4 -->
+      </c:otherwise>
+    </c:choose>
   </div>
 
 

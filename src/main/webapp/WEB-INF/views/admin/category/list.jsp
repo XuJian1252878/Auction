@@ -28,6 +28,7 @@
       <td>${category.id}</td>
       <td>${category.name}</td>
       <td>${category.cdesc}</td>
+      <td><img src="${category.imgPath }" alt="商品类别图片" width="240" height="240"></td>
       <td><a href="admin/category/edit/0_${category.id }?pageNo=${pageNo}">查看详情</a></td>
       <td><a href="admin/category/edit/1_${category.id }?pageNo=${pageNo}">编辑</a></td>
       <td><a href="admin/category/delete_${category.id }?pageNo=${pageNo}">删除</a></td>

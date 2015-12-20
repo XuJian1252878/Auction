@@ -1,8 +1,10 @@
 package com.auction.controller.category;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.auction.model.Category;
 import com.auction.model.validator.CategoryValidator;
 import com.auction.service.ICategoryService;
+import com.auction.util.ImageUtil;
 
 @Controller
 @RequestMapping(value = "/admin/category")
@@ -52,7 +55,7 @@ public class CategoryController {
       // 传入的pageNo参数不正确，那么显示最后一页的数据
       pageNo = (categoryCount / PAGESIZE) + 1;
     }
-    List<Category> categories = categoryService.loadPart(pageNo, PAGESIZE);
+    List<Category> categories = categoryService.loadCategory(pageNo, PAGESIZE);
     mv.addObject("categories", categories);
     // 记录当前的页码信息
     mv.addObject("pageNo", pageNo);
@@ -74,19 +77,29 @@ public class CategoryController {
 
   @RequestMapping(value = "/add", method = RequestMethod.POST)
   public String add(@Valid @ModelAttribute("category") Category category, BindingResult result,
-      @RequestParam("pageNo") int pageNo, Model model) {
+      @RequestParam("pageNo") int pageNo, Model model, HttpServletRequest request) {
     // 首先如果用户添加的是一级标签，那么将这个一级标签的parentCategory设置为null。
     if (category.getParentCategory().getId() == -1) {
       System.out.println("添加类别为一级标签");
       category.setParentCategory(null);
     }
-    System.out.println(model.toString());
+//    System.out.println(model.toString());
     if (result.hasErrors()) {
       model.addAttribute("pageNo", pageNo);
-      System.out.print("post_add_error" + pageNo);
+//      System.out.print("post_add_error" + pageNo);
       return "admin/category/add";
     }
+    String imgFilePath = ImageUtil.genImgFileName(request, "category", category.getImgFile().getOriginalFilename());
+    category.setImgPath(imgFilePath);
     if (categoryService.newCategory(category)) {
+      try {
+        ImageUtil.saveImgFile(request, category.getImgFile(), result, imgFilePath);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+        model.addAttribute("pageNo", pageNo);
+        return "admin/category/add";
+      }
       // 而redirect后的是url，是会经过controller处理的。
       return "redirect:/admin/category/list/" + pageNo;
     } else {

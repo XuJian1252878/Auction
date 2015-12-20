@@ -4,7 +4,7 @@
 <link rel="stylesheet" type="text/css" href="template/imgareaselect/css/imgareaselect-default.css" />
 <script type="text/javascript" src="template/imgareaselect/scripts/jquery.min.js"></script>
 <script type="text/javascript" src="template/imgareaselect/scripts/jquery.imgareaselect.pack.js"></script>
-<script type="text/javascript" src="scripts/cutavatarimg.js"></script>
+<script type="text/javascript" src="scripts/cutimg.js"></script>
 <script type="text/javascript" src="scripts/bootstrap.file-input.js"></script>
 
 <link href="styles/userprofile.css" style="stylesheet">
@@ -98,7 +98,7 @@
                     <div class="row">
                       <div id="uploadImgDiv" class="col-md-8">
                         <img id="uploadImg" src="#" alt="头像图片" /> <br />
-                        <button id="cutImgBtn" style="display: none;" value="裁剪" onclick="cutImg()" type="button">裁剪</button>
+                        <button id="cutImgBtn" style="display: none;" class="btn-info btn-sm" value="裁剪" onclick="cutImg()" type="button">裁剪</button>
                         <input type="hidden" name="x1" value="-1" /> <input type="hidden" name="y1" value="-1" /> <input
                           type="hidden" name="x2" value="-1" /> <input type="hidden" name="y2" value="-1" /> <input
                           type="hidden" name="imgWidth" value="-1" /> <input type="hidden" name="imgHeight" value="-1" />

@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.auction.controller.ImageTool;
 import com.auction.model.User;
 import com.auction.model.validator.UserValidator;
 import com.auction.service.IUserService;
+import com.auction.util.ImageUtil;
 
 @Controller
 @RequestMapping("/user")
@@ -60,14 +60,15 @@ public class UserController {
       return "/user/register";// 如果注册过程中出现错误，那么返回原来的页面。
     }
     // 首先获得图片将要保存在的路径信息。
-    String avatarFilePath = ImageTool.genAvatarFileName(request, user.getAvatarFile().getOriginalFilename());
+    String avatarFilePath = ImageUtil.genImgFileName(request, "avatar", user.getAvatarFile().getOriginalFilename());
     // image 引用的时候要 / 的格式才能引用出来
     user.setAvatarPath(avatarFilePath);
     // 注册信息符合要求，写入数据库
-    if (userService.createUser(user)) {
+    if (userService.canCreateUser(user)) {
       // 此时开始写入图片信息
       try {
-        ImageTool.saveAvatarImgFile(request, user.getAvatarFile(), result, avatarFilePath);
+        ImageUtil.saveImgFile(request, user.getAvatarFile(), result, avatarFilePath);
+        userService.saveUser(user); // 保存用户信息
       } catch (IOException e) {
         // TODO Auto-generated catch block
         result.rejectValue("avatarFile", "register.user.avatar.upload.failed");
@@ -171,7 +172,7 @@ public class UserController {
     }
 
     // 开始更新用户的信息
-    String avatarFilePath = ImageTool.genAvatarFileName(request, user.getAvatarFile().getOriginalFilename());
+    String avatarFilePath = ImageUtil.genImgFileName(request, "avatar", user.getAvatarFile().getOriginalFilename());
     if (user.getAvatarFile() != null) { // 说明用户更改了头像信息
       user.setAvatarPath(avatarFilePath);
     }
@@ -189,7 +190,7 @@ public class UserController {
         avatarFile.delete(); // 删除原来的头像文件。
       }
       try {
-        ImageTool.saveAvatarImgFile(request, user.getAvatarFile(), result, avatarFilePath);
+        ImageUtil.saveImgFile(request, user.getAvatarFile(), result, avatarFilePath);
       } catch (IOException e) {
         result.rejectValue("avatarFile", "register.user.avatar.upload.failed");
         e.printStackTrace();

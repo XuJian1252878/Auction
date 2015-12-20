@@ -1,4 +1,4 @@
-package com.auction.controller;
+package com.auction.util;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
-public class ImageTool {
+public class ImageUtil {
 
   private static ServletContext getServletContext(HttpServletRequest request) {
     // WebApplicationContext webApplicationContext =
@@ -51,14 +51,14 @@ public class ImageTool {
   }
 
   // 获得上传图像文件的相对路径（相对于项目根目录）
-  public static String genAvatarFileName(HttpServletRequest request, String oriFileName) {
+  public static String genImgFileName(HttpServletRequest request, String folderName, String oriFileName) {
     StringBuilder stringBuilder = new StringBuilder();
     // 获得文件的后缀名称。
     String suffix = getImgSuffix(oriFileName);
     // 获得格式化的文件名称
     stringBuilder.append(new IPTimeStamp(request.getRemoteAddr()).getIpTimeRand());
     stringBuilder.append("." + suffix);
-    String avatarFilePath = "images" + File.separator + "avatar" + File.separator + stringBuilder.toString();
+    String avatarFilePath = "images" + File.separator + folderName + File.separator + stringBuilder.toString();
     return avatarFilePath;
   }
 
@@ -92,7 +92,7 @@ public class ImageTool {
     return false;
   }
 
-  public static String saveAvatarImgFile(HttpServletRequest request, MultipartFile oriImgFile, BindingResult result, String avatarFilePath)
+  public static String saveImgFile(HttpServletRequest request, MultipartFile oriImgFile, BindingResult result, String avatarFilePath)
       throws IOException {
     // 首先检查关于图片裁剪的信息
     int x1 = Integer.parseInt(request.getParameter("x1"));
@@ -109,7 +109,7 @@ public class ImageTool {
       try {
         saveImg(oriImgFile, avatarCorePath);
       } catch (IOException e) {
-        result.rejectValue("avatarFile", "register.user.avatar.upload.failed");
+        result.reject("img.upload.failed");
         e.printStackTrace();
         return null;
       }
@@ -127,7 +127,7 @@ public class ImageTool {
         delImg(tmpImgPath);
       } catch (IllegalStateException e) {
         // TODO Auto-generated catch block
-        result.rejectValue("avatarFile", "register.user.avatar.cut.failed");
+        result.reject("img.cut.failed");
         e.printStackTrace();
         return null;
       }

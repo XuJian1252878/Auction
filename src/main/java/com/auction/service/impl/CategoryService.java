@@ -19,10 +19,15 @@ public class CategoryService extends BaseService<Category> implements ICategoryS
   @Resource(name = "categoryDao")
   private ICategoryDao categoryDao;
 
-  public List<Category> loadPart(int pageNo, int pageSize) {
+  public List<Category> loadCategory(int pageNo, int pageSize) {
     // TODO Auto-generated method stub
     String hql = "from " + Category.class.getName() + " as c order by c.id desc";
-    List<Category> resultList = categoryDao.listPart(pageNo, pageSize, hql);
+    List<Category> resultList = null;
+    if (pageSize == -1 && pageNo == -1) {
+      resultList = categoryDao.findAll(Category.class);
+    } else {
+      resultList = categoryDao.listPart(pageNo, pageSize, hql);
+    }
     return resultList;
   }
 

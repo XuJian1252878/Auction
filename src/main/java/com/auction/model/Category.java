@@ -17,6 +17,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Table(name = "CATEGORY")
@@ -50,6 +51,12 @@ public class Category {
   // 商品的类别信息，一级类别为1，二级类别为2，最多为2级类别。
   @Transient
   private int levelInfo;
+
+  @Column(name = "imgPath")
+  private String imgPath;
+
+  @Transient
+  private MultipartFile imgFile; 
 
   /*
    * 一对多关联关系 级联关系：cascade=CascadeType.ALL 延迟加载：fetch = FetchType.LAZY
@@ -89,6 +96,22 @@ public class Category {
 
   public void setCdesc(String cdesc) {
     this.cdesc = cdesc;
+  }
+
+  public String getImgPath() {
+    return imgPath;
+  }
+
+  public void setImgPath(String imgPath) {
+    this.imgPath = imgPath;
+  }
+
+  public MultipartFile getImgFile() {
+    return imgFile;
+  }
+
+  public void setImgFile(MultipartFile imgFile) {
+    this.imgFile = imgFile;
   }
 
   public Set<Product> getProducts() {

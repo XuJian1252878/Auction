@@ -1,23 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-  pageEncoding="UTF-8" isELIgnored="false"%>
-<%
-  String path = request.getContextPath();
-  String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path
-      + "/";
-%>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ include file="../../../../template/header.jsp"%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<base href="<%=basePath%>">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>更新商品类别信息</title>
-</head>
-<body>
   <form:form modelAttribute="category"
     action="admin/category/edit?pageNo=${pageNo }" method="post">
     <form:label path="parentCategory.name">父类别名称：</form:label>
@@ -69,5 +52,5 @@
       <br />
     </c:forEach>
   </form:form>
-</body>
-</html>
+
+<%@ include file="../../../../template/footer.jsp"%>

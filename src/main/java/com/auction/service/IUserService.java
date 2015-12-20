@@ -10,6 +10,8 @@ public interface IUserService {
   
   public List<User> getAllUser();
   
+  public boolean canCreateUser(User user);
+  
   public boolean createUser(User user);
   
   public boolean updateUser(User user);
