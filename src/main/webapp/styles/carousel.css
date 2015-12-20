@@ -105,3 +105,58 @@ body {
     margin-top: 120px;
   }
 }
+
+/* TITLE CSS
+-------------------------------------------------- */
+.title h2 {
+  display: inherit;
+  padding: 10px 10px 11px;
+  font-size: 22px;
+}
+
+.title h2 span {
+  top: 13px;
+}
+
+/*-----------------------------------------------------------------------------------*/
+/*  GALLERY
+/*-----------------------------------------------------------------------------------*/
+
+.gallery {
+/*  margin-bottom:80px;
+  overflow: hidden; */
+}
+
+.gallery .overlay {
+  display: none;
+  width:240px; 
+  height:240px; 
+  padding: 25px; 
+  background:#1f1f1f;
+  position: absolute; 
+  top: 0px; 
+  left: 75px;
+  opacity: 0.8;
+}
+
+.gallery .overlay h4 {
+  color:#CCC; 
+  margin-bottom:35px; 
+  font:14px Arial, Helvetica, sans-serif;
+}
+.gallery .overlay p {
+  color:#545454; 
+  margin-bottom:64px; 
+  font:12px Arial, Helvetica, sans-serif; 
+  line-height:18px; 
+  letter-spacing:1px;
+}
+.gallery .overlay span {
+  color:#CD3333;
+}
+.gallery .overlay a {
+  color:#fff186;
+}
+.gallery div:hover .overlay { 
+  display: block; 
+}
