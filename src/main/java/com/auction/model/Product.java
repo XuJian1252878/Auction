@@ -41,7 +41,7 @@ public class Product {
   /*
    * 多对一关联关系 延迟加载：fetch = FetchType.LAZY 引用外键：category_id
    */
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
   @JoinColumn(name = "category_id") // 指明生成的外键的名字，随意命名。
   private Category category;
 

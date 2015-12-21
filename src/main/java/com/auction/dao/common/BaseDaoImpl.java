@@ -128,9 +128,9 @@ public class BaseDaoImpl<T> implements IBaseDao<T> {
     return resultList;
   }
 
-/**
- * 
- */
+  /**
+   * 
+   */
   public boolean merge(T entity) {
     // TODO Auto-generated method stub
     sessionFactory.getCurrentSession().merge(entity);

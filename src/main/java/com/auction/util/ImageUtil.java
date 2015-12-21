@@ -56,7 +56,7 @@ public class ImageUtil {
     // 获得文件的后缀名称。
     String suffix = getImgSuffix(oriFileName);
     // 获得格式化的文件名称
-    stringBuilder.append(new IPTimeStamp(request.getRemoteAddr()).getIpTimeRand());
+    stringBuilder.append(DateTimeUtil.getIpTimeRand(request.getRemoteAddr()));
     stringBuilder.append("." + suffix);
     String avatarFilePath = "images" + File.separator + folderName + File.separator + stringBuilder.toString();
     return avatarFilePath;
@@ -92,8 +92,8 @@ public class ImageUtil {
     return false;
   }
 
-  public static String saveImgFile(HttpServletRequest request, MultipartFile oriImgFile, BindingResult result, String avatarFilePath)
-      throws IOException {
+  public static String saveImgFile(HttpServletRequest request, MultipartFile oriImgFile, BindingResult result,
+      String imgFilePath) {
     // 首先检查关于图片裁剪的信息
     int x1 = Integer.parseInt(request.getParameter("x1"));
     int y1 = Integer.parseInt(request.getParameter("y1"));
@@ -102,7 +102,7 @@ public class ImageUtil {
     int imgWidth = Integer.parseInt(request.getParameter("imgWidth"));
     int imgHeight = Integer.parseInt(request.getParameter("imgHeight"));
     // 获取头像文件的存取路径。// 写文件的时候需要注意当前系统的文件路径分隔符。写入服务器中的对应目录下。
-    String avatarCorePath = getServletContext(request).getRealPath("/") + avatarFilePath;
+    String avatarCorePath = getServletContext(request).getRealPath("/") + imgFilePath;
     if (x1 == -1 || y1 == -1 || x2 == -1 || y2 == -1 || imgWidth == -1 || imgHeight == -1) {
       // 说明用户没有进行裁剪操作。
       // 此时开始写入图片信息
@@ -130,6 +130,10 @@ public class ImageUtil {
         result.reject("img.cut.failed");
         e.printStackTrace();
         return null;
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        result.reject("img.cut.failed");
+        e.printStackTrace();
       }
     }
     // 返回最终文件的存储路径。

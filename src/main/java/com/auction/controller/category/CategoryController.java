@@ -1,6 +1,5 @@
 package com.auction.controller.category;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -92,11 +91,8 @@ public class CategoryController {
     String imgFilePath = ImageUtil.genImgFileName(request, "category", category.getImgFile().getOriginalFilename());
     category.setImgPath(imgFilePath);
     if (categoryService.newCategory(category)) {
-      try {
-        ImageUtil.saveImgFile(request, category.getImgFile(), result, imgFilePath);
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+      ImageUtil.saveImgFile(request, category.getImgFile(), result, imgFilePath);
+      if (result.hasErrors()) {
         model.addAttribute("pageNo", pageNo);
         return "admin/category/add";
       }

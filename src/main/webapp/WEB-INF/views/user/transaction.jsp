@@ -19,6 +19,32 @@
         <div id="tab_a" class="tab-pane fade in active">
           <h4>Pane A</h4>
           <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+          <c:choose>
+            <c:when test="${products == null || fn:length(products) == 0 }">
+              <label>当前不存在竞价记录</label>
+            </c:when>
+            <c:otherwise>
+              <table>
+              <c:forEach var="product" items="${products }">
+                <tr>
+                  <td>${product.id }</td>
+                  <td>${product.name }</td>
+                  <td>${product.describe }</td>
+                  <td>${product.onSaleDate }</td>
+                  <td>${product.endDate }</td>
+                  <td><img src="${product.imgPath }" alt="商品图片"></td>
+                </tr>
+                <tr>
+                  <td>${product.user.userName }</td>
+                </tr>
+                <tr>
+                  <td>${product.category.name }</td>
+                  <td>${product.category.cdesc }</td>
+                </tr>
+              </c:forEach>
+              </table>
+            </c:otherwise>
+          </c:choose>
         </div>
         <div id="tab_b" class="tab-pane fade">
           <h4>Pane B</h4>

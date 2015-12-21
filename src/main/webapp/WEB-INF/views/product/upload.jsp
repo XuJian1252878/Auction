@@ -25,8 +25,8 @@
 
 <form:form modelAttribute="product" action="product/upload" enctype="multipart/form-data" method="post" >
   <div class="form-group">
-  <form:label path="category">请选择商品类别：</form:label> <br />
-  <form:select path="category">
+  <form:label path="category.id">请选择商品类别：</form:label> <br />
+  <form:select path="category.id">
     <c:choose>
       <c:when test="${categories == null || fn:length(categories) == 0 }">
         <form:option value="" label="暂无商品类别可选"></form:option> <br />
@@ -34,13 +34,14 @@
       <c:otherwise>
         <form:option value="" label="请选择商品类别："></form:option> <br />
         <c:forEach var="mycategory" items="${categories }">
-          <form:option value="${mycategory }" label="${mycategory.name }"></form:option>
+          <form:option value="${mycategory.id }" label="${mycategory.name }"></form:option>
         </c:forEach>
       </c:otherwise>
     </c:choose>
   </form:select>
   </div>
   <br />
+  <form:input path="user.id" type="hidden" value="${loginUser.id }" />
   <div class="form-group">
   <form:label path="name" >商品名称：</form:label>
   <form:input path="name"/>
@@ -63,20 +64,29 @@
   <br />
   <br />
   <label>竞拍结束时间：</label>
+  <input id="endTimeMillis" name="endTimeMillis" type="hidden" />
+  <form:errors path="endDate" />
   <div style="overflow: hidden;">
     <div class="form-group">
       <div class="row">
         <div class="col-md-8">
-          <div id="datetimepicker12"></div>
+          <div id="datetimepicker"></div>
         </div>
       </div>
     </div>
     <script type="text/javascript">
       $(function() {
-        $('#datetimepicker12').datetimepicker({
+        $('#datetimepicker').datetimepicker({
           inline : true,
           sideBySide : true
         });
+      });
+      $("#datetimepicker").on("dp.change", function(e) {
+        if (e.date == null || e.date == "") {
+          $("#endTimeMillis").val(e.oldDate.valueOf());
+        } else {
+          $("#endTimeMillis").val(e.date.valueOf());
+        }
       });
     </script>
   </div>

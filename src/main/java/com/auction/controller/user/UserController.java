@@ -2,6 +2,8 @@ package com.auction.controller.user;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.auction.model.Product;
 import com.auction.model.User;
 import com.auction.model.validator.UserValidator;
+import com.auction.service.IProductService;
 import com.auction.service.IUserService;
 import com.auction.util.ConstantUtil;
 import com.auction.util.ImageUtil;
@@ -29,6 +33,9 @@ public class UserController {
 
   @Resource(name = "userService")
   private IUserService userService;
+
+  @Resource(name = "productService")
+  private IProductService productService;
 
   @InitBinder
   public void initBinder(DataBinder binder) {
@@ -59,21 +66,17 @@ public class UserController {
       return "/user/register";// 如果注册过程中出现错误，那么返回原来的页面。
     }
     // 首先获得图片将要保存在的路径信息。
-    String avatarFilePath = ImageUtil.genImgFileName(request, "avatar", user.getAvatarFile().getOriginalFilename());
+    String avatarFilePath = ImageUtil.genImgFileName(request, ConstantUtil.AVATARFOLDER, user.getAvatarFile().getOriginalFilename());
     // image 引用的时候要 / 的格式才能引用出来
     user.setAvatarPath(avatarFilePath);
     // 注册信息符合要求，写入数据库
     if (userService.existsUser(user)) {
       // 此时开始写入图片信息
-      try {
-        ImageUtil.saveImgFile(request, user.getAvatarFile(), result, avatarFilePath);
-        userService.saveUser(user); // 保存用户信息
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        result.rejectValue("avatarFile", "register.user.avatar.upload.failed");
-        e.printStackTrace();
-        return "/user/register";
+      ImageUtil.saveImgFile(request, user.getAvatarFile(), result, avatarFilePath);
+      if (result.hasErrors()) {
+        return "/user/register";// 如果注册过程中出现错误，那么返回原来的页面。
       }
+      userService.saveUser(user); // 保存用户信息
       return "redirect:/index";
     }
     result.rejectValue("userName", "register.user.name.already.exist");
@@ -171,7 +174,7 @@ public class UserController {
     }
 
     // 开始更新用户的信息
-    String avatarFilePath = ImageUtil.genImgFileName(request, "avatar", user.getAvatarFile().getOriginalFilename());
+    String avatarFilePath = ImageUtil.genImgFileName(request, ConstantUtil.AVATARFOLDER, user.getAvatarFile().getOriginalFilename());
     if (user.getAvatarFile() != null) { // 说明用户更改了头像信息
       user.setAvatarPath(avatarFilePath);
     }
@@ -188,12 +191,7 @@ public class UserController {
       if (avatarFile.exists() && avatarFile.isFile()) {
         avatarFile.delete(); // 删除原来的头像文件。
       }
-      try {
-        ImageUtil.saveImgFile(request, user.getAvatarFile(), result, avatarFilePath);
-      } catch (IOException e) {
-        result.rejectValue("avatarFile", "register.user.avatar.upload.failed");
-        e.printStackTrace();
-      }
+      ImageUtil.saveImgFile(request, user.getAvatarFile(), result, avatarFilePath);
     }
     // 更新session中的登陆用户信息
     User newUser = userService.findUserById(user.getId());
@@ -216,6 +214,9 @@ public class UserController {
   @RequestMapping(value = "/transaction", method = RequestMethod.GET)
   public ModelAndView userTransaction() {
     ModelAndView mv = new ModelAndView();
+    List<Product> products = productService.loadProduct(-1, -1);
+    mv.addObject("products", products);
+    mv.setViewName("user/transaction");
     return mv;
   }
 }
