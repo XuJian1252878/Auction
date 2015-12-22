@@ -16,8 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
-public class ImageUtil {
+public class ImageUtil extends FileUtil {
 
+  private static final String[] ALLOWIMGTYPES = {"jpg", "jpeg", "gif", "png"};
+  
   private static ServletContext getServletContext(HttpServletRequest request) {
     // WebApplicationContext webApplicationContext =
     // ContextLoader.getCurrentWebApplicationContext();
@@ -25,14 +27,32 @@ public class ImageUtil {
     return request.getSession().getServletContext();
   }
 
-  public static String getImgSuffix(String oriFileName) {
-    // 获得文件的后缀名称。
-    String[] fileNameSplitInfo = oriFileName.split("\\.");
-    String suffix = "jpg";
-    if (fileNameSplitInfo.length >= 1) {
-      suffix = fileNameSplitInfo[fileNameSplitInfo.length - 1];
+  /**
+   * 检查图片文件的类型是否符合要求，符合要求返回true；否则返回false。
+   * @param imgFileName
+   * @return
+   */
+  public static boolean checkImgType(String imgFileName) {
+    String suffix = getFileSuffix(imgFileName);
+    if (suffix == null) {
+      return false;
     }
-    return suffix;
+    for (String imgType : ALLOWIMGTYPES) {
+      if (imgType.equals(suffix)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  /**
+   * 获得图片文件的后缀名。如果获取图片文件的后缀名称失败，那么默认返回"jpg"。
+   * @param imgFileName
+   * @return
+   */
+  public static String getImgSuffix(String imgFileName) {
+    String suffix = getFileSuffix(imgFileName);
+    return (suffix == null) ? "jpg" : suffix;
   }
 
   public static String genTempImgFileName(String oriFileName) {

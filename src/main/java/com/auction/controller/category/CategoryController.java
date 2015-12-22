@@ -33,9 +33,10 @@ public class CategoryController {
   // 每页显示两个类别信息。
   private final int PAGESIZE = 2;
 
-  @InitBinder
-  public void initBinder(DataBinder binder) {
+  @InitBinder("category")
+  public void initCategoryBinder(DataBinder binder) {
     // 有个疑问，我需要多个validator的时候怎么办？
+    // 解决方案： http://stackoverflow.com/questions/14533488/addiing-multiple-validators-using-initbinder
     binder.setValidator(new CategoryValidator());
   }
 

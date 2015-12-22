@@ -5,9 +5,12 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.auction.model.Category;
 import com.auction.model.Product;
 import com.auction.model.User;
+import com.auction.model.validator.ProductValidator;
 import com.auction.service.ICategoryService;
 import com.auction.service.IProductService;
 import com.auction.util.ConstantUtil;
@@ -31,6 +35,12 @@ public class ProductController {
 
   @Resource(name = "categoryService")
   ICategoryService CategoryService;
+
+  // http://stackoverflow.com/questions/14533488/addiing-multiple-validators-using-initbinder
+  @InitBinder("product") // 注意这里 InitBinder 参数命令 需要为被检测对象的名称。
+  public void initProductBinder(DataBinder binder) {
+    binder.addValidators(new ProductValidator());
+  }
 
   @RequestMapping(value = "/upload", method=RequestMethod.GET)
   public ModelAndView uploadProduct(HttpSession session) {
@@ -50,13 +60,20 @@ public class ProductController {
   }
   
   @RequestMapping(value = "/upload", method=RequestMethod.POST)
-  public String uploadProduct(@ModelAttribute("product") Product product, BindingResult result, HttpServletRequest request) {
+  public ModelAndView uploadProduct(@Valid @ModelAttribute("product") Product product, BindingResult result, HttpServletRequest request, HttpSession session) {
+    User loginUser = (User)session.getAttribute(ConstantUtil.LOGINUSER);
+    // 选出所有的商品类别信息
+    List<Category> categories = CategoryService.loadCategory(-1, -1);
+    ModelAndView mv = new ModelAndView();
     // 获得当前的时间，拍卖商品的拍卖截止时间不能早于当前时间。
     long curTimeMillis = DateTimeUtil.getCurrentTimeMillis();
     long endTimeMillis = Long.parseLong(request.getParameter("endTimeMillis"));
     if (endTimeMillis < curTimeMillis) {
       result.rejectValue("endDate", "product.bid.end.date.error");
-      return "redirect:/product/upload";
+      mv.addObject("loginUser", loginUser);
+      mv.addObject("categories", categories);
+      mv.setViewName("product/upload");
+      return mv;
     }
     // 设置商品拍卖相关时间
     product.setOnSaleDate(DateTimeUtil.timeMillisToDate(curTimeMillis));
@@ -66,12 +83,19 @@ public class ProductController {
     product.setImgPath(imgPath);
     ImageUtil.saveImgFile(request, product.getImgFile(), result, imgPath);
     if (result.hasErrors()) {
-      return "redirect:/product/upload";
+      mv.setViewName("product/upload");
+      mv.addObject("loginUser", loginUser);
+      mv.addObject("categories", categories);
+      return mv;
     }
     // 保存商品信息
     if (!productService.createProduct(product)) {
-      return "redirect:/product/upload";
+      mv.setViewName("product/upload");
+      mv.addObject("loginUser", loginUser);
+      mv.addObject("categories", categories);
+      return mv;
     }
-    return "redirect:/user/transaction";
+    mv.setViewName("redirect:/user/transaction");
+    return mv;
   }
 }

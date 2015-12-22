@@ -5,6 +5,8 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.auction.model.User;
+import com.auction.util.FileUtil;
+import com.auction.util.ImageUtil;
 
 public class UserValidator implements Validator {
 
@@ -32,32 +34,25 @@ public class UserValidator implements Validator {
     if (user.getId() == null && user.getPassword() != null && !user.getPassword().equals(user.getConfirmPassword())) {
       errors.rejectValue("confirmPassword", "register.user.pwd.notsame");
     }
-    // 检查上传文件的扩展名称，文件其大小信息
-    if (user.getId() == null && user.getAvatarFile() == null || user.getAvatarFile().getSize() == 0) {
-      errors.rejectValue("avatarFile", "register.user.no.avatar.file");
-      return;
-    } else if (user.getAvatarFile() != null && user.getAvatarFile().getSize() > 1024 * 1024) {
-      errors.rejectValue("avatarFile", "register.user.avatar.file.toolarge");
-    }
-    String originalFilename = user.getAvatarFile().getOriginalFilename();
-    String[] fileNameSplit = originalFilename.split("\\.");
-    if (originalFilename == null || fileNameSplit.length < 1) {
-      errors.rejectValue("avatarFile", "register.user.no.avatar.file");
-      return;
-    }
-    // 获得原始文件的后缀名信息。
-    String avatarFileSuffix = fileNameSplit[fileNameSplit.length - 1];
-    String[] allowAvatarFileSuffix = { "jpg", "jpeg", "gif", "png" };
-    boolean suffixFlag = false;
-    for (String suffix : allowAvatarFileSuffix) {
-      if (avatarFileSuffix.equals(suffix)) {
-        suffixFlag = true;
-        break;
+    if (user.getId() == null) {
+      // 说明是用户注册时的情况，而不是用户更新个人信息时的情况。
+      if (FileUtil.isEmptyFile(user.getAvatarFile())) {
+        errors.rejectValue("avatarFile", "register.user.no.avatar.file");
+        return; // 图片没上传，就没有检查图片后缀名称的必要。
       }
+    } else if (FileUtil.meetSizeRestrict(user.getAvatarFile(), 1024 * 1024)) {
+      errors.rejectValue("avatarFile", "register.user.avatar.file.toolarge");
+      return;
     }
-    if (!suffixFlag) {
+    // 检查图片文件的后缀名信息
+    if (FileUtil.getFileSuffix(user.getAvatarFile().getOriginalFilename()) == null) {
+      errors.rejectValue("avatarFile", "register.user.no.avatar.file");
+      return; // 后缀名称都没有，那就没有检查后缀名称合法性的必要。
+    }
+
+    // 检查图片类型的合法性
+    if (! ImageUtil.checkImgType(user.getAvatarFile().getOriginalFilename())) {
       errors.rejectValue("avatarFile", "register.user.avatar.file.suffix.error");
     }
   }
-
 }

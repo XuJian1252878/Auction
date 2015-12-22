@@ -29,16 +29,17 @@
   <form:select path="category.id">
     <c:choose>
       <c:when test="${categories == null || fn:length(categories) == 0 }">
-        <form:option value="" label="暂无商品类别可选"></form:option> <br />
+        <form:option value="-1" label="暂无商品类别可选"></form:option> <br />
       </c:when>
       <c:otherwise>
-        <form:option value="" label="请选择商品类别："></form:option> <br />
+        <form:option value="-1" label="请选择商品类别："></form:option> <br />
         <c:forEach var="mycategory" items="${categories }">
           <form:option value="${mycategory.id }" label="${mycategory.name }"></form:option>
         </c:forEach>
       </c:otherwise>
     </c:choose>
   </form:select>
+  <form:errors path="category.id" />
   </div>
   <br />
   <form:input path="user.id" type="hidden" value="${loginUser.id }" />

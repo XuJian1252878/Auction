@@ -34,6 +34,7 @@
       </c:otherwise>
     </c:choose>
   </form:select>
+  <form:errors path="parentCategory.id"/>
   <br />
   <form:label path="name">商品类别名称：</form:label>
   <form:input path="name" />
