@@ -8,7 +8,9 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.auction.dao.ICategoryDao;
+import com.auction.dao.IProductDao;
 import com.auction.model.Category;
+import com.auction.model.Product;
 import com.auction.service.ICategoryService;
 import com.auction.service.common.BaseService;
 
@@ -18,6 +20,9 @@ public class CategoryService extends BaseService<Category> implements ICategoryS
 
   @Resource(name = "categoryDao")
   private ICategoryDao categoryDao;
+  
+  @Resource(name = "productDao")
+  private IProductDao productDao;
 
   public List<Category> loadCategory(int pageNo, int pageSize) {
     // TODO Auto-generated method stub
@@ -76,6 +81,18 @@ public class CategoryService extends BaseService<Category> implements ICategoryS
     // TODO Auto-generated method stub
     // 这里一直是返回true的，因为session的update方法返回的是void。
     return categoryDao.update(category);
+  }
+
+  public List<Product> loadProducts(int categoryId, int pageNo, int pageSize) {
+    // TODO Auto-generated method stub
+    List<Product> products = null;
+    String hql = "from " + Product.class.getName() + " as p where p.category.id = ?";
+    if (pageNo == -1 && pageSize == -1) {
+      products = productDao.find(hql, categoryId);
+    } else {
+      products = productDao.listPart(pageNo, pageSize, hql, categoryId);
+    }
+    return products;
   }
 
 }

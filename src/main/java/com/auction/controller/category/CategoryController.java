@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.auction.model.Category;
+import com.auction.model.Product;
 import com.auction.model.validator.CategoryValidator;
 import com.auction.service.ICategoryService;
 import com.auction.util.ImageUtil;
 
 @Controller
-@RequestMapping(value = "/admin/category")
 public class CategoryController {
 
   @Resource(name = "categoryService")
@@ -46,7 +46,7 @@ public class CategoryController {
    * @param pageNo
    * @return
    */
-  @RequestMapping(value = "/list/{pageNo}", method = RequestMethod.GET)
+  @RequestMapping(value = "/admin/category/list/{pageNo}", method = RequestMethod.GET)
   public ModelAndView list(@PathVariable int pageNo) {
     ModelAndView mv = new ModelAndView();
     // 首先获得category的记录总数
@@ -63,7 +63,7 @@ public class CategoryController {
     return mv;
   }
 
-  @RequestMapping(value = "/add", method = RequestMethod.GET)
+  @RequestMapping(value = "/admin/category/add", method = RequestMethod.GET)
   public String add(@RequestParam("pageNo") int pageNo, Model model) {
     model.addAttribute("category", new Category());
     model.addAttribute("pageNo", pageNo);
@@ -75,7 +75,7 @@ public class CategoryController {
     return "admin/category/add";
   }
 
-  @RequestMapping(value = "/add", method = RequestMethod.POST)
+  @RequestMapping(value = "/admin/category/add", method = RequestMethod.POST)
   public String add(@Valid @ModelAttribute("category") Category category, BindingResult result,
       @RequestParam("pageNo") int pageNo, Model model, HttpServletRequest request) {
     // 首先如果用户添加的是一级标签，那么将这个一级标签的parentCategory设置为null。
@@ -109,7 +109,7 @@ public class CategoryController {
   }
 
   // 删除商品类别
-  @RequestMapping(value = "/delete_{categoryId}", method = RequestMethod.GET)
+  @RequestMapping(value = "/admin/category/delete_{categoryId}", method = RequestMethod.GET)
   public String delete(@PathVariable int categoryId, @RequestParam int pageNo, Model model) {
     // 先省略判断categoryId是否合法的逻辑。
     categoryService.deleteCategory(categoryId);
@@ -118,7 +118,7 @@ public class CategoryController {
   
   // 更新商品类别信息 进入页面
   // viewOrEdit 是0那么表示为查看，1表示为编辑
-  @RequestMapping(value={"/edit/{viewOrEdit}_{categoryId}", "/view/{viewOrEdit}_{categoryId}"}, method = RequestMethod.GET)
+  @RequestMapping(value={"/admin/category/edit/{viewOrEdit}_{categoryId}", "/view/{viewOrEdit}_{categoryId}"}, method = RequestMethod.GET)
   public String edit(@PathVariable("viewOrEdit") int viewOrEdit, @PathVariable("categoryId") int categoryId, @RequestParam int pageNo, Model model) {
     Category category = categoryService.getCategory(categoryId);
     model.addAttribute("pageNo", pageNo);
@@ -132,9 +132,22 @@ public class CategoryController {
   }
   
   // 更新商品类别信息 条件商品类别信息
-  @RequestMapping(value="/edit", method=RequestMethod.POST)
+  @RequestMapping(value="/admin/category/edit", method=RequestMethod.POST)
   public String edit(@Valid @ModelAttribute("category") Category category, @RequestParam int pageNo, BindingResult result) {
     categoryService.updateCategory(category);
     return "redirect:/admin/category/list/" + pageNo;
+  }
+
+  @RequestMapping(value="/category/list/{categoryId}", method=RequestMethod.GET)
+  public ModelAndView listProducts(@PathVariable("categoryId") int categoryId) {
+    ModelAndView mv = new ModelAndView();
+    // 取出该商品类别的详细信息
+    Category category = categoryService.getCategory(categoryId);
+    // 需要取出该商品类别下所有的商品信息
+    List<Product> products = categoryService.loadProducts(categoryId, -1, -1);
+    mv.addObject("category", category);
+    mv.addObject("products", products);
+    mv.setViewName("product/list");
+    return mv;
   }
 }

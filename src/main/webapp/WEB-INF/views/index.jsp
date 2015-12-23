@@ -168,7 +168,7 @@
                 <p>
                   <span>${category.cdesc }</span>
                 </p>
-                <a href="#">查看商品列表</a>
+                <a href="category/list/${category.id }">查看商品列表</a>
               </div>
             </div>
           </c:forEach>

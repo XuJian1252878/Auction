@@ -3,6 +3,7 @@ package com.auction.service;
 import java.util.List;
 
 import com.auction.model.Category;
+import com.auction.model.Product;
 
 public interface ICategoryService {
   /**
@@ -53,4 +54,13 @@ public interface ICategoryService {
    * @return
    */
   public boolean updateCategory(Category category);
+  
+  /**
+   * 根据分页限制返回某一商品类别下的商品。
+   * @param categoryId 商品类别的id信息。
+   * @param pageNo
+   * @param pageSize 如果pageNo值和pageSize的值同时为-1， 那么表示返回全部的结果。
+   * @return
+   */
+  public List<Product> loadProducts(int categoryId, int pageNo, int pageSize);
 }

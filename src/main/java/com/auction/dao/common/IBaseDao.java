@@ -37,6 +37,21 @@ public interface IBaseDao<T> {
   // 取出唯一的一个符合条件的实体
   public T loadModel(String hql, Object... params);
 
-  // 根据分页条件取出特定的数据
+  /**
+   * 根据分页数据取出对应的实体
+   * @param pageNo
+   * @param pageSize
+   * @param hql hql语句，可包含参数
+   * @param params hql语句中的参数值
+   * @return 包含实体类的List对象，不可能是null（没有查询结果的情况下是一个空的List）
+   */
   public List<T> listPart(int pageNo, int pageSize, String hql, Object...params);
+  
+  /**
+   * 取得符合hql查询语句的所有该类实体。
+   * @param hql
+   * @param params
+   * @return 包含实体类的List对象，不可能是null（没有查询结果的情况下是一个空的List）
+   */
+  public List<T> find(String hql, Object... params);
 }
