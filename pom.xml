@@ -22,6 +22,7 @@
     <servlet.api.version>3.0-alpha-1</servlet.api.version>
     <!-- http://blog.csdn.net/testcs_dn/article/details/45583791 -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jackson.version>2.6.4</jackson.version>
   </properties>
 
   <dependencies>
@@ -158,8 +159,25 @@
       <version>${servlet.api.version}</version>
     </dependency>
 
+    <!-- Spring Mvc Json -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
 
   </dependencies>
+
   <build>
     <finalName>Auction</finalName>
   </build>

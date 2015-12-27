@@ -21,6 +21,9 @@ import org.hibernate.annotations.Proxy;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "USER")
 @Proxy(lazy = true)
@@ -70,12 +73,15 @@ public class User {
   private MultipartFile avatarFile;
 
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+  @JsonBackReference
   private Set<Comment> comment = new HashSet<Comment>();
 
   @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "user")
+  @JsonManagedReference
   private Set<Bid> bids = new HashSet<Bid>();
 
   @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, mappedBy = "user")
+  @JsonManagedReference
   private Set<Product> products = new HashSet<Product>();
 
   public Integer getId() {

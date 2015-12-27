@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
-  xmlns:context="http://www.springframework.org/schema/context"
-  xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jee="http://www.springframework.org/schema/jee"
-  xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
-  xmlns:mvc="http://www.springframework.org/schema/mvc"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jee="http://www.springframework.org/schema/jee" xmlns:cache="http://www.springframework.org/schema/cache"
+  xmlns:p="http://www.springframework.org/schema/p" xmlns:mvc="http://www.springframework.org/schema/mvc"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://www.springframework.org/schema/aop
@@ -26,7 +24,7 @@
   <!-- 这样标注之后，@Repository @Service @Controller @Component 这些标签才会生效 -->
   <context:component-scan base-package="com.auction"></context:component-scan>
   <!-- 使spring mvc 支持上传文件 -->
-  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
   <!-- 开启spring注解 -->
   <mvc:annotation-driven></mvc:annotation-driven>
   <!-- 开启对静态资源的访问 -->
@@ -35,10 +33,27 @@
   <mvc:resources location="/images/" mapping="/images/**"></mvc:resources>
   <mvc:resources location="/template/" mapping="/template/**"></mvc:resources>
   <!-- 定义视图解析器 -->
-  <bean
-    class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
     <property name="prefix" value="/WEB-INF/views/"></property>
     <property name="suffix" value=".jsp"></property>
+  </bean>
+
+  <!-- springmvc4 集成hibernate4 中配置信息；http://www.tanzhuo.net/268.html -->
+  <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+    <property name="messageConverters">
+      <list>
+        <ref bean="mappingJackson2HttpMessageConverter" />
+      </list>
+    </property>
+  </bean>
+  <bean id="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+    <property name="supportedMediaTypes">
+      <list>
+        <value>text/html;charset=UTF-8</value>
+        <value>text/json;charset=UTF-8</value>
+        <value>application/json;charset=UTF-8</value>
+      </list>
+    </property>
   </bean>
 
   <import resource="classpath:/configs/spring-hibernate.xml" />

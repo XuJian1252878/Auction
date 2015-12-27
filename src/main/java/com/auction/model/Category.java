@@ -19,6 +19,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "CATEGORY")
 @Proxy(lazy = true)
@@ -66,6 +68,7 @@ public class Category {
    * 这里的category是Product类中的一个成员变量。指明Category类不负责级联关系，而是Product类中的category变量负责级联关系。
    */
   @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "category")
+  @JsonBackReference
   private Set<Product> products = new HashSet<Product>();
 
   @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)

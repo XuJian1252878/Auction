@@ -23,6 +23,9 @@ import org.hibernate.annotations.Proxy;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "PRODUCT")
 @Proxy(lazy = true)
@@ -43,6 +46,7 @@ public class Product {
    */
   @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
   @JoinColumn(name = "category_id") // 指明生成的外键的名字，随意命名。
+  @JsonManagedReference
   private Category category;
 
   @Column(name = "name", length = 100)
@@ -71,13 +75,16 @@ public class Product {
   private MultipartFile imgFile;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
+  @JsonBackReference
   private Set<Comment> comments = new HashSet<Comment>();
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "product")
+  @JsonManagedReference
   private Set<Bid> bids = new HashSet<Bid>();
 
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
+  @JsonBackReference
   private User user;
 
   public Integer getId() {

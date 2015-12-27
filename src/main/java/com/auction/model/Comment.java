@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="COMMENT")
 @Proxy(lazy=true)
@@ -30,6 +32,7 @@ public class Comment {
   
   @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
   @JoinColumn(name="user_id")
+  @JsonManagedReference
   private User user;
   
   @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)

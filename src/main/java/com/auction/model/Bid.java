@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="BID")
 @Proxy(lazy=true)
@@ -34,6 +36,7 @@ public class Bid {
   
   @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
   @JoinColumn(name="user_id")
+  @JsonBackReference
   private User user;
   
   @Column(name="price", length=20)
