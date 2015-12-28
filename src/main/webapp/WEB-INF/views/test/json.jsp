@@ -3,22 +3,42 @@
 
 <link rel="stylesheet" href="template/bingdian-waterfall/demos/css/reset.css">
 <link rel="stylesheet" href="template/bingdian-waterfall/demos/css/waterfall.css">
+<script type="text/javascript" src="template/bingdian-waterfall/libs/handlebars/handlebars.js"></script>
+<script type="text/javascript" src="template/bingdian-waterfall/build/waterfall.min.js"></script>
 
-<div id="container"></div>
-<div id="page-navigation" class="hide clear">
-    <span class="disabled page-navigation-prev" title="上一页">«上一页</span>
-    <a href="?&p=1" data-target="page" data-page="1" class="cur">1</a>
-    <a href="?&p=2" data-target="page" data-page="2">2</a>
-    <a href="?&p=3" data-target="page" data-page="3">3</a>
-    <a href="?&p=4" data-target="page" data-page="4">4</a>
-    <a href="?&p=5" data-target="page" data-page="5">5</a>
-    <a href="?&p=6" data-target="page" data-page="6">6</a>
-    <a href="?&p=7" data-target="page" data-page="7">7</a>
-    <a href="?&p=8" data-target="page" data-page="8">8</a>
-    <a href="?&p=9" data-target="page" data-page="9">9</a>
-    <a href="?&p=10" data-target="page" data-page="10">10</a>
-    <a href="?&p=2" class="page-navigation-next"  data-page="2" title="下一页">下一页»</a>
-</div><!-- #page-navigation -->
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div id="waterfall-container"></div>
+    </div>
+    <div class="col-md-8 col-md-offset-3">
+      <nav id="my-page-navigation" style="display: none;">
+        <ul class="pagination">
+          <li class="disabled">
+            <a href="?&p=1" data-target="page" data-page="0">
+              <span aria-hidden="true" >&laquo;上一页</span>
+            </a>
+          </li>
+          <li class="active"><a href="?&p=1" data-target="page" data-page="1">1 <span class="sr-only">(current)</span></a></li>
+          <li><a href="&p=2" data-target="page" data-page="2">2</a></li>
+          <li><a href="&p=3" data-target="page" data-page="3">3</a></li>
+          <li><a href="&p=4" data-target="page" data-page="4">4</a></li>
+          <li><a href="&p=5" data-target="page" data-page="5">5</a></li>
+          <li><a href="&p=6" data-target="page" data-page="6">6</a></li>
+          <li><a href="&p=7" data-target="page" data-page="7">7</a></li>
+          <li><a href="&p=8" data-target="page" data-page="8">8</a></li>
+          <li><a href="&p=9" data-target="page" data-page="9">9</a></li>
+          <li><a href="&p=10" data-target="page" data-page="10">10</a></li>
+          <li>
+            <a href="?&p=2" data-target="page" data-page="2">
+             <span aria-hidden="true" >下一页&raquo;</span>
+            </a>
+          </li>
+        </ul>
+    </nav><!-- #page-navigation -->
+    </div>
+  </div>
+</div>
 
 <script type="text/x-handlebars-template" id="waterfall-tpl">
 {{#result}}
@@ -27,16 +47,14 @@
     </div>
 {{/result}}
 </script>
-<script type="text/javascript" src="template/bingdian-waterfall/libs/handlebars/handlebars.js"></script>
-<script type="text/javascript" src="template/bingdian-waterfall/build/waterfall.min.js"></script>
 
 <script>
-  $('#container').waterfall({
+  $('#waterfall-container').waterfall({
     itemCls: 'item',
-    colWidth: 222,  
+    colWidth: 300,  
     gutterWidth: 15,
     gutterHeight: 15,
-    maxPage: 5,
+    maxPage: 1,
     checkImagesLoaded: false,
     callbacks : {
       loadingFinished : function($loading, isBeyondMaxPage) {
@@ -44,7 +62,9 @@
           $loading.fadeOut();
         } else {
           $loading.hide();
-          $('#page-navigation').show();
+          //$('#my-page-navigation').style.visibility='visible';
+          var myPageNavigation = document.getElementById("my-page-navigation");
+          myPageNavigation.style.display = "block";
         }
       }
     },
@@ -63,7 +83,7 @@
     var ga = document.createElement('script');
     ga.type = 'text/javascript';
     ga.async = true;
-    ga.src = 'https://ssl.google-analytics.com/ga.js';
+    ga.src = 'scripts/ga.js';
     var s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(ga, s);
   })();

@@ -66,7 +66,7 @@ public class TestController {
     map.put("total", IMG_PAGE_COUNT);
     
     for (int index = startIndex; index < endIndex; index ++) {
-      ImgTestEntity ite = new ImgTestEntity("images/test/" + addZeroToNum(index, 3) + ".jpg", 200, 150);
+      ImgTestEntity ite = new ImgTestEntity("images/test/" + addZeroToNum(index, 3) + ".jpg", 300, 300);
       testImgs.add(ite);
     }
     map.put("result", testImgs);
@@ -89,7 +89,7 @@ public class TestController {
     map.put("total", IMG_PAGE_COUNT);
     
     for (int index = startIndex; index < endIndex; index ++) {
-      ImgTestEntity ite = new ImgTestEntity("images/test/" + addZeroToNum(index, 3) + ".jpg", 200, 150);
+      ImgTestEntity ite = new ImgTestEntity("images/test/" + addZeroToNum(index, 3) + ".jpg", 300, 300);
       testImgs.add(ite);
     }
     map.put("result", testImgs);
