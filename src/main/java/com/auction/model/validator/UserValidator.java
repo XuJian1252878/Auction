@@ -40,7 +40,7 @@ public class UserValidator implements Validator {
         errors.rejectValue("avatarFile", "register.user.no.avatar.file");
         return; // 图片没上传，就没有检查图片后缀名称的必要。
       }
-    } else if (FileUtil.meetSizeRestrict(user.getAvatarFile(), 1024 * 1024)) {
+    } else if (! FileUtil.meetSizeRestrict(user.getAvatarFile(), 1024 * 1024)) {
       errors.rejectValue("avatarFile", "register.user.avatar.file.toolarge");
       return;
     }

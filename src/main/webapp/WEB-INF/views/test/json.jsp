@@ -44,6 +44,8 @@
 {{#result}}
     <div class="item">
         <img src="{{imgFilePath}}" width="{{width}}" height="{{height}}" />
+        <br/>
+        <p>my image test</p>
     </div>
 {{/result}}
 </script>

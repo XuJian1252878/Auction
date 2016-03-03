@@ -21,7 +21,7 @@ public class FileUtil {
    * 检查文件的大小是否满足要求，文件为null，或者大于restrictSize，返回false；
    * 不然返回true。
    * @param file
-   * @param restrictSize
+   * @param restrictSize 单位为byte
    * @return
    */
   public static boolean meetSizeRestrict(MultipartFile file, long restrictSize) {

@@ -65,6 +65,9 @@ public class TestController {
     int endIndex = page * IMG_PAGE_COUNT;
     map.put("total", IMG_PAGE_COUNT);
     
+    map.put("curPage", page);
+    map.put("pageCount", Math.ceil(IMG_COUNT / (float)IMG_PAGE_COUNT));
+    
     for (int index = startIndex; index < endIndex; index ++) {
       ImgTestEntity ite = new ImgTestEntity("images/test/" + addZeroToNum(index, 3) + ".jpg", 300, 300);
       testImgs.add(ite);

@@ -91,7 +91,7 @@ public class UserController {
    */
   @RequestMapping(value = "/login", method = RequestMethod.GET)
   public String Login(Model model) {
-    model.addAttribute("loginUser", new User());
+    model.addAttribute(ConstantUtil.LOGINUSER, new User());
     return "/user/login";
   }
 
@@ -104,7 +104,7 @@ public class UserController {
    * @return
    */
   @RequestMapping(value = "/login", method = RequestMethod.POST)
-  public String Login(@ModelAttribute("loginUser") User user, BindingResult result, HttpSession httpSession) {
+  public String Login(@ModelAttribute(ConstantUtil.LOGINUSER) User user, BindingResult result, HttpSession httpSession) {
     if (result.hasErrors()) {
       System.out.println("raise error");
       return "/user/login";
@@ -150,7 +150,7 @@ public class UserController {
   @RequestMapping(value="/profile", method=RequestMethod.GET)
   public ModelAndView userProfile(HttpSession httpSession) {
     ModelAndView mv = new ModelAndView();
-    mv.addObject("loginUser", httpSession.getAttribute(ConstantUtil.LOGINUSER));
+    mv.addObject(ConstantUtil.LOGINUSER, httpSession.getAttribute(ConstantUtil.LOGINUSER));
     mv.setViewName("/user/profile");
     return mv;
   }
@@ -164,12 +164,12 @@ public class UserController {
    * @return
    */
   @RequestMapping(value = "/profile", method = RequestMethod.POST)
-  public ModelAndView updateProfile(@Valid @ModelAttribute("loginUser") User user, BindingResult result,
+  public ModelAndView updateProfile(@Valid @ModelAttribute(ConstantUtil.LOGINUSER) User user, BindingResult result,
       HttpSession httpSession, HttpServletRequest request) {
     ModelAndView mv = new ModelAndView();
     User oriUser = (User)httpSession.getAttribute(ConstantUtil.LOGINUSER);
     if (result.hasErrors()) {
-      mv.addObject("loginUser", oriUser);
+      mv.addObject(ConstantUtil.LOGINUSER, oriUser);
       return mv;
     }
 
@@ -181,7 +181,7 @@ public class UserController {
 
     if (userService.updateUser(user) == false) {
       result.rejectValue("id", "profile.user.not.exists");
-      mv.addObject("loginUser", oriUser);
+      mv.addObject(ConstantUtil.LOGINUSER, oriUser);
       return mv;
     }
     if (user.getAvatarFile() != null) {
@@ -197,11 +197,11 @@ public class UserController {
     User newUser = userService.findUserById(user.getId());
     if (newUser == null) {
       result.rejectValue("id", "profile.user.id.not.exist");
-      mv.addObject("loginUser", oriUser);
+      mv.addObject(ConstantUtil.LOGINUSER, oriUser);
       return mv;
     }
     httpSession.setAttribute(ConstantUtil.LOGINUSER, newUser);
-    mv.addObject("loginUser", newUser);
+    mv.addObject(ConstantUtil.LOGINUSER, newUser);
     mv.setViewName("/user/profile");
     return mv;
   }

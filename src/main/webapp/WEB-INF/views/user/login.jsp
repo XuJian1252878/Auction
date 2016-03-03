@@ -18,7 +18,7 @@
       <div class="wrap">
         <p class="form-title">Sign In</p>
         <form:form class="login" action="user/login"
-          modelAttribute="loginUser" method="post">
+          modelAttribute="loginuser" method="post">
           <form:input type="text" placeholder="Username" path="userName" />
           <form:errors path="userName" />
           <form:input type="password" placeholder="Password"

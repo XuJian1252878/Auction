@@ -1,5 +1,6 @@
 package com.auction.service.impl;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -49,7 +50,11 @@ public class UserService extends BaseService<User> implements IUserService {
 
   public boolean saveUser(User user) {
     // TODO Auto-generated method stub
-    return userDao.update(user);
+    Serializable sid = userDao.save(user);
+    if (sid != null) {
+      return true;
+    }
+    return false;
   }
 
   /**
