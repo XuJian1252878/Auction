@@ -84,6 +84,7 @@ public class BaseDaoImpl<T> implements IBaseDao<T> {
   public List<T> findAll(Class<T> entityClazz) {
     // TODO Auto-generated method stub
     String hql = " from " + entityClazz.getName();
+    // list方法总会返回List对象，如果一个查询结果都没有，那么list为空。
     return sessionFactory.getCurrentSession().createQuery(hql).list();
   }
 

@@ -1,5 +1,6 @@
 package com.auction.controller.category;
 
+import java.awt.print.Printable;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -46,7 +47,7 @@ public class CategoryController {
    * @param pageNo
    * @return
    */
-  @RequestMapping(value = "/admin/category/list/{pageNo}", method = RequestMethod.GET)
+  @RequestMapping(value = "/admin/category/list/{pageNo:\\d+}", method = RequestMethod.GET)
   public ModelAndView list(@PathVariable int pageNo) {
     ModelAndView mv = new ModelAndView();
     // 首先获得category的记录总数

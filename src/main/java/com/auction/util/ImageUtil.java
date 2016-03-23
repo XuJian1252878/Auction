@@ -18,8 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class ImageUtil extends FileUtil {
 
-  private static final String[] ALLOWIMGTYPES = {"jpg", "jpeg", "gif", "png"};
-  
+  private static final String[] ALLOWIMGTYPES = { "jpg", "jpeg", "gif", "png" };
+
   private static ServletContext getServletContext(HttpServletRequest request) {
     // WebApplicationContext webApplicationContext =
     // ContextLoader.getCurrentWebApplicationContext();
@@ -29,6 +29,7 @@ public class ImageUtil extends FileUtil {
 
   /**
    * 检查图片文件的类型是否符合要求，符合要求返回true；否则返回false。
+   * 
    * @param imgFileName
    * @return
    */
@@ -44,9 +45,10 @@ public class ImageUtil extends FileUtil {
     }
     return false;
   }
-  
+
   /**
    * 获得图片文件的后缀名。如果获取图片文件的后缀名称失败，那么默认返回"jpg"。
+   * 
    * @param imgFileName
    * @return
    */
@@ -55,7 +57,27 @@ public class ImageUtil extends FileUtil {
     return (suffix == null) ? "jpg" : suffix;
   }
 
-  public static String genTempImgFileName(String oriFileName) {
+  /**
+   * 如果folder文件夹路径中有一级不存在，那么创建这一系列的文件夹。
+   * @param folder  文件夹的全路径信息。
+   * @return  如果该文件夹中有一级不存在，那么返回True。否则返回False。
+   */
+  public static boolean createFolderIfNotExist(String folder) {
+    File folderFile = new File(folder);
+    if (!folderFile.exists()) {
+      folderFile.mkdirs();
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * 网站上传图片信息时，可能需要对图片进行裁剪，该函数临时存储的图片相对路径信息。
+   * @param request
+   * @param oriFileName
+   * @return 临时存储图片的相对路径信息。
+   */
+  public static String genTempImgFileName(HttpServletRequest request, String oriFileName) {
     StringBuilder stringBuilder = new StringBuilder();
     String suffix = getImgSuffix(oriFileName);
     // 获得格式化的文件名称
@@ -66,11 +88,21 @@ public class ImageUtil extends FileUtil {
     }
     stringBuilder.append(new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()));
     stringBuilder.append("." + suffix);
+    String tempFolder = getServletContext(request).getRealPath("/") + "images" + File.separator + "temp";
+    createFolderIfNotExist(tempFolder);
     String tmpImgFilePath = "images" + File.separator + "temp" + File.separator + stringBuilder.toString();
     return tmpImgFilePath;
   }
 
-  // 获得上传图像文件的相对路径（相对于项目根目录）
+  /**
+   * @param request
+   *          用户请求的request对象。
+   * @param folderName
+   *          用户上传的是哪一类型的图片就对应哪一个类型的文件夹。
+   * @param oriFileName
+   *          上传文件的原始名称，传入该参数目的是为了获取文件的后缀名称。
+   * @return 上传图像文件的相对路径（相对于项目根目录，为了能在img标签中直接存取出来）。
+   */
   public static String genImgFileName(HttpServletRequest request, String folderName, String oriFileName) {
     StringBuilder stringBuilder = new StringBuilder();
     // 获得文件的后缀名称。
@@ -78,8 +110,10 @@ public class ImageUtil extends FileUtil {
     // 获得格式化的文件名称
     stringBuilder.append(DateTimeUtil.getIpTimeRand(request.getRemoteAddr()));
     stringBuilder.append("." + suffix);
-    String avatarFilePath = "images" + File.separator + folderName + File.separator + stringBuilder.toString();
-    return avatarFilePath;
+    String imgFolder = getServletContext(request).getRealPath("/") + "images" + File.separator + folderName;
+    createFolderIfNotExist(imgFolder);
+    String imgFilePath = "images" + File.separator + folderName + File.separator + stringBuilder.toString();
+    return imgFilePath;
   }
 
   private static BufferedImage cutImg(File oriImgFile, int x1, int y1, int imgWidth, int imgHeight) throws IOException {
@@ -136,7 +170,7 @@ public class ImageUtil extends FileUtil {
     } else { // 说明上传的图像被裁减过。
       // 首先将未存储的图片数据存储起来
       String tmpImgPath = getServletContext(request).getRealPath("/")
-          + genTempImgFileName(oriImgFile.getOriginalFilename());
+        + genTempImgFileName(request, oriImgFile.getOriginalFilename());
       File tmpImgFile = new File(tmpImgPath);
       try {
         oriImgFile.transferTo(tmpImgFile);

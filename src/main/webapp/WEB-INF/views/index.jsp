@@ -154,8 +154,12 @@
       </div>
     </div>
     <c:choose>
-      <c:when test="${categoryList == null }">
-        <label>暂无商品类别信息</label>
+      <c:when test="${categoryList == null || fn:length(categoryList) == 0}">
+        <div class="col-lg-12 col-lg-offset-5">
+          <div class="title">
+            <h4>暂无商品类别信息</h4>
+          </div>
+        </div>
       </c:when>
       <c:otherwise>
         <!-- /.col-lg-4 -->

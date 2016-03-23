@@ -79,7 +79,8 @@
         <li><a href="#contact">Contact</a></li>
         <c:choose>
           <c:when test="${sessionScope.loginuser != null }">
-            <li><img src="" alt="${sessionScope.loginuser.userName }" class="img-circle"></li>
+            <li><img src="images/avatar/001.jpg" wigth="50px" height="50px"
+              alt="${sessionScope.loginuser.userName }" title="${sessionScope.loginuser.userName }" class="img-circle"></li>
             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
               aria-haspopup="true" aria-expanded="false">信息中心 <span class="caret"></span>
             </a>
