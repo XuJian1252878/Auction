@@ -74,8 +74,8 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse navbar-right">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="index#home">Home</a></li>
-        <li><a href="#about">About</a></li>
+        <li class="active"><a href="index#home">主页</a></li>
+        <li><a href="#about">关于</a></li>
         <li><a href="#contact">Contact</a></li>
         <c:choose>
           <c:when test="${sessionScope.loginuser != null }">

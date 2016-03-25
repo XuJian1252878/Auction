@@ -68,7 +68,7 @@ public class Category {
    * 这里的category是Product类中的一个成员变量。指明Category类不负责级联关系，而是Product类中的category变量负责级联关系。
    */
   @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "category")
-  @JsonBackReference
+  @JsonBackReference  // 解决json数据循环显示的问题。
   private Set<Product> products = new HashSet<Product>();
 
   @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)

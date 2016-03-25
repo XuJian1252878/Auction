@@ -44,11 +44,9 @@ _gaq.push(['_setAccount', 'UA-1245097-16']);
 _gaq.push(['_trackPageview']);
 _gaq.push(['_trackPageLoadTime']);
 (function() {
-    var ga = document.createElement('script'); /* 创建一个script节点，相当于<script></script> */
-    ga.type = 'text/javascript'; ga.async = true; /* 设置该节点的type属性为js，相当于<script type = 'text/javascript'></script> */
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
     ga.src = 'https://ssl.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; /* 找到网页脚本(HTML)里的第一个script节点 */
-    s.parentNode.insertBefore(ga, s);
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
 </script>
 </body>

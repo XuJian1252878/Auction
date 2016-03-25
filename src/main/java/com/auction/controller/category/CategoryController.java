@@ -1,6 +1,5 @@
 package com.auction.controller.category;
 
-import java.awt.print.Printable;
 import java.util.List;
 
 import javax.annotation.Resource;
