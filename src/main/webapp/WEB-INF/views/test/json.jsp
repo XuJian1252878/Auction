@@ -1,8 +1,10 @@
+<%@page import="java.util.Date"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ include file="../../../template/header.jsp"%>
 
 <link rel="stylesheet" href="template/bingdian-waterfall/demos/css/reset.css">
 <link rel="stylesheet" href="template/bingdian-waterfall/demos/css/waterfall.css">
+<script type="text/javascript" src="template/jquery.countdown/dist/jquery.countdown.min.js"></script>
 <script type="text/javascript" src="template/bingdian-waterfall/libs/handlebars/handlebars.js"></script>
 <script type="text/javascript" src="template/bingdian-waterfall/build/waterfall.min.js"></script>
 
@@ -37,19 +39,23 @@
 
 <script type="text/x-handlebars-template" id="waterfall-tpl">
 {{#result}}
-    <div class="item">
-        <img src="{{imgFilePath}}" width="{{width}}" height="{{height}}" />
-        <br />
-        <div class="row">
-          <div class="col-sm-12 col-sm-offset-4">
-            <a href="#">查看商品链接</a>
-          </div>
-        </div>
+  <div class="item">
+    <img src="{{imgFilePath}}" width="{{width}}" height="{{height}}" />
+    <br />
+    <div class="row">
+      <div class="col-sm-12 col-sm-offset-4">
+        <a href="#">查看商品链接</a>
+        <br/>
+        <div id="{{countdownId}}" data-countdown="{{expireTimeStamp}}"></div>
+        <div id="{{countdownAlertId}}"></div>
+      </div>
     </div>
+  </div>
 {{/result}}
 </script>
 
 <script>
+
   $('#waterfall-container').waterfall({
     itemCls: 'item',
     // 设置瀑布流中的每一列的最大宽度，这个最大宽度要大于item元素的宽度，否则会发生重叠。
@@ -60,6 +66,11 @@
     // 是否图片加载完成后开始排列数据块。如果直接后台输出图片尺寸，可设置为false，强烈建议从后台输出图片尺寸，设置为false
     checkImagesLoaded: false,
     callbacks : {
+      /*
+       * ajax请求加载完成
+       * @param {Object} loading $('#waterfall-loading')
+       * @param {Boolean} isBeyondMaxPage
+       */
       loadingFinished : function($loading, isBeyondMaxPage) {
         if (!isBeyondMaxPage) {
           $loading.fadeOut();
@@ -69,7 +80,33 @@
           var myPageNavigation = document.getElementById("my-page-navigation");
           myPageNavigation.style.display = "block";
         }
-      }
+        // 初始化 countdown 组件。
+        $('[data-countdown]').each(function() {
+          var $this = $(this), finalDate = $(this).data('countdown');
+          $this.countdown(finalDate, function(event) {
+            $this.html(event.strftime('%D days %H:%M:%S'));
+          }).on('finish.countdown', function(event) {
+            var colckId = $(this).attr('id');
+            var expireId = "#productexpirealert" + colckId.replace(/[^0-9]/ig,"");
+            $(expireId).html('该商品已停止竞价！');
+          })
+        })
+      },
+    /*
+     * 处理ajax返回数方法
+     * @param {String} data
+     * @param {String} dataType , "json", "jsonp", "html"
+     */
+     renderData: function(data, dataType) {
+       var tpl, template;
+       if ( dataType === 'json' ||  dataType === 'jsonp'  ) { // json或jsonp格式
+         tpl = $('#waterfall-tpl').html();
+         template = Handlebars.compile(tpl);
+         return template(data);
+       } else { // html格式
+         return data;
+       }
+     }
     },
     path : function(page) {
       /**

@@ -55,10 +55,20 @@ public class DateTimeUtil {
    * @return
    */
   public static String getCurrentTimeStamp(String dateTimeFormat) {
-    sdf = new SimpleDateFormat(dateTimeFormat);
-    return sdf.format(new Date());
+    return DateTimeUtil.getTimeStamp(dateTimeFormat, new Date());
   }
-  
+
+  /**
+   * 获得指定时间的时间戳信息。
+   * @param dateTimeFormat dateTimeFormat 需要的日期格式
+   * @param date 需要转化的日期
+   * @return
+   */
+  public static String getTimeStamp(String dateTimeFormat, Date date) {
+    sdf = new SimpleDateFormat(dateTimeFormat);
+    return sdf.format(date);
+  }
+
   /**
    * 获得当前距离1970年1月1日0点0分0秒的毫秒数
    * @return

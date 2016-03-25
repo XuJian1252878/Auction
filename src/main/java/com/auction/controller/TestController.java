@@ -23,10 +23,10 @@ public class TestController {
 
   private final int IMG_PAGE_COUNT = 20;
   private final int IMG_COUNT = 100;
-  
+
   @Resource(name = "userService")
   IUserService userService;
-  
+
   @RequestMapping(value = "/imageselect")
   public String imgSelectTest() {
     return "test/imageselect";
@@ -37,22 +37,23 @@ public class TestController {
     return "test/countdown";
   }
 
-  @RequestMapping(value = "json", method=RequestMethod.GET)
+  @RequestMapping(value = "json", method = RequestMethod.GET)
   public ModelAndView transferJson() {
     ModelAndView mv = new ModelAndView();
     mv.setViewName("test/json");
     return mv;
   }
-  
+
   @RequestMapping(value = "/jsondata")
   @ResponseBody
   public List<User> getUsers() {
     return userService.getAllUser();
   }
-  
+
   @RequestMapping(value = "/imgdata/{page}")
   @ResponseBody
   public Map<String, Object> getImgTestEntity(@PathVariable("page") int page) {
+    // 计算当前商品的下标与当前页数之间的关系。
     if (page < 1) {
       page = 1;
     }
@@ -64,19 +65,22 @@ public class TestController {
     }
     int endIndex = page * IMG_PAGE_COUNT;
     map.put("total", IMG_PAGE_COUNT);
-    
-//    map.put("curPage", page);
-//    map.put("pageCount", Math.ceil(IMG_COUNT / (float)IMG_PAGE_COUNT));
-    
-    for (int index = startIndex; index < endIndex; index ++) {
-      ImgTestEntity ite = new ImgTestEntity("images/test/" + addZeroToNum(index, 3) + ".jpg", 300, 300);
+
+    // map.put("curPage", page);
+    // map.put("pageCount", Math.ceil(IMG_COUNT / (float)IMG_PAGE_COUNT));
+
+    // 填充商品的图片实体信息。
+    for (int index = startIndex; index < endIndex; index++) {
+      int productId = index;
+      ImgTestEntity ite = new ImgTestEntity("images/test/" + addZeroToNum(index, 3) + ".jpg", 300, 300,
+          "productexpireclock" + productId, "productexpirealert" + productId, 10000);
       testImgs.add(ite);
     }
     map.put("result", testImgs);
     return map;
   }
-  
-  @RequestMapping(value = "/imgdatatxt/{page}", method=RequestMethod.GET)
+
+  @RequestMapping(value = "/imgdatatxt/{page}", method = RequestMethod.GET)
   @ResponseBody
   public Map<String, Object> getImgTestTextEntity(@PathVariable("page") int page) {
     if (page < 1) {
@@ -90,15 +94,17 @@ public class TestController {
     }
     int endIndex = page * IMG_PAGE_COUNT;
     map.put("total", IMG_PAGE_COUNT);
-    
-    for (int index = startIndex; index < endIndex; index ++) {
-      ImgTestEntity ite = new ImgTestEntity("images/test/" + addZeroToNum(index, 3) + ".jpg", 300, 300);
+
+    for (int index = startIndex; index < endIndex; index++) {
+      int productId = index;
+      ImgTestEntity ite = new ImgTestEntity("images/test/" + addZeroToNum(index, 3) + ".jpg", 300, 300,
+          "productexpireclock" + productId, "productexpirealert" + productId, 10000);
       testImgs.add(ite);
     }
     map.put("result", testImgs);
     return map;
   }
-  
+
   private String addZeroToNum(int num, int len) {
     if (num < 1) {
       return "001";
