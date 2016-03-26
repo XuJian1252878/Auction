@@ -151,9 +151,12 @@ public class CategoryController {
     ModelAndView mv = new ModelAndView();
     Category category = categoryService.getCategory(categoryId);
     int productCount = categoryService.getProductCount(categoryId);
-    mv.addObject("category", category);
-    mv.addObject("pageNo", pageNo);
-    mv.addObject("productCount", productCount);
+    int pageCount = (int)Math.ceil(productCount / (double)ConstantUtil.PRODUCT_COUNT_PER_PAGE);
+    mv.addObject("category", category);  // 当前的商品类别信息。
+    mv.addObject("pageNo", pageNo);  // 当前显示的页码。
+    mv.addObject("productCount", productCount); // 竞价商品的总数。
+    mv.addObject("pageCount", pageCount);  // 商品总共占的页数。
+    mv.addObject("maxWaterfallParts", ConstantUtil.PRODUCT_WATERFALL_PARTS_PER_PAGE);  // 每个页面中，瀑布流最多加载的次数。
     mv.setViewName("product/list");
     return mv;
   }

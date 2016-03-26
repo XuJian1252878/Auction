@@ -20,20 +20,26 @@
         <div class="col-md-8 col-md-offset-3">
           <nav id="my-page-navigation" style="display: none;">
             <ul class="pagination">
-              <li class="disabled"><a href="?&p=1" data-target="page" data-page="0"> <span aria-hidden="true">&laquo;上一页</span>
-              </a></li>
-              <li class="active"><a href="?&p=1" data-target="page" data-page="1">1 <span class="sr-only">(current)</span></a></li>
-              <li><a href="&p=2" data-target="page" data-page="2">2</a></li>
-              <li><a href="&p=3" data-target="page" data-page="3">3</a></li>
-              <li><a href="&p=4" data-target="page" data-page="4">4</a></li>
-              <li><a href="&p=5" data-target="page" data-page="5">5</a></li>
-              <li><a href="&p=6" data-target="page" data-page="6">6</a></li>
-              <li><a href="&p=7" data-target="page" data-page="7">7</a></li>
-              <li><a href="&p=8" data-target="page" data-page="8">8</a></li>
-              <li><a href="&p=9" data-target="page" data-page="9">9</a></li>
-              <li><a href="&p=10" data-target="page" data-page="10">10</a></li>
-              <li><a href="?&p=2" data-target="page" data-page="2"> <span aria-hidden="true">下一页&raquo;</span>
-              </a></li>
+              <li <c:if test="${pageNo == 1}"> class="disabled" </c:if> >
+                <a href="category/list/${category.id}_${pageNo - 1}" data-target="page" data-page="${pageNo - 1}">
+                  <span aria-hidden="true">&laquo;上一页</span>
+                </a>
+              </li>
+              <c:forEach var="index" begin="1" end="${pageCount}">
+                <c:choose>
+                  <c:when test="${index == pageNo}">
+                    <li class="active"><a href="category/list/${category.id}_${index}" data-target="page" data-page="${index}">${index} <span class="sr-only">(current)</span></a></li>
+                  </c:when>
+                  <c:otherwise>
+                    <li><a href="category/list/${category.id}_${index}" data-target="page" data-page="${index}">${index}</a></li>
+                  </c:otherwise>
+                </c:choose>
+              </c:forEach>
+              <li <c:if test="${pageNo == pageCount}"> class="disabled" </c:if> >
+                <a href="category/list/${category.id}_${pageNo + 1}" data-target="page" data-page="${pageNo + 1}"> 
+                  <span aria-hidden="true">下一页&raquo;</span>
+                </a>
+              </li>
             </ul>
           </nav>
           <!-- #page-navigation -->
@@ -43,7 +49,7 @@
     <script type="text/x-handlebars-template" id="waterfall-tpl">
       {{#result}}
         <div class="item">
-          <img src="{{imgFilePath}}" width="{{width}}" height="{{height}}" />
+          <img src="{{imgPath}}" width="300" height="300" />
           <br />
           <div class="row">
             <div class="col-sm-12 col-sm-offset-4">
@@ -63,7 +69,7 @@
         colWidth: 350,
         gutterWidth: 15,
         gutterHeight: 15,
-        maxPage: 5,
+        maxPage: '${maxWaterfallParts}', // 使用jstl从后台取出数据。
         // 是否图片加载完成后开始排列数据块。如果直接后台输出图片尺寸，可设置为false，强烈建议从后台输出图片尺寸，设置为false
         checkImagesLoaded: false,
         callbacks : {
