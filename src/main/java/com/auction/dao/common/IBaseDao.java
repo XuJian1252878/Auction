@@ -13,6 +13,9 @@ public interface IBaseDao<T> {
   // 查询实体的总个数
   int findCount(Class<T> entityClazz);
 
+  // 查询满足条件的实体总个数。
+  int findCount(String hql);
+
   // 保存一个实体
   Serializable save(T entity);
 

@@ -1,6 +1,8 @@
 package com.auction.controller.category;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -16,12 +18,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.auction.model.Category;
 import com.auction.model.Product;
 import com.auction.model.validator.CategoryValidator;
 import com.auction.service.ICategoryService;
+import com.auction.util.ConstantUtil;
 import com.auction.util.ImageUtil;
 
 @Controller
@@ -31,12 +35,13 @@ public class CategoryController {
   private ICategoryService categoryService;
 
   // 每页显示两个类别信息。
-  private final int PAGESIZE = 2;
+  private final int CATEGORY_COUNT_PER_PAGE = 2;
 
   @InitBinder("category")
   public void initCategoryBinder(DataBinder binder) {
     // 有个疑问，我需要多个validator的时候怎么办？
-    // 解决方案： http://stackoverflow.com/questions/14533488/addiing-multiple-validators-using-initbinder
+    // 解决方案：
+    // http://stackoverflow.com/questions/14533488/addiing-multiple-validators-using-initbinder
     binder.setValidator(new CategoryValidator());
   }
 
@@ -51,11 +56,11 @@ public class CategoryController {
     ModelAndView mv = new ModelAndView();
     // 首先获得category的记录总数
     int categoryCount = categoryService.count();
-    if ((categoryCount / PAGESIZE) + 1 < pageNo) {
+    if ((categoryCount / CATEGORY_COUNT_PER_PAGE) + 1 < pageNo) {
       // 传入的pageNo参数不正确，那么显示最后一页的数据
-      pageNo = (categoryCount / PAGESIZE) + 1;
+      pageNo = (categoryCount / CATEGORY_COUNT_PER_PAGE) + 1;
     }
-    List<Category> categories = categoryService.loadCategory(pageNo, PAGESIZE);
+    List<Category> categories = categoryService.loadCategory(pageNo, CATEGORY_COUNT_PER_PAGE);
     mv.addObject("categories", categories);
     // 记录当前的页码信息
     mv.addObject("pageNo", pageNo);
@@ -83,10 +88,10 @@ public class CategoryController {
       System.out.println("添加类别为一级标签");
       category.setParentCategory(null);
     }
-//    System.out.println(model.toString());
+    // System.out.println(model.toString());
     if (result.hasErrors()) {
       model.addAttribute("pageNo", pageNo);
-//      System.out.print("post_add_error" + pageNo);
+      // System.out.print("post_add_error" + pageNo);
       return "admin/category/add";
     }
     String imgFilePath = ImageUtil.genImgFileName(request, "category", category.getImgFile().getOriginalFilename());
@@ -115,11 +120,13 @@ public class CategoryController {
     categoryService.deleteCategory(categoryId);
     return "redirect:/admin/category/list/" + pageNo;
   }
-  
+
   // 更新商品类别信息 进入页面
   // viewOrEdit 是0那么表示为查看，1表示为编辑
-  @RequestMapping(value={"/admin/category/edit/{viewOrEdit}_{categoryId}", "/view/{viewOrEdit}_{categoryId}"}, method = RequestMethod.GET)
-  public String edit(@PathVariable("viewOrEdit") int viewOrEdit, @PathVariable("categoryId") int categoryId, @RequestParam int pageNo, Model model) {
+  @RequestMapping(value = { "/admin/category/edit/{viewOrEdit}_{categoryId}",
+      "/view/{viewOrEdit}_{categoryId}" }, method = RequestMethod.GET)
+  public String edit(@PathVariable("viewOrEdit") int viewOrEdit, @PathVariable("categoryId") int categoryId,
+      @RequestParam int pageNo, Model model) {
     Category category = categoryService.getCategory(categoryId);
     model.addAttribute("pageNo", pageNo);
     model.addAttribute("viewOrEdit", viewOrEdit);
@@ -130,24 +137,48 @@ public class CategoryController {
     model.addAttribute("category", category);
     return "admin/category/edit";
   }
-  
+
   // 更新商品类别信息 条件商品类别信息
-  @RequestMapping(value="/admin/category/edit", method=RequestMethod.POST)
-  public String edit(@Valid @ModelAttribute("category") Category category, @RequestParam int pageNo, BindingResult result) {
+  @RequestMapping(value = "/admin/category/edit", method = RequestMethod.POST)
+  public String edit(@Valid @ModelAttribute("category") Category category, @RequestParam int pageNo,
+      BindingResult result) {
     categoryService.updateCategory(category);
     return "redirect:/admin/category/list/" + pageNo;
   }
 
-  @RequestMapping(value="/category/list/{categoryId}", method=RequestMethod.GET)
-  public ModelAndView listProducts(@PathVariable("categoryId") int categoryId) {
+  @RequestMapping(value = "/category/list/{categoryId}_{pageNo}", method = RequestMethod.GET)
+  public ModelAndView listProducts(@PathVariable("categoryId") int categoryId, @PathVariable("pageNo") int pageNo) {
     ModelAndView mv = new ModelAndView();
-    // 取出该商品类别的详细信息
     Category category = categoryService.getCategory(categoryId);
-    // 需要取出该商品类别下所有的商品信息
-    List<Product> products = categoryService.loadProducts(categoryId, -1, -1);
+    int productCount = categoryService.getProductCount(categoryId);
     mv.addObject("category", category);
-    mv.addObject("products", products);
+    mv.addObject("pageNo", pageNo);
+    mv.addObject("productCount", productCount);
     mv.setViewName("product/list");
     return mv;
+  }
+
+  /**
+   * 返回前端瀑布流所需要的json数据。
+   * 
+   * @param categoryId
+   * @param pageNo
+   * @param waterfallIndex
+   * @return
+   */
+  // /category/list/{categoryId:\\d+}_{pageNo:\\d+}_{waterfallIndex:\\d+} //
+  // {pageNo:\\d+}_{waterfallIndex:\\d+}识别不出，会混在一起，如pageNo=1_1，为什么？
+  @RequestMapping(value = "/category/list/{categoryId:\\d+}_{pageNo:\\d+}/{waterfallIndex:\\d+}")
+  @ResponseBody // 返回的是json数据。
+  public Map<String, Object> getProductsByWaterFallPart(@PathVariable("categoryId") int categoryId,
+      @PathVariable("pageNo") int pageNo, @PathVariable("waterfallIndex") int waterfallIndex) {
+    // 获得当前应该改加载哪一部分瀑布流的数据。
+    int waterfallCurPart = (pageNo - 1) * ConstantUtil.PRODUCT_WATERFALL_PARTS_PER_PAGE + waterfallIndex;
+    List<Product> products = categoryService.loadProducts(categoryId, waterfallCurPart,
+        ConstantUtil.PRODUCT_COUNT_PER_WATERFALL_PART);
+    Map<String, Object> resMap = new HashMap<String, Object>();
+    resMap.put("total", products.size());
+    resMap.put("result", products);
+    return resMap;
   }
 }

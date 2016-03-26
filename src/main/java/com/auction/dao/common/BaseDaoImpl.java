@@ -53,6 +53,12 @@ public class BaseDaoImpl<T> implements IBaseDao<T> {
     return recordCount != null ? recordCount.intValue() : -1;
   }
 
+  public int findCount(String hql) {
+    // TODO Auto-generated method stub
+    Long recordCount = (Long) sessionFactory.getCurrentSession().createQuery(hql).uniqueResult();
+    return recordCount != null ? recordCount.intValue() : -1;
+  }
+  
   public Serializable save(T entity) {
     // TODO Auto-generated method stub
     return sessionFactory.getCurrentSession().save(entity);
@@ -137,4 +143,5 @@ public class BaseDaoImpl<T> implements IBaseDao<T> {
     sessionFactory.getCurrentSession().merge(entity);
     return true;
   }
+
 }

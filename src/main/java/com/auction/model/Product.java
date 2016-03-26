@@ -73,6 +73,14 @@ public class Product {
 
   @Transient
   private MultipartFile imgFile;
+  
+  // 商品在html页面中的倒计时元素id信息。
+  @Transient
+  private String countdownId;
+  
+  // 商品在html页面中的倒计时提示元素的id信息。
+  @Transient
+  private String countdownAlertId;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
   @JsonBackReference
@@ -157,6 +165,14 @@ public class Product {
 
   public void setImgFile(MultipartFile imgFile) {
     this.imgFile = imgFile;
+  }
+
+  public String getCountdownId() {
+    return "productexpireclock" + getId();
+  }
+
+  public String getCountdownAlertId() {
+    return "productexpirealert" + getId();
   }
 
   public Set<Comment> getComments() {

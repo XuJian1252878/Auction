@@ -13,6 +13,7 @@ public class ImgTestEntity {
   public String countdownId;
   public String countdownAlertId;
   public String expireTimeStamp;
+  public Date myDate;
   // public String productUrl;  // 商品的实体页面信息，代写入。 
   public ImgTestEntity(String imgFilePath, int width, int height, String countdownId, String countdownAlertId, int expireTimeStamp) {
     this.imgFilePath = imgFilePath;
@@ -23,7 +24,8 @@ public class ImgTestEntity {
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(new Date());
     calendar.add(Calendar.MINUTE, 1);
-    this.expireTimeStamp = DateTimeUtil.getTimeStamp("yyyy/MM/dd HH:mm:ss", calendar.getTime());
+    this.myDate = calendar.getTime();
+    this.expireTimeStamp = DateTimeUtil.getTimeStamp("yyyy-MM-dd HH:mm:ss", calendar.getTime());
     // 由于页面需要显示倒计时，需要显示时间的html元素id信息，
     // 显示到时提醒的html元素id信息，
     // 以及商品拍卖的倒计时间。

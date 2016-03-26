@@ -58,9 +58,16 @@ public interface ICategoryService {
   /**
    * 根据分页限制返回某一商品类别下的商品。
    * @param categoryId 商品类别的id信息。
-   * @param pageNo
-   * @param pageSize 如果pageNo值和pageSize的值同时为-1， 那么表示返回全部的结果。
+   * @param pageNo 要取出的是哪一页的数据
+   * @param pageSize 每一页数据的数量是多少。如果pageNo值和pageSize的值同时为-1， 那么表示返回全部的结果。
    * @return
    */
   public List<Product> loadProducts(int categoryId, int pageNo, int pageSize);
+
+  /**
+   * 获得该商品类别下商品的总数。
+   * @param categoryId  商品类别的id信息。
+   * @return 该商品类别下的商品总数。
+   */
+  public int getProductCount(int categoryId);
 }

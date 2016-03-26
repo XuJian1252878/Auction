@@ -95,4 +95,9 @@ public class CategoryService extends BaseService<Category> implements ICategoryS
     return products;
   }
 
+  public int getProductCount(int categoryId) {
+    // TODO Auto-generated method stub
+    return categoryDao.getProductCount(categoryId);
+  }
+
 }
