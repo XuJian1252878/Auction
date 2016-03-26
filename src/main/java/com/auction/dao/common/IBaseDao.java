@@ -7,7 +7,12 @@ public interface IBaseDao<T> {
   // [public][static][final]变量
   // [public][abstract]方法
 
-  // 获取一个变量实体
+  /**
+   * 根据数据库记录的id信息获得对应的数据库对象。
+   * @param entityClazz  数据库对象对应的类信息。
+   * @param id  数据库对象的id信息
+   * @return  a persistent instance or null
+   */
   T get(Class<T> entityClazz, Serializable id);
 
   // 查询实体的总个数

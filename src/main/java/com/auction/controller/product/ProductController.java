@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -71,7 +72,7 @@ public class ProductController {
       result.rejectValue("endDate", "product.bid.end.date.error");
       mv.addObject("loginUser", loginUser);
       mv.addObject("categories", categories);
-      mv.setViewName("product/upload");
+      mv.setViewName("/product/upload");
       return mv;
     }
     // 设置商品拍卖相关时间
@@ -95,6 +96,16 @@ public class ProductController {
       return mv;
     }
     mv.setViewName("redirect:/user/transaction");
+    return mv;
+  }
+
+  @RequestMapping(value="/detail/{productId}")
+  public ModelAndView getProductDetail(@PathVariable("productId") int productId) {
+    ModelAndView mv = new ModelAndView();
+    Product product = productService.getProductById(productId);
+    // 获得商品对应的分类信息。
+    mv.addObject("product", product);
+    mv.setViewName("/product/detail");
     return mv;
   }
 }

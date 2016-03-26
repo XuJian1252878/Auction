@@ -41,4 +41,10 @@ public class ProductService extends BaseService<Product> implements IProductServ
     return products;
   }
 
+  public Product getProductById(int productId) {
+    // TODO Auto-generated method stub
+    Product product = productDao.get(Product.class, productId);
+    return product;
+  }
+
 }

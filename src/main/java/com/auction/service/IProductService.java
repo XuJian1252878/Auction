@@ -22,4 +22,10 @@ public interface IProductService {
    */
   public List<Product> loadProduct(int pageNo, int pageSize);
 
+  /**
+   * 根据商品的id信息获取id的实体
+   * @param productId  提供的商品id信息
+   * @return  若实体存在，那么返回实体对象；否则返回null。
+   */
+  public Product getProductById(int productId);
 }

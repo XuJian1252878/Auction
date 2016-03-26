@@ -53,7 +53,7 @@
           <br />
           <div class="row">
             <div class="col-sm-12 col-sm-offset-4">
-              <a href="#">查看商品链接</a>
+              <a href="product/detail/{{id}}">查看商品链接</a>
               <br/>
               <div id="{{countdownId}}" data-countdown="{{endDate}}"></div>
               <div id="{{countdownAlertId}}"></div>
