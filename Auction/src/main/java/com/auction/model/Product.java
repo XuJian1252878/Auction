@@ -82,11 +82,11 @@ public class Product {
   @Transient
   private String countdownAlertId;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "product", orphanRemoval = true)
   @JsonBackReference
   private Set<Comment> comments = new HashSet<Comment>();
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "product")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "product", orphanRemoval = true)
   @JsonManagedReference
   private Set<Bid> bids = new HashSet<Bid>();
 

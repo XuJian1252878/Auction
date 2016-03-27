@@ -1,6 +1,5 @@
 package com.auction.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,11 +29,12 @@ public class Bid {
   @Column(name="id", length=32)
   private Integer id;
   
-  @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+  // 关于各个cascade关系的使用，http://vladmihalcea.com/2015/03/05/a-beginners-guide-to-jpa-and-hibernate-cascade-types/
+  @ManyToOne(fetch=FetchType.LAZY)
   @JoinColumn(name="product_id")
   private Product product;
   
-  @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+  @ManyToOne(fetch=FetchType.LAZY)
   @JoinColumn(name="user_id")
   @JsonBackReference
   private User user;
