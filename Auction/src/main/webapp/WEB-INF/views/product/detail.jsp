@@ -26,11 +26,31 @@
     <label>竞拍起价：</label><span>${product.basicPrice }</span><br />
     <img src="${product.imgPath }" width="300" height="300"/><br /><br />
 
-    <!-- 只有登陆用户才能参与竞价。 -->
-    <c:if test="${sessionScope.loginuser != null}">
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#myModal">我要竞价</button>
-    </c:if>
+    <c:choose>
+      <c:when test="${sessionScope.loginuser != null}">
+        <!-- 只有上传该商品的用户才能看到所有的竞价信息。 -->
+        <c:if test="${sessionScope.loginuser.id == product.user.id}">
+          <c:choose>
+            <c:when test="${productBids == null || fn:length(productBids) == 0}">
+              <h4>当前还未有人对该商品进行竞价！</h4>
+            </c:when>
+            <c:otherwise>
+              <c:forEach var="bid" items="${productBids }">
+                <h4>用户名称：${bid.user.userName }，出价：${bid.price }，出价时间：${bid.bindDate }</h4>
+              </c:forEach>
+            </c:otherwise>
+          </c:choose>
+        </c:if>
+        <!-- 只有登陆用户（不包括该商品的上传用户）才能参与竞价。 -->
+        <c:if test="${sessionScope.loginuser.id != product.user.id}">
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#myModal">我要竞价</button>
+        </c:if>
+      </c:when>
+      <c:otherwise>
+        <h4>想要参与竞价？赶快<a href="user/register"><span class="label label-success">注册</span></a>吧！</h4>
+      </c:otherwise>
+    </c:choose>
 
     <form:form action="bid/commit_${product.id }" modelAttribute="userbid" method="post">
       <form:input type="hidden" path="product.id" value="${product.id }"/>

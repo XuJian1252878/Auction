@@ -45,4 +45,10 @@ public class BidServiceImpl extends BaseService<Bid> implements IBidService {
     }
     return new ArrayList<Bid>(bids).get(0);
   }
+
+  public List<Bid> getAllBidsByProduct(int productId) {
+    // TODO Auto-generated method stub
+    String hql = "from " + Bid.class.getName() + " as b where b.product.id = ? order by b.price desc";
+    return bidDao.find(hql, productId);
+  }
 }

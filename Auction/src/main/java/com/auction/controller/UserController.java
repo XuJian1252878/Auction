@@ -70,7 +70,7 @@ public class UserController {
     // image 引用的时候要 / 的格式才能引用出来
     user.setAvatarPath(avatarFilePath);
     // 注册信息符合要求，写入数据库
-    if (userService.existsUser(user)) {
+    if (userService.existsUser(user, result)) {
       // 此时开始写入图片信息
       ImageUtil.saveImgFile(request, user.getAvatarFile(), result, avatarFilePath);
       if (result.hasErrors()) {
@@ -79,7 +79,7 @@ public class UserController {
       userService.saveUser(user); // 保存用户信息
       return "redirect:/index";
     }
-    result.rejectValue("userName", "register.user.name.already.exist");
+    // 注册的用户名称或者是用户信息已经存在。
     return "/user/register";
   }
 

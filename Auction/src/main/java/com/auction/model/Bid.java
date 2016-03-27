@@ -36,6 +36,7 @@ public class Bid {
   // 关于各个cascade关系的使用，http://vladmihalcea.com/2015/03/05/a-beginners-guide-to-jpa-and-hibernate-cascade-types/
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "product_id")
+  @JsonBackReference
   private Product product;
 
   @ManyToOne(fetch = FetchType.EAGER)

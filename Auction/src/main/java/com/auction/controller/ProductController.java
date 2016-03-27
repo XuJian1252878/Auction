@@ -37,7 +37,7 @@ public class ProductController {
 
   @Resource(name = "categoryService")
   ICategoryService CategoryService;
-  
+
   @Resource(name = "bidService")
   IBidService bidService;
 
@@ -47,11 +47,11 @@ public class ProductController {
     binder.addValidators(new ProductValidator());
   }
 
-  @RequestMapping(value = "/upload", method=RequestMethod.GET)
+  @RequestMapping(value = "/upload", method = RequestMethod.GET)
   public ModelAndView uploadProduct(HttpSession session) {
     ModelAndView mv = new ModelAndView();
     // 只有登陆了才能到达这个页面，所以不太可能存在loginUser为空的情况。
-    User loginUser = (User)session.getAttribute(ConstantUtil.LOGINUSER);
+    User loginUser = (User) session.getAttribute(ConstantUtil.LOGINUSER);
     mv.addObject("loginUser", loginUser);
     // 创建一个新的产品实体，用于存储上传的产品信息
     Product product = new Product();
@@ -63,10 +63,11 @@ public class ProductController {
     mv.setViewName("/product/upload");
     return mv;
   }
-  
-  @RequestMapping(value = "/upload", method=RequestMethod.POST)
-  public ModelAndView uploadProduct(@Valid @ModelAttribute("product") Product product, BindingResult result, HttpServletRequest request, HttpSession session) {
-    User loginUser = (User)session.getAttribute(ConstantUtil.LOGINUSER);
+
+  @RequestMapping(value = "/upload", method = RequestMethod.POST)
+  public ModelAndView uploadProduct(@Valid @ModelAttribute("product") Product product, BindingResult result,
+      HttpServletRequest request, HttpSession session) {
+    User loginUser = (User) session.getAttribute(ConstantUtil.LOGINUSER);
     // 选出所有的商品类别信息
     List<Category> categories = CategoryService.loadCategory(-1, -1);
     ModelAndView mv = new ModelAndView();
@@ -84,7 +85,8 @@ public class ProductController {
     product.setOnSaleDate(DateTimeUtil.timeMillisToDate(curTimeMillis));
     product.setEndDate(DateTimeUtil.timeMillisToDate(endTimeMillis));
     // 上传商品图片
-    String imgPath = ImageUtil.genImgFileName(request, ConstantUtil.PRODUCTFOLDER, product.getImgFile().getOriginalFilename());
+    String imgPath = ImageUtil.genImgFileName(request, ConstantUtil.PRODUCTFOLDER,
+        product.getImgFile().getOriginalFilename());
     product.setImgPath(imgPath);
     ImageUtil.saveImgFile(request, product.getImgFile(), result, imgPath);
     if (result.hasErrors()) {
@@ -104,20 +106,27 @@ public class ProductController {
     return mv;
   }
 
-  @RequestMapping(value="/detail/{productId}")
+  @RequestMapping(value = "/detail/{productId}")
   public ModelAndView getProductDetail(@PathVariable("productId") int productId, HttpSession httpSession) {
     ModelAndView mv = new ModelAndView();
+    User loginUser = (User) httpSession.getAttribute(ConstantUtil.LOGINUSER);
     Product product = productService.getProductById(productId);
     // 获得商品对应的分类信息。
     mv.addObject("product", product);
     // 用户可能需要竞价，提供竞价实体。
     Bid bid = new Bid();
     mv.addObject(ConstantUtil.USERBID, bid);
-    User loginUser = (User)httpSession.getAttribute(ConstantUtil.LOGINUSER);
     if (loginUser != null) {
-   // 用户之前可能对该商品进行过竞价，如有，那么显示竞价信息。
-      Bid oldBid = bidService.getBid(loginUser.getId(), productId);
-      mv.addObject("oldBid", oldBid);
+      if (!loginUser.getId().equals(product.getUser().getId())) {
+        // 1. 用户之前可能对该商品进行过竞价，如有，那么显示竞价信息。
+        // 2. 该用户不是上传该商品的用户。用户不能对自己上传的商品进行竞价。
+        Bid oldBid = bidService.getBid(loginUser.getId(), productId);
+        mv.addObject("oldBid", oldBid);
+      } else if (loginUser.getId().equals(product.getUser().getId())) {
+        // 登陆用户就是上传该商品的用户。那么该用户可以看到该商品的所有竞价信息。
+        List<Bid> productBids = bidService.getAllBidsByProduct(productId);
+        mv.addObject("productBids", productBids);
+      }
     }
     mv.setViewName("/product/detail");
     return mv;

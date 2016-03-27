@@ -1,6 +1,7 @@
 package com.auction.service;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.auction.model.Bid;
 
@@ -20,4 +21,11 @@ public interface IBidService {
    * @return  若竞价信息存在，那么返回竞价信息实体；否则返回null。
    */
   public Bid getBid(int userId, int productId);
+  
+  /**
+   * 获得某一个商品下的所有竞价信息。
+   * @param productId  商品的id信息。
+   * @return  返回该商品下竞价信息的list列表，若无竞价信息，那么返回空的list。
+   */
+  public List<Bid> getAllBidsByProduct(int productId);
 }

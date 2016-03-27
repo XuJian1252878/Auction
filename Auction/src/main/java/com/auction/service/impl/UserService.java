@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import com.auction.dao.IUserDao;
 import com.auction.model.User;
@@ -88,11 +89,15 @@ public class UserService extends BaseService<User> implements IUserService {
   /**
    * 判断新用户是否符合注册条件，用户名和注册邮箱都唯一。
    */
-  public boolean existsUser(User user) {
+  public boolean existsUser(User user, BindingResult result) {
     // TODO Auto-generated method stub
     // 查看数据库中有无相通名称或者注册邮箱的用户，如果有那么返回原页面重新注册
-    if (getUserByEmail(user.getEmail()) != null || getUserByName(user.getUserName()) != null) {
+    if (getUserByEmail(user.getEmail()) != null) {
       // 该用户名称或者用户邮箱已经被注册
+      result.rejectValue("email", "register.user.email.already.exist");
+      return false;
+    } else if (getUserByName(user.getUserName()) != null) {
+      result.rejectValue("userName", "register.user.name.already.exist");
       return false;
     }
     return true;
