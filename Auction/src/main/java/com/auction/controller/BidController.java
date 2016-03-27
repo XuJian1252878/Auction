@@ -35,7 +35,9 @@ public class BidController {
   public ModelAndView commitBidInfo(@Valid @ModelAttribute(ConstantUtil.USERBID) Bid userBid, @PathVariable("productId") int productId) {
     ModelAndView mv = new ModelAndView();
     // 记录用户提出竞价的时间。
-    userBid.setBindDate(new Date());
+    userBid.setBidDate(new Date());
+    // 刚开始的时候竞价还没有成交。
+    userBid.setIsSuccess(false);
     bidService.saveUserBid(userBid);
     mv.setViewName("redirect:/product/detail/" + productId);
     return mv;

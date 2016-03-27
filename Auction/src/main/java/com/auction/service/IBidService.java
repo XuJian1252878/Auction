@@ -28,4 +28,25 @@ public interface IBidService {
    * @return  返回该商品下竞价信息的list列表，若无竞价信息，那么返回空的list。
    */
   public List<Bid> getAllBidsByProduct(int productId);
+
+  /**
+   * 获取某用户正在进行的竞价信息，竞价信息以时间顺序降序排序。
+   * @param userId  用户实体的id信息。
+   * @return  若竞价信息存在，那么返回竞价信息实体；若无竞价信息，那么返回空的list。
+   */
+  public List<Bid> getGoingOnBids(int userId);
+
+  /**
+   * 获取某用户已经完成的竞价信息（包括竞价的失败与否），竞价信息以时间顺序降序排列。
+   * @param userId  用户实体的id信息。
+   * @return 若竞价信息存在，那么返回竞价信息实体；若无竞价信息，那么返回空的list。
+   */
+  public List<Bid> getHistoryBids(int userId);
+  
+  /**
+   * 获取某用户已经成交的竞价信息，竞价信息以时间顺序降序排列。
+   * @param userId  用户实体的id信息。
+   * @return  若竞价信息存在，那么返回竞价信息实体；若无竞价信息，那么返回空的list。
+   */
+  public List<Bid> getDealBids(int userId);
 }

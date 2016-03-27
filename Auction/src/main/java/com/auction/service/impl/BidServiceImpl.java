@@ -13,6 +13,7 @@ import com.auction.dao.IBidDao;
 import com.auction.model.Bid;
 import com.auction.service.IBidService;
 import com.auction.service.common.BaseService;
+import com.auction.util.DateTimeUtil;
 
 @Service("bidService")
 @Transactional // 将service至于一个transaction中执行。
@@ -29,7 +30,7 @@ public class BidServiceImpl extends BaseService<Bid> implements IBidService {
       return bidDao.save(bid);
     } else {
       // 说明用户对该商品之前出过竞价。
-      oldBid.setBindDate(bid.getBindDate());
+      oldBid.setBidDate(bid.getBidDate());
       oldBid.setPrice(bid.getPrice());
       bidDao.update(oldBid);
       return oldBid.getId();
@@ -50,5 +51,27 @@ public class BidServiceImpl extends BaseService<Bid> implements IBidService {
     // TODO Auto-generated method stub
     String hql = "from " + Bid.class.getName() + " as b where b.product.id = ? order by b.price desc";
     return bidDao.find(hql, productId);
+  }
+
+  public List<Bid> getGoingOnBids(int userId) {
+    // TODO Auto-generated method stub
+    String curTimestampStr = DateTimeUtil.getCurrentTimeStamp("yyyy-MM-dd HH:mm:ss");
+    String hql = "from " + Bid.class.getName() + " as b where b.user.id = ? and b.product.endDate >= '" + curTimestampStr
+        + "' order by b.bidDate desc";
+    return bidDao.find(hql, userId);
+  }
+
+  public List<Bid> getHistoryBids(int userId) {
+    // TODO Auto-generated method stub
+    String curTimestampStr = DateTimeUtil.getCurrentTimeStamp("yyyy-MM-dd HH:mm:ss");
+    String hql = "from " + Bid.class.getName() + " as b where b.user.id = ? and b.product.endDate < '" + curTimestampStr
+        + "' order by b.bidDate desc";
+    return bidDao.find(hql, userId);
+  }
+
+  public List<Bid> getDealBids(int userId) {
+    // TODO Auto-generated method stub
+    String hql = "from " + Bid.class.getName() + " as b where b.user.id = ? and b.isSuccess = true order by b.dealDate desc";
+    return bidDao.find(hql, userId);
   }
 }

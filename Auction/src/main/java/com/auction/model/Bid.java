@@ -47,10 +47,18 @@ public class Bid {
   @Column(name = "price", length = 20)
   private float price;
 
-  @Column(name = "bindDate")
+  @Column(name = "bidDate")
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @Temporal(TemporalType.TIMESTAMP)
-  private Date bindDate;
+  private Date bidDate;
+
+  @Column(name = "isSuccess")
+  private boolean isSuccess; // 记录成交与否的字段。
+
+  @Column(name = "dealDate", nullable = true)
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date dealDate; // 记录交易成功的时间，如果交易没有成功，那么这个字段为NULL。
 
   public Integer getId() {
     return id;
@@ -84,12 +92,29 @@ public class Bid {
     this.price = price;
   }
 
-  public Date getBindDate() {
-    return bindDate;
+  public Date getBidDate() {
+    return bidDate;
   }
 
-  public void setBindDate(Date bindDate) {
-    this.bindDate = bindDate;
+  public void setBidDate(Date bidDate) {
+    this.bidDate = bidDate;
+  }
+
+  // 注意函数名称不能是isSuccess，否则框架取不出这个变量的值，变量的存取名称必须是getXXX, setXXX。（XXX是变量名称，驼峰命名法。）
+  public boolean getIsSuccess() {
+    return isSuccess;
+  }
+
+  public void setIsSuccess(boolean isSuccess) {
+    this.isSuccess = isSuccess;
+  }
+
+  public Date getDealDate() {
+    return dealDate;
+  }
+
+  public void setDealDate(Date dealDate) {
+    this.dealDate = dealDate;
   }
 
 }

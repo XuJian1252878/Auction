@@ -19,9 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.auction.model.Product;
+import com.auction.model.Bid;
 import com.auction.model.User;
 import com.auction.model.validator.UserValidator;
+import com.auction.service.IBidService;
 import com.auction.service.IProductService;
 import com.auction.service.IUserService;
 import com.auction.util.ConstantUtil;
@@ -36,6 +37,9 @@ public class UserController {
 
   @Resource(name = "productService")
   private IProductService productService;
+
+  @Resource(name = "bidService")
+  private IBidService bidService;
 
   @InitBinder
   public void initBinder(DataBinder binder) {
@@ -66,7 +70,8 @@ public class UserController {
       return "/user/register";// 如果注册过程中出现错误，那么返回原来的页面。
     }
     // 首先获得图片将要保存在的路径信息。
-    String avatarFilePath = ImageUtil.genImgFileName(request, ConstantUtil.AVATARFOLDER, user.getAvatarFile().getOriginalFilename());
+    String avatarFilePath = ImageUtil.genImgFileName(request, ConstantUtil.AVATARFOLDER,
+        user.getAvatarFile().getOriginalFilename());
     // image 引用的时候要 / 的格式才能引用出来
     user.setAvatarPath(avatarFilePath);
     // 注册信息符合要求，写入数据库
@@ -104,7 +109,8 @@ public class UserController {
    * @return
    */
   @RequestMapping(value = "/login", method = RequestMethod.POST)
-  public String Login(@ModelAttribute(ConstantUtil.LOGINUSER) User user, BindingResult result, HttpSession httpSession) {
+  public String Login(@ModelAttribute(ConstantUtil.LOGINUSER) User user, BindingResult result,
+      HttpSession httpSession) {
     if (result.hasErrors()) {
       System.out.println("raise error");
       return "/user/login";
@@ -142,40 +148,33 @@ public class UserController {
     }
     return "redirect:/index";
   }
-  
+
   /**
    * 
    * @param httpSession
    * @return
    */
-  @RequestMapping(value="/profile", method=RequestMethod.GET)
+  @RequestMapping(value = "/profile", method = RequestMethod.GET)
   public ModelAndView userProfile(HttpSession httpSession) {
     ModelAndView mv = new ModelAndView();
     mv.addObject(ConstantUtil.LOGINUSER, httpSession.getAttribute(ConstantUtil.LOGINUSER));
     mv.setViewName("/user/profile");
     return mv;
   }
-  
-  /**
-   * 
-   * @param user
-   * @param result
-   * @param httpSession
-   * @param request
-   * @return
-   */
+
   @RequestMapping(value = "/profile", method = RequestMethod.POST)
   public ModelAndView updateProfile(@Valid @ModelAttribute(ConstantUtil.LOGINUSER) User user, BindingResult result,
       HttpSession httpSession, HttpServletRequest request) {
     ModelAndView mv = new ModelAndView();
-    User oriUser = (User)httpSession.getAttribute(ConstantUtil.LOGINUSER);
+    User oriUser = (User) httpSession.getAttribute(ConstantUtil.LOGINUSER);
     if (result.hasErrors()) {
       mv.addObject(ConstantUtil.LOGINUSER, oriUser);
       return mv;
     }
 
     // 开始更新用户的信息
-    String avatarFilePath = ImageUtil.genImgFileName(request, ConstantUtil.AVATARFOLDER, user.getAvatarFile().getOriginalFilename());
+    String avatarFilePath = ImageUtil.genImgFileName(request, ConstantUtil.AVATARFOLDER,
+        user.getAvatarFile().getOriginalFilename());
     if (user.getAvatarFile() != null) { // 说明用户更改了头像信息
       user.setAvatarPath(avatarFilePath);
     }
@@ -208,16 +207,27 @@ public class UserController {
   }
 
   /**
-   * 返回用户的交易记录页面
+   * 返回用户的交易记录的相关信息，包括正在进行的交易，已经完成的交易等。
    * 
    * @return
    */
   @RequestMapping(value = "/transaction", method = RequestMethod.GET)
-  public ModelAndView userTransaction() {
+  public ModelAndView userTransaction(HttpSession httpSession) {
     ModelAndView mv = new ModelAndView();
-    List<Product> products = productService.loadProduct(-1, -1);
-    mv.addObject("products", products);
     mv.setViewName("user/transaction");
+    User loginUser = (User)httpSession.getAttribute(ConstantUtil.LOGINUSER);
+    if (loginUser == null) {
+      return mv;  // 不会走到这一步，用户登录之后才可以看自己相关的交易信息。
+    }
+    // 取出正在进行的竞价信息。
+    List<Bid> goingOnBids = bidService.getGoingOnBids(loginUser.getId());
+    // 取出竞价的历史信息。
+    List<Bid> historyBids = bidService.getHistoryBids(loginUser.getId());
+    // 取出已经成交的竞价信息。
+    List<Bid> dealBids = bidService.getDealBids(loginUser.getId());
+    mv.addObject("goingOnBids", goingOnBids);
+    mv.addObject("historyBids", historyBids);
+    mv.addObject("dealBids", dealBids);
     return mv;
   }
 }
