@@ -1,4 +1,4 @@
-package com.auction.controller.index;
+package com.auction.controller;
 
 import java.util.List;
 

@@ -26,64 +26,78 @@
     <label>竞拍起价：</label><span>${product.basicPrice }</span><br />
     <img src="${product.imgPath }" width="300" height="300"/><br /><br />
 
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#myModal">我要竞价</button>
-    
-    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="gridSystemModalLabel">竞价提示</h4>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-md-12">
-                <h4>该商品的竞拍起价为：<span class="label label-danger">${product.basicPrice }</span>，您的出价必须高于竞拍起价！</h4>
-              </div>
+    <!-- 只有登陆用户才能参与竞价。 -->
+    <c:if test="${sessionScope.loginuser != null}">
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#myModal">我要竞价</button>
+    </c:if>
+
+    <form:form action="bid/commit_${product.id }" modelAttribute="userbid" method="post">
+      <form:input type="hide" path="product.id" value="${product.id }"/>
+      <form:input type="hide" path="user.id" value="${sessionScope.loginuser.id }"/>
+      <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="gridSystemModalLabel">竞价提示</h4>
             </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="input-group input-group-lg">
-                  <span class="input-group-addon" id="sizing-addon1">我的竞拍价：</span>
-                  <input type="text" class="form-control" placeholder="请输入您的竞拍价" aria-describedby="sizing-addon1">
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <h4>该商品的竞拍起价为：<span class="label label-danger">${product.basicPrice }</span>，您的出价必须高于竞拍起价！</h4>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">.col-md-4</div>
-              <div class="col-md-4 col-md-offset-4">.col-md-4 .col-md-offset-4</div>
-            </div>
-            <div class="row">
-              <div class="col-md-3 col-md-offset-3">.col-md-3 .col-md-offset-3</div>
-              <div class="col-md-2 col-md-offset-4">.col-md-2 .col-md-offset-4</div>
-            </div>
-            <div class="row">
-              <div class="col-md-6 col-md-offset-3">.col-md-6 .col-md-offset-3</div>
-            </div>
-            <div class="row">
-              <div class="col-sm-9">
-                Level 1: .col-sm-9
-                <div class="row">
-                  <div class="col-xs-8 col-sm-6">
-                    Level 2: .col-xs-8 .col-sm-6
-                  </div>
-                  <div class="col-xs-4 col-sm-6">
-                    Level 2: .col-xs-4 .col-sm-6
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="input-group input-group-lg">
+                    <span class="input-group-addon" id="sizing-addon1">我的竞拍价：</span>
+                    <form:input type="text" path="price" class="form-control" placeholder="请输入您的竞拍价" aria-describedby="sizing-addon1" />
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">取消竞价</button>
-            <button type="button" class="btn btn-primary" >提交竞价</button>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">取消竞价</button>
+              <button id="commitBidBtn" type="submit" class="btn btn-primary" >提交竞价</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+    </form:form>
   </c:otherwise>
 </c:choose>
+
+
+<button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#pleaseWaitDialog">进度条测试</button>
+<div class="modal fade" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-header">
+    <h1>Processing...</h1>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="progress progress-striped active">
+          <div class="bar bar-success" style="width: 100%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary" >Commit</button>
+  </div>
+</div>
+
+<div id="contentDiv"><h2>我的测试文字</h2></div>
+<button id="btn001" type="button">ChangeContent</button><br /><br />
+
+<script type="text/javascript">
+  $('#btn001').click(function(){
+    htmlobj = $.ajax({url:"imgdatatxt/1", async: false});
+    $('#contentDiv').html(htmlobj.responseText);
+  })
+</script>
 
 <style type="text/css">
 /*

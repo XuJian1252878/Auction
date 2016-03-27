@@ -1,4 +1,4 @@
-package com.auction.controller.product;
+package com.auction.controller;
 
 import java.util.List;
 
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.auction.model.Bid;
 import com.auction.model.Category;
 import com.auction.model.Product;
 import com.auction.model.User;
@@ -105,6 +106,9 @@ public class ProductController {
     Product product = productService.getProductById(productId);
     // 获得商品对应的分类信息。
     mv.addObject("product", product);
+    // 用户可能需要竞价，提供竞价实体。
+    Bid bid = new Bid();
+    mv.addObject(ConstantUtil.USERBID, bid);
     mv.setViewName("/product/detail");
     return mv;
   }

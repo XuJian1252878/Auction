@@ -1,4 +1,4 @@
-package com.auction.controller.user;
+package com.auction.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -126,7 +126,8 @@ public class UserController {
     }
     // 应该还要在Session中设置User http://www.tuicool.com/articles/m2iimaa
     httpSession.setAttribute(ConstantUtil.LOGINUSER, loginUser);
-    return "/index";
+    // 使用redirect可以在当前的controller中跳转到另一个controller中去。
+    return "redirect:/index";
   }
 
   /**

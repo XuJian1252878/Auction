@@ -1,4 +1,4 @@
-package com.auction.controller.category;
+package com.auction.controller;
 
 import java.util.HashMap;
 import java.util.List;

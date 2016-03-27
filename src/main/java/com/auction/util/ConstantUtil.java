@@ -3,6 +3,8 @@ package com.auction.util;
 public class ConstantUtil {
   // session 存储的User变量索引。
   public static final String LOGINUSER = "loginuser";
+  // 存储用户的竞价信息的Bid变量索引。
+  public static final String USERBID = "userbid";
   // 存储用户头像的文件夹名称
   public static final String AVATARFOLDER = "avatar";
   // 存储商品类别图片的文件夹名称
