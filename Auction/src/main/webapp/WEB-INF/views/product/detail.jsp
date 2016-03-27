@@ -33,8 +33,8 @@
     </c:if>
 
     <form:form action="bid/commit_${product.id }" modelAttribute="userbid" method="post">
-      <form:input type="hide" path="product.id" value="${product.id }"/>
-      <form:input type="hide" path="user.id" value="${sessionScope.loginuser.id }"/>
+      <form:input type="hidden" path="product.id" value="${product.id }"/>
+      <form:input type="hidden" path="user.id" value="${sessionScope.loginuser.id }"/>
       <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -48,6 +48,13 @@
                   <h4>该商品的竞拍起价为：<span class="label label-danger">${product.basicPrice }</span>，您的出价必须高于竞拍起价！</h4>
                 </div>
               </div>
+              <c:if test="${oldBid != null}">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h4>您之前已对该商品进行出价，您的出价为：<span class="label label-danger">${oldBid.price }</span>！</h4>
+                  </div>
+                </div>
+              </c:if>
               <div class="row">
                 <div class="col-md-12">
                   <div class="input-group input-group-lg">

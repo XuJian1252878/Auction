@@ -21,6 +21,7 @@ import com.auction.model.Category;
 import com.auction.model.Product;
 import com.auction.model.User;
 import com.auction.model.validator.ProductValidator;
+import com.auction.service.IBidService;
 import com.auction.service.ICategoryService;
 import com.auction.service.IProductService;
 import com.auction.util.ConstantUtil;
@@ -36,6 +37,9 @@ public class ProductController {
 
   @Resource(name = "categoryService")
   ICategoryService CategoryService;
+  
+  @Resource(name = "bidService")
+  IBidService bidService;
 
   // http://stackoverflow.com/questions/14533488/addiing-multiple-validators-using-initbinder
   @InitBinder("product") // 注意这里 InitBinder 参数命令 需要为被检测对象的名称。
@@ -101,7 +105,7 @@ public class ProductController {
   }
 
   @RequestMapping(value="/detail/{productId}")
-  public ModelAndView getProductDetail(@PathVariable("productId") int productId) {
+  public ModelAndView getProductDetail(@PathVariable("productId") int productId, HttpSession httpSession) {
     ModelAndView mv = new ModelAndView();
     Product product = productService.getProductById(productId);
     // 获得商品对应的分类信息。
@@ -109,6 +113,12 @@ public class ProductController {
     // 用户可能需要竞价，提供竞价实体。
     Bid bid = new Bid();
     mv.addObject(ConstantUtil.USERBID, bid);
+    User loginUser = (User)httpSession.getAttribute(ConstantUtil.LOGINUSER);
+    if (loginUser != null) {
+   // 用户之前可能对该商品进行过竞价，如有，那么显示竞价信息。
+      Bid oldBid = bidService.getBid(loginUser.getId(), productId);
+      mv.addObject("oldBid", oldBid);
+    }
     mv.setViewName("/product/detail");
     return mv;
   }

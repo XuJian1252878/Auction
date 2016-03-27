@@ -1,5 +1,7 @@
 package com.auction.controller;
 
+import java.util.Date;
+
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
@@ -32,7 +34,9 @@ public class BidController {
   @RequestMapping(value="/commit_{productId}", method = RequestMethod.POST)
   public ModelAndView commitBidInfo(@Valid @ModelAttribute(ConstantUtil.USERBID) Bid userBid, @PathVariable("productId") int productId) {
     ModelAndView mv = new ModelAndView();
-    bidService.createBid(userBid);
+    // 记录用户提出竞价的时间。
+    userBid.setBindDate(new Date());
+    bidService.saveUserBid(userBid);
     mv.setViewName("redirect:/product/detail/" + productId);
     return mv;
   }

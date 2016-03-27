@@ -57,8 +57,8 @@ public interface IBaseDao<T> {
   
   /**
    * 取得符合hql查询语句的所有该类实体。
-   * @param hql
-   * @param params
+   * @param hql  可能包含有占位符的hql语句，注意这里hql语句只支持?占位符，不支持自定义占位符名称。
+   * @param params  填充占位符所需要的值。
    * @return 包含实体类的List对象，不可能是null（没有查询结果的情况下是一个空的List）
    */
   public List<T> find(String hql, Object... params);
