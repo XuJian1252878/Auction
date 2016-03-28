@@ -3,6 +3,7 @@ package com.auction.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -244,9 +245,9 @@ public class UserController {
     // 获得用户上传的，并且正在被竞价的商品列表。
     List<Product> goingOnProducts = productService.getGoingOnProductsByUser(loginUser.getId());
     // 获得用户上传的，但是已经结束竞价的商品列表。
-    List<Product> historyProducts = productService.getHistoryProductsByUser(loginUser.getId());
+    Map<Product, Bid> historyProductsMap = productService.getHistoryProductsByUser(loginUser.getId());
     mv.addObject("goingOnProducts", goingOnProducts);
-    mv.addObject("historyProducts", historyProducts);
+    mv.addObject("historyProductsMap", historyProductsMap);
     mv.setViewName("/user/product");
     return mv;
   }

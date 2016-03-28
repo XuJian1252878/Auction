@@ -1,7 +1,9 @@
 package com.auction.service;
 
 import java.util.List;
+import java.util.Map;
 
+import com.auction.model.Bid;
 import com.auction.model.Product;
 
 public interface IProductService {
@@ -30,16 +32,16 @@ public interface IProductService {
   public Product getProductById(int productId);
 
   /**
-   * 获得用户上传的，并且正在被竞价的商品列表。商品列表按照商品上传的时间降序排序。
+   * 获得用户上传的，并且正在被竞价的商品列表。商品列表按照竞拍的数量对商品进行降序排序。
    * @param userId  上传商品的用户id信息。
    * @return  返回一个包含商品实体的list列表，如果没有符合条件的商品信息，那么返回一个空的list。
    */
   public List<Product> getGoingOnProductsByUser(int userId);
 
   /**
-   * 获得用户上传的，并且竞价过程已经结束的商品列表。商品列表按照商品上传的时间降序排序。
+   * 获得用户上传的，并且竞价过程已经结束的<商品, 成交竞价>map。map按照商品上传的时间降序排序。
    * @param userId  上传商品的用户id信息。
-   * @return  返回一个包含商品实体的list列表，如果没有符合条件的商品信息，那么返回一个空的list。
+   * @return  返回一个包含<商品, 成交竞价>map，如果没有符合条件的商品信息，那么返回一个空的Map。
    */
-  public List<Product> getHistoryProductsByUser(int userId);
+  public Map<Product, Bid> getHistoryProductsByUser(int userId);
 }

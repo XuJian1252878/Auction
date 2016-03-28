@@ -3,6 +3,7 @@ package com.auction.model;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -184,7 +185,12 @@ public class Product {
   }
 
   public Set<Bid> getBids() {
-    return bids;
+    // 希望得到一个按照竞价价格降序排列的集合。
+    TreeSet<Bid> bidsSet = new TreeSet<Bid>();
+    for (Bid bid : bids) {
+      bidsSet.add(bid);
+    }
+    return bidsSet;
   }
 
   public void setBids(Set<Bid> bids) {

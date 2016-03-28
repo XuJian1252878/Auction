@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "BID")
 @Proxy(lazy = true)
-public class Bid {
+public class Bid implements Comparable<Bid> {
 
   public Bid() {
 
@@ -115,6 +115,18 @@ public class Bid {
 
   public void setDealDate(Date dealDate) {
     this.dealDate = dealDate;
+  }
+
+  public int compareTo(Bid o) {
+    // TODO Auto-generated method stub
+    // 实现降序排列。
+    if (this.price > o.price) {
+      return -1;
+    } else if (this.price < o.price) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
 
 }

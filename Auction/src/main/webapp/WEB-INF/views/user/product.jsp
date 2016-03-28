@@ -2,10 +2,11 @@
 <%@ include file="../../../template/header.jsp"%>
 
 <link href="styles/fade-tab-nav.css" rel="stylesheet">
+<link href="styles/collapsible.css" rel="stylesheet">
 
 <div class="container">
   <div class="row">
-    <div class="col-lg-10 col-lg-offset-1">
+    <div class="col-lg-12">
       <div class="title">
         <h2>
           <span>我上传的物品</span>
@@ -28,29 +29,113 @@
               <label>您没有上传任何商品。</label>
             </c:when>
             <c:otherwise>
-              <table>
-                <tr>
-                  <th>商品名称：</th>
-                  <th>商品描述：</th>
-                  <th>竞价起价：</th>
-                  <th>上架时间：</th>
-                  <th>竞价热度：</th>
-                  <th>更多操作：</th>
-                  <th>商品图片：</th>
-                </tr>
-              </table>
+              <div class="row">
+                <div class="col-lg-1 col-lg-offset-1">商品名称</div>
+                <div class="col-lg-2">商品描述</div>
+                <div class="col-lg-1">竞价起价</div>
+                <div class="col-lg-2">上架时间</div>
+                <div class="col-lg-1">竞价热度</div>
+                <div class="col-lg-2">商品图片</div>
+                <div class="col-lg-1">更多操作</div>
+              </div>
+              <div id="accordion" role="tablist" aria-multiselectable="true">
+                <c:forEach var="goingOnProduct" items="${goingOnProducts }">
+                  <div class="row">
+                    <div class="col-lg-1 col-lg-offset-1">${goingOnProduct.name }</div>
+                    <div class="col-lg-2">${goingOnProduct.describe }</div>
+                    <div class="col-lg-1">${goingOnProduct.basicPrice }</div>
+                    <div class="col-lg-2">${goingOnProduct.onSaleDate }</div>
+                    <div class="col-lg-1">${goingOnProduct.bids.size() }</div>
+                    <div class="col-lg-2">
+                      <img src="${goingOnProduct.imgPath }" alt="${goingOnProduct.name }"
+                        title="${goingOnProduct.name }" width="100" height="100" class="img-circle" />
+                    </div>
+                    <div class="panel panel-default">
+                      <div class="panel-heading col-lg-1" role="tab" id="heading${goingOnProduct.id }">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#collapse${goingOnProduct.id }"
+                            aria-expanded="false" aria-controls="collapse${goingOnProduct.id }">竞价详情</a>
+                        </h4>
+                      </div>
+                      <div id="collapse${goingOnProduct.id }" class="panel-collapse collapse col-lg-10 col-lg-offset-1"
+                        role="tabpanel" aria-labelledby="heading${goingOnProduct.id }">
+                        <c:choose>
+                          <c:when test="${goingOnProduct.bids == null || fn:length(goingOnProduct.bids) == 0}">
+                            <div class="row">
+                              <div class="col-lg-4 col-lg-offset-4">
+                                <label>暂时没有该商品的竞价记录！</label>
+                              </div>
+                            </div>
+                          </c:when>
+                          <c:otherwise>
+                            <div class="row">
+                              <div class="col-lg-4 col-lg-offset-4">
+                                <label>共有${fn:length(goingOnProduct.bids) }条竞价记录。</label>
+                              </div>
+                            </div>
+                            <c:forEach var="bid" items="${goingOnProduct.bids }">
+                              <div class="row">
+                                <div class="col-lg-2 col-lg-offset-1">${bid.user.userName }</div>
+                                <div class="col-lg-3">${bid.bidDate }</div>
+                                <div class="col-lg-3">${bid.price }</div>
+                                <div class="col-lg-2">
+                                  <a href="#">成交</a>
+                                </div>
+                              </div>
+                            </c:forEach>
+                          </c:otherwise>
+                        </c:choose>
+                      </div>
+                    </div>
+                  </div>
+                </c:forEach>
+              </div>
             </c:otherwise>
           </c:choose>
         </div>
         <div id="tab_b" class="tab-pane fade">
           <h4>我的已完成竞价商品</h4>
           <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+          <c:choose>
+            <c:when test="${historyProducts == null || fn:length(historyProducts) == 0}">
+              <label>您还没有任何历史纪录！</label>
+            </c:when>
+            <c:otherwise>
+              <div class="row">
+                <div class="col-lg-1 col-lg-offset-1">商品名称</div>
+                <div class="col-lg-2">商品描述</div>
+                <div class="col-lg-1">竞价起价</div>
+                <div class="col-lg-2">上架时间</div>
+                <div class="col-lg-1">竞价热度</div>
+                <div class="col-lg-1">成交价格</div>
+                <div class="col-lg-2">商品图片</div>
+              </div>
+              <c:forEach var="historyProductPair" items="${historyProductsMap }">
+                <div class="row">
+                  <div class="col-lg-1 col-lg-offset-1">${historyProductPair.key.name }</div>
+                  <div class="col-lg-2">${historyProductPair.key.describe }</div>
+                  <div class="col-lg-1">${historyProductPair.key.basicPrice }</div>
+                  <div class="col-lg-2">${historyProductPair.key.onSaleDate }</div>
+                  <div class="col-lg-1">${historyProductPair.key.size() }</div>
+                  <div class="col-lg-1">
+                    <c:choose>
+                      <c:when test="${historyProductPair.value == null }">商品竞拍失败</c:when>
+                      <c:otherwise>${historyProductPair.value.price }</c:otherwise>
+                    </c:choose>
+                  </div>
+                  <div class="col-lg-2">
+                    <img src="${historyProduct.imgPath }" alt="${historyProduct.name }" title="${historyProduct.name }"
+                      width="100" height="100" class="img-circle" />
+                  </div>
+                </div>
+              </c:forEach>
+            </c:otherwise>
+          </c:choose>
         </div>
       </div>
     </div>
   </div>
 </div>
-
 
 <div class="contanner">
   <div class="row">
