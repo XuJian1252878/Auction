@@ -42,12 +42,12 @@ public class Comment {
   @Temporal(TemporalType.TIMESTAMP)
   private Date pubDate;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
   @JsonManagedReference
   private User user;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "product_id")
   @JsonManagedReference
   private Product product;

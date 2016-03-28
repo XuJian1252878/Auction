@@ -132,6 +132,9 @@ public class ProductController {
         List<Bid> productBids = bidService.getAllBidsByProduct(productId);
         mv.addObject("productBids", productBids);
       }
+      // 用户可能需要发表评论信息。
+      Comment userComment = new Comment();
+      mv.addObject("userComment", userComment);
     }
     // 加载该商品的相关评论列表。
     List<Comment> productComments = commentService.getProductComments(productId);

@@ -3,6 +3,7 @@
 
 <link rel="stylesheet" href="styles/loading.css">
 <script type="text/javascript" src="template/jquery.countdown/dist/jquery.countdown.min.js"></script>
+<script type="text/javascript" src="template/ckeditor/ckeditor.js"></script>
 
 <c:choose>
   <%-- 判断商品是否存在信息 --%>
@@ -117,6 +118,27 @@
         </table>
       </c:otherwise>
     </c:choose>
+    <%-- 用户发表评论区域 --%>
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2">
+        <form:form action="comment/pub" modelAttribute="userComment" method="post">
+          <form:input type="hidden" path="user.id" value="${sessionScope.loginuser.id }" />
+          <form:input type="hidden" path="product.id" value="${product.id }" />
+          <form:textarea id="commentEditor" name="commentEditor" path="commentText" rows="5" cols="80" ></form:textarea><br />
+          <script type="text/javascript">
+            // Replace the <textarea id="commentEditor"> with a CKEditor
+            // instance, using default configuration.
+            CKEDITOR.replace('commentEditor');
+          </script>
+          <form:errors path="commentText"></form:errors><br />
+          <div class="row">
+            <div class="col-lg-2 col-lg-offset-10">
+              <input type="submit" class="btn btn-lg btn-success" value="提交评论" />
+            </div>
+          </div>
+        </form:form>
+      </div>
+    </div>
   </c:otherwise>
 </c:choose>
 
