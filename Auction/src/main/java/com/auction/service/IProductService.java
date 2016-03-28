@@ -28,4 +28,18 @@ public interface IProductService {
    * @return  若实体存在，那么返回实体对象；否则返回null。
    */
   public Product getProductById(int productId);
+
+  /**
+   * 获得用户上传的，并且正在被竞价的商品列表。商品列表按照商品上传的时间降序排序。
+   * @param userId  上传商品的用户id信息。
+   * @return  返回一个包含商品实体的list列表，如果没有符合条件的商品信息，那么返回一个空的list。
+   */
+  public List<Product> getGoingOnProductsByUser(int userId);
+
+  /**
+   * 获得用户上传的，并且竞价过程已经结束的商品列表。商品列表按照商品上传的时间降序排序。
+   * @param userId  上传商品的用户id信息。
+   * @return  返回一个包含商品实体的list列表，如果没有符合条件的商品信息，那么返回一个空的list。
+   */
+  public List<Product> getHistoryProductsByUser(int userId);
 }

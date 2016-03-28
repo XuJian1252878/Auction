@@ -1,10 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ include file="../../../template/header.jsp"%>
 
-<link href="styles//usertransaction.css" rel="stylesheet">
+<link href="styles/fade-tab-nav.css" rel="stylesheet">
 
 <div class="container">
-  <div class="col-lg-12 col-lg-offset-1">
+  <div class="col-lg-10 col-lg-offset-1">
     <div class="title">
       <h2>
         <span>我的交易记录</span>
@@ -139,12 +139,5 @@
 <br />
 <br />
 <br />
-<div class="contanner">
-  <div class="row">
-    <div class="col-md-10 col-md-offset-5 col-sm-10 col-sm-offset-5 col-xs-10 col-xs-offset-5">
-      <a class="btn-success btn-lg" href="product/upload" role="button">上传我的旧物信息</a>
-    </div>
-  </div>
-</div>
 
 <%@ include file="../../../template/footer.jsp"%>

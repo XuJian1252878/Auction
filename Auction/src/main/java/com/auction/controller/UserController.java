@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.auction.model.Bid;
+import com.auction.model.Product;
 import com.auction.model.User;
 import com.auction.model.validator.UserValidator;
 import com.auction.service.IBidService;
@@ -207,8 +208,8 @@ public class UserController {
   }
 
   /**
-   * 返回用户的交易记录的相关信息，包括正在进行的交易，已经完成的交易等。
-   * 
+   * 返回用户对他人商品进行竞价的相关信息，包括正在进行的交易，已经完成的交易等。
+   * @param httpSession  为了取出登陆用户的信息而使用。
    * @return
    */
   @RequestMapping(value = "/transaction", method = RequestMethod.GET)
@@ -228,6 +229,25 @@ public class UserController {
     mv.addObject("goingOnBids", goingOnBids);
     mv.addObject("historyBids", historyBids);
     mv.addObject("dealBids", dealBids);
+    return mv;
+  }
+
+  /**
+   * 获得用户上传的所有竞价商品信息，分为正在进行以及已经完结的两个商品list列表，列表以商品的上传时间降序排序。
+   * @param httpSession
+   * @return
+   */
+  @RequestMapping(value = "/products")
+  public ModelAndView uploadProductsRecords(HttpSession httpSession) {
+    ModelAndView mv = new ModelAndView();
+    User loginUser = (User)httpSession.getAttribute(ConstantUtil.LOGINUSER);
+    // 获得用户上传的，并且正在被竞价的商品列表。
+    List<Product> goingOnProducts = productService.getGoingOnProductsByUser(loginUser.getId());
+    // 获得用户上传的，但是已经结束竞价的商品列表。
+    List<Product> historyProducts = productService.getHistoryProductsByUser(loginUser.getId());
+    mv.addObject("goingOnProducts", goingOnProducts);
+    mv.addObject("historyProducts", historyProducts);
+    mv.setViewName("/user/product");
     return mv;
   }
 }

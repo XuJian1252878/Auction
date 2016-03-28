@@ -85,13 +85,13 @@
               aria-haspopup="true" aria-expanded="false">信息中心 <span class="caret"></span>
             </a>
               <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
+                <li><a href="user/profile"><i class="glyphicon glyphicon-cog"></i> 个人信息</a></li>
                 <li><a href="#">Another action</a></li>
                 <li><a href="#">Something else here</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Nav header</li>
-                <li><a href="user/transaction"><i class="fa fa-credit-card-alt"></i> 我的交易</a></li>
-                <li><a href="user/profile"><i class="glyphicon glyphicon-cog"></i> 个人信息</a></li>
+                <li><a href="user/products"><i class="glyphicon glyphicon-shopping-cart"></i> 我的商品</a></li>
+                <li><a href="user/transaction"><i class="fa fa-credit-card-alt"></i> 我的竞价记录</a></li>
                 <li role="seperator" class="divider"></li>
                 <li><a href="user/logout"><i class="glyphicon glyphicon-off"></i> 注销</a></li>
               </ul></li>
