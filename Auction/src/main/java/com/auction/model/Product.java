@@ -92,7 +92,7 @@ public class Product {
 
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
-  @JsonBackReference
+  @JsonManagedReference
   private User user;
 
   public Integer getId() {

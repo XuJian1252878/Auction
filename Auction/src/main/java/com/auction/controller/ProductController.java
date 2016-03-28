@@ -18,11 +18,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.auction.model.Bid;
 import com.auction.model.Category;
+import com.auction.model.Comment;
 import com.auction.model.Product;
 import com.auction.model.User;
 import com.auction.model.validator.ProductValidator;
 import com.auction.service.IBidService;
 import com.auction.service.ICategoryService;
+import com.auction.service.ICommentService;
 import com.auction.service.IProductService;
 import com.auction.util.ConstantUtil;
 import com.auction.util.DateTimeUtil;
@@ -40,6 +42,9 @@ public class ProductController {
 
   @Resource(name = "bidService")
   IBidService bidService;
+  
+  @Resource(name = "commentService")
+  ICommentService commentService;
 
   // http://stackoverflow.com/questions/14533488/addiing-multiple-validators-using-initbinder
   @InitBinder("product") // 注意这里 InitBinder 参数命令 需要为被检测对象的名称。
@@ -128,6 +133,9 @@ public class ProductController {
         mv.addObject("productBids", productBids);
       }
     }
+    // 加载该商品的相关评论列表。
+    List<Comment> productComments = commentService.getProductComments(productId);
+    mv.addObject("productComments", productComments);
     mv.setViewName("/product/detail");
     return mv;
   }
