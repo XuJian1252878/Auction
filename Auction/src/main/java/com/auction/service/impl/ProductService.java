@@ -96,14 +96,14 @@ public class ProductService extends BaseService<Product> implements IProductServ
     // TODO Auto-generated method stub
     Map<Product, Bid> pbMap = new LinkedHashMap<Product, Bid>();
     String phql = "from " + Product.class.getName()
-        + " as p where p.user.id = ? and p.endDate < ? order by p.onSaleDate desc";
+        + " as p where (p.user.id = ? and p.endDate < ?) or (p.isDeal = true) order by p.onSaleDate desc";
     // 获得用户上传的已经超过竞价期限的物品。
     List<Product> historyProducts = productDao.find(phql, userId, new Date());
     // 查询这些商品是否已经成交、或者是流拍。
     for (Product product : historyProducts) {
       // 检查该商品是否拍卖成功。
       String bhql = "from " + Bid.class.getName()
-          + " as b where b.isSuccess = true and b.user.id = ? and b.product.id = ?";
+          + " as b where b.isSuccess = true and b.product.user.id = ? and b.product.id = ?";
       List<Bid> bids = bidDao.find(bhql, userId, product.getId());
       if (bids.size() == 1) {
         pbMap.put(product, bids.get(0));

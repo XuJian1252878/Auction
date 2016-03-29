@@ -106,7 +106,7 @@
           <h4>我的已完成竞价商品</h4>
           <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
           <c:choose>
-            <c:when test="${historyProducts == null || fn:length(historyProducts) == 0}">
+            <c:when test="${historyProductsMap == null || fn:length(historyProductsMap) == 0}">
               <label>您还没有任何历史纪录！</label>
             </c:when>
             <c:otherwise>
@@ -125,7 +125,7 @@
                   <div class="col-lg-2">${historyProductPair.key.describe }</div>
                   <div class="col-lg-1">${historyProductPair.key.basicPrice }</div>
                   <div class="col-lg-2">${historyProductPair.key.onSaleDate }</div>
-                  <div class="col-lg-1">${historyProductPair.key.size() }</div>
+                  <div class="col-lg-1">${historyProductPair.key.bids.size() }</div>
                   <div class="col-lg-1">
                     <c:choose>
                       <c:when test="${historyProductPair.value == null }">商品竞拍失败</c:when>
@@ -133,7 +133,7 @@
                     </c:choose>
                   </div>
                   <div class="col-lg-2">
-                    <img src="${historyProduct.imgPath }" alt="${historyProduct.name }" title="${historyProduct.name }"
+                    <img src="${historyProductPair.key.imgPath }" alt="${historyProductPair.key.name }" title="${historyProductPair.key.name }"
                       width="100" height="100" class="img-circle" />
                   </div>
                 </div>
