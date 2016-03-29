@@ -26,12 +26,12 @@
               <label>暂无未读的交易成功通知</label>
             </c:when>
             <c:otherwise>
-              <div id="accordion" role="tablist" aria-multiselectable="true">
+              <div id="unreadAccordion" role="tablist" aria-multiselectable="true">
               <c:forEach var="unreadBidNotification" items="${unreadBidNotifications }">
                 <div class="panel panel-default">
                   <div class="panel-heading" role="tab" id="unreadHeading${unreadBidNotification.id }">
                     <h4 class="panel-title">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#unreadCollapse${unreadBidNotification.id }" aria-expanded="false" aria-controls="#unreadCollapse${unreadBidNotification.id }">
+                      <a data-toggle="collapse" data-parent="#unreadAccordion" href="#unreadCollapse${unreadBidNotification.id }" aria-expanded="false" aria-controls="#unreadCollapse${unreadBidNotification.id }">
                         <span>您成功拍得 ${unreadBidNotification.bid.product.name }！点我查看详情！${unreadBidNotification.bid.dealDate }</span>
                       </a>
                     </h4>
@@ -61,12 +61,12 @@
               <label>暂无历史通知信息！</label>
             </c:when>
             <c:otherwise>
-              <div id="accordion" role="tablist" aria-multiselectable="true">
+              <div id="historyAccordion" role="tablist" aria-multiselectable="true">
               <c:forEach var="historyBidNotification" items="${historyBidNotifications }">
                 <div class="panel panel-default">
                   <div class="panel-heading" role="tab" id="historyHeading${historyBidNotification.id }">
                     <h4 class="panel-title">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#historyCollapse${historyBidNotification.id }" aria-expanded="false" aria-controls="historyCollapse${historyBidNotification.id }">
+                      <a data-toggle="collapse" data-parent="#historyAccordion" href="#historyCollapse${historyBidNotification.id }" aria-expanded="false" aria-controls="historyCollapse${historyBidNotification.id }">
                         <span>您成功拍得 ${historyBidNotification.bid.product.name }！点我查看详情！${historyBidNotification.bid.dealDate }</span>
                       </a>
                     </h4>
