@@ -32,7 +32,7 @@
                   <div class="panel-heading" role="tab" id="unreadHeading${unreadBidNotification.id }">
                     <h4 class="panel-title">
                       <a data-toggle="collapse" data-parent="#accordion" href="#unreadCollapse${unreadBidNotification.id }" aria-expanded="false" aria-controls="#unreadCollapse${unreadBidNotification.id }">
-                        <span>您成功拍得 ${unreadBidNotification.bid.product.name }！点我查看详情！</span>
+                        <span>您成功拍得 ${unreadBidNotification.bid.product.name }！点我查看详情！${unreadBidNotification.bid.dealDate }</span>
                       </a>
                     </h4>
                   </div>
@@ -45,7 +45,7 @@
                         <span class="label label-danger">￥${unreadBidNotification.bid.price }</span>的价格拍下
                         <span class="label label-danger">${unreadBidNotification.bid.product.name }</span>，成交日期为：${unreadBidNotification.bid.dealDate }。
                         </p>
-                        <span><a href="#">后续操作</a></span>
+                        <span><a href="message/markread/${unreadBidNotification.id }">标为已读</a></span>
                       </div>
                     </div>
                   </div>
@@ -55,9 +55,39 @@
             </c:otherwise>
           </c:choose>
         </div>
-      </div>
-      <div class="tab-content">
         <div id="tab_b" class="tab-pane fade">
+          <c:choose>
+            <c:when test="${historyBidNotifications == null || fn:length(historyBidNotifications) == 0}">
+              <label>暂无历史通知信息！</label>
+            </c:when>
+            <c:otherwise>
+              <div id="accordion" role="tablist" aria-multiselectable="true">
+              <c:forEach var="historyBidNotification" items="${historyBidNotifications }">
+                <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="historyHeading${historyBidNotification.id }">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#historyCollapse${historyBidNotification.id }" aria-expanded="false" aria-controls="historyCollapse${historyBidNotification.id }">
+                        <span>您成功拍得 ${historyBidNotification.bid.product.name }！点我查看详情！${historyBidNotification.bid.dealDate }</span>
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="historyCollapse${historyBidNotification.id }" class="panel-collapse collapse" role="tabpanel" aria-labelledby="historyHeading${historyBidNotification.id }">
+                    <div class="row">
+                      <div class="col-lg-10 col-lg-offset-1">
+                        <span>系统提示：</span>
+                        <span>亲爱的${sessionScope.loginuser.userName }：</span>
+                        <p>您好！恭喜您以
+                        <span class="label label-danger">￥${historyBidNotification.bid.price }</span>的价格拍下
+                        <span class="label label-danger">${historyBidNotification.bid.product.name }</span>，成交日期为：${historyBidNotification.bid.dealDate }。
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </c:forEach>
+              </div>
+            </c:otherwise>
+          </c:choose>
         </div>
       </div>
     </div>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.auction.dao.IBidNotificationDao;
 import com.auction.dao.IMessageDao;
+import com.auction.model.Bid;
 import com.auction.model.BidNotification;
 import com.auction.model.Message;
 import com.auction.service.IMessageService;
@@ -27,7 +28,10 @@ public class MessageService extends BaseService<Message> implements IMessageServ
   public boolean saveBidSuccessNotification(int bidId) {
     // TODO Auto-generated method stub
     BidNotification bNotification = new BidNotification();
-    bNotification.getBid().setId(bidId);
+    Bid bid = new Bid();
+    bid.setId(bidId);
+    bNotification.setBid(bid);
+    bNotification.setIsRead(false);
     bidNotificationDao.save(bNotification);
     return true;
   }
@@ -53,6 +57,18 @@ public class MessageService extends BaseService<Message> implements IMessageServ
     String hql = "from " + BidNotification.class.getName() + " as b where b.isRead = true";
     List<BidNotification> notifications = bidNotificationDao.find(hql);
     return notifications;
+  }
+
+  public boolean markBidNotificationAsRead(int notificationId) {
+    // TODO Auto-generated method stub
+    BidNotification bn = bidNotificationDao.get(BidNotification.class, notificationId);
+    if (bn == null) {
+      return false;
+    }
+    // 将该竞价通知消息设置为已读。
+    bn.setIsRead(true);
+    bidNotificationDao.update(bn);
+    return true;
   }
 
 }

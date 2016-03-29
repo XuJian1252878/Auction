@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.DataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -46,6 +47,15 @@ public class MessageController {
     List<BidNotification> historyBidNotifications = messageService.getHistoryBidNotification(loginUser.getId());
     mv.addObject("historyBidNotifications", historyBidNotifications);
     mv.setViewName("user/message");
+    return mv;
+  }
+  
+  @RequestMapping(value = "/markread/{notificationId}")
+  public ModelAndView markMessageAsRead(@PathVariable("notificationId") int notificationId) {
+    ModelAndView mv = new ModelAndView();
+    // 将该通知信息设置为已读。
+    messageService.markBidNotificationAsRead(notificationId);
+    mv.setViewName("redirect:/message/list");
     return mv;
   }
 }

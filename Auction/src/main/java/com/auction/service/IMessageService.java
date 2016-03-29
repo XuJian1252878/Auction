@@ -32,4 +32,11 @@ public interface IMessageService {
    * @return  返回历史竞价消息的list，如果没有历史竞价消息，则返回一个空的list。
    */
   public List<BidNotification> getHistoryBidNotification(int userId);
+  
+  /**
+   * 将竞价通知消息标记为已读。
+   * @param notificationId  需要标记为已读的竞价通知消息id。
+   * @return  如果标记已读成功，那么返回true；否则就返回false。
+   */
+  public boolean markBidNotificationAsRead(int notificationId);
 }
