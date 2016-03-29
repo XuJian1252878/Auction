@@ -16,8 +16,8 @@
     <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
       <ul class="nav nav-pills nav-justified">
         <li class="active"><a href="#tab_a" data-toggle="pill">正在进行</a></li>
-        <li><a href="#tab_b" data-toggle="pill">已经完成</a></li>
-        <li><a href="#tab_c" data-toggle="pill">竞价记录</a></li>
+        <li><a href="#tab_b" data-toggle="pill">竞价时限已到</a></li>
+        <li><a href="#tab_c" data-toggle="pill">成交记录</a></li>
       </ul>
       <div class="tab-content">
         <div id="tab_a" class="tab-pane fade in active">
@@ -86,7 +86,7 @@
                     <td>${historyBid.bidDate }</td>
                     <td>
                       <c:choose>
-                        <c:when test="${historyBid.isSuccess eq false }">未成交</c:when>
+                        <c:when test="${historyBid.isSuccess eq false }">竞价失败</c:when>
                         <c:otherwise>已成交</c:otherwise>
                       </c:choose>
                     </td>

@@ -58,15 +58,15 @@ public class BidServiceImpl extends BaseService<Bid> implements IBidService {
     // TODO Auto-generated method stub
     String curTimestampStr = DateTimeUtil.getCurrentTimeStamp("yyyy-MM-dd HH:mm:ss");
     String hql = "from " + Bid.class.getName() + " as b where b.user.id = ? and b.product.endDate >= '" + curTimestampStr
-        + "' order by b.bidDate desc";
+        + "' and b.isSuccess = false order by b.bidDate desc";
     return bidDao.find(hql, userId);
   }
 
   public List<Bid> getHistoryBids(int userId) {
     // TODO Auto-generated method stub
     String curTimestampStr = DateTimeUtil.getCurrentTimeStamp("yyyy-MM-dd HH:mm:ss");
-    String hql = "from " + Bid.class.getName() + " as b where b.user.id = ? and b.product.endDate < '" + curTimestampStr
-        + "' order by b.bidDate desc";
+    String hql = "from " + Bid.class.getName() + " as b where b.user.id = ? and ( b.product.endDate < '" + curTimestampStr
+        + "' or b.isSuccess = true ) order by b.bidDate desc";
     return bidDao.find(hql, userId);
   }
 
