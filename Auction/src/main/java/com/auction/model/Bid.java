@@ -1,6 +1,8 @@
 package com.auction.model;
 
 import java.util.Date;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -59,6 +62,9 @@ public class Bid implements Comparable<Bid> {
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @Temporal(TemporalType.TIMESTAMP)
   private Date dealDate; // 记录交易成功的时间，如果交易没有成功，那么这个字段为NULL。
+
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "bid")
+  private BidNotification bidNotification;
 
   public Integer getId() {
     return id;
@@ -115,6 +121,14 @@ public class Bid implements Comparable<Bid> {
 
   public void setDealDate(Date dealDate) {
     this.dealDate = dealDate;
+  }
+
+  public BidNotification getBidNotification() {
+    return bidNotification;
+  }
+
+  public void setBidNotification(BidNotification bidNotification) {
+    this.bidNotification = bidNotification;
   }
 
   public int compareTo(Bid o) {

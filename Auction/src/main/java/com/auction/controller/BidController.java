@@ -18,6 +18,7 @@ import com.auction.model.Bid;
 import com.auction.model.Product;
 import com.auction.model.validator.BidValidator;
 import com.auction.service.IBidService;
+import com.auction.service.IMessageService;
 import com.auction.service.IProductService;
 import com.auction.util.ConstantUtil;
 
@@ -27,17 +28,21 @@ public class BidController {
 
   @Resource(name = "bidService")
   IBidService bidService;
-  
+
   @Resource(name = "productService")
   IProductService productService;
-  
+
+  @Resource(name = "messageService")
+  IMessageService messageService;
+
   @InitBinder("bid")
   public void initBidBinder(DataBinder binder) {
     binder.addValidators(new BidValidator());
   }
 
-  @RequestMapping(value="/commit_{productId}", method = RequestMethod.POST)
-  public ModelAndView commitBidInfo(@Valid @ModelAttribute(ConstantUtil.USERBID) Bid userBid, @PathVariable("productId") int productId) {
+  @RequestMapping(value = "/commit_{productId}", method = RequestMethod.POST)
+  public ModelAndView commitBidInfo(@Valid @ModelAttribute(ConstantUtil.USERBID) Bid userBid,
+      @PathVariable("productId") int productId) {
     ModelAndView mv = new ModelAndView();
     // 记录用户提出竞价的时间。
     userBid.setBidDate(new Date());
@@ -47,8 +52,8 @@ public class BidController {
     mv.setViewName("redirect:/product/detail/" + productId);
     return mv;
   }
-  
-  @RequestMapping(value="/deal", method=RequestMethod.POST)
+
+  @RequestMapping(value = "/deal", method = RequestMethod.POST)
   public ModelAndView bidDeal(@Valid @ModelAttribute("bid") Bid bid) {
     ModelAndView mv = new ModelAndView();
     // 设置竞价成交的时间
@@ -58,6 +63,8 @@ public class BidController {
     Product product = productService.getProductById(bid.getProduct().getId());
     product.setIsDeal(true);
     productService.updateProduct(product);
+    // 向提出竞价的用户发送一条提示消息，告知其已竞价成功。
+    messageService.saveBidSuccessNotification(bid.getId());
     mv.setViewName("redirect:/user/products");
     return mv;
   }

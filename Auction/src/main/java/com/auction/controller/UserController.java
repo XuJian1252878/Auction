@@ -210,16 +210,18 @@ public class UserController {
 
   /**
    * 返回用户对他人商品进行竞价的相关信息，包括正在进行的交易，已经完成的交易等。
-   * @param httpSession  为了取出登陆用户的信息而使用。
+   * 
+   * @param httpSession
+   *          为了取出登陆用户的信息而使用。
    * @return
    */
   @RequestMapping(value = "/transaction", method = RequestMethod.GET)
   public ModelAndView userTransaction(HttpSession httpSession) {
     ModelAndView mv = new ModelAndView();
     mv.setViewName("user/transaction");
-    User loginUser = (User)httpSession.getAttribute(ConstantUtil.LOGINUSER);
+    User loginUser = (User) httpSession.getAttribute(ConstantUtil.LOGINUSER);
     if (loginUser == null) {
-      return mv;  // 不会走到这一步，用户登录之后才可以看自己相关的交易信息。
+      return mv; // 不会走到这一步，用户登录之后才可以看自己相关的交易信息。
     }
     // 取出正在进行的竞价信息。
     List<Bid> goingOnBids = bidService.getGoingOnBids(loginUser.getId());
@@ -235,13 +237,14 @@ public class UserController {
 
   /**
    * 获得用户上传的所有竞价商品信息，分为正在进行以及已经完结的两个商品list列表，列表以商品的上传时间降序排序。
+   * 
    * @param httpSession
    * @return
    */
   @RequestMapping(value = "/products")
   public ModelAndView uploadProductsRecords(HttpSession httpSession) {
     ModelAndView mv = new ModelAndView();
-    User loginUser = (User)httpSession.getAttribute(ConstantUtil.LOGINUSER);
+    User loginUser = (User) httpSession.getAttribute(ConstantUtil.LOGINUSER);
     // 获得用户上传的，并且正在被竞价的商品列表。
     List<Product> goingOnProducts = productService.getGoingOnProductsByUser(loginUser.getId());
     // 获得用户上传的，但是已经结束竞价的商品列表。

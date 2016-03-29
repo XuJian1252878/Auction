@@ -86,7 +86,7 @@
             </a>
               <ul class="dropdown-menu">
                 <li><a href="user/profile"><i class="glyphicon glyphicon-cog"></i> 个人信息</a></li>
-                <li><a href="#">Another action</a></li>
+                <li><a href="message/list"><i class="glyphicon glyphicon-circle-arrow-down"></i>我的消息 <span class="badge">${unreadMessageCount }</span></a></li>
                 <li><a href="#">Something else here</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Nav header</li>

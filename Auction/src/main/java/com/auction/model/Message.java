@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,6 +21,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name = "Message")
 @Proxy(lazy = true)
+@DynamicInsert(value = true)
 public class Message {
 
   public Message() {
@@ -51,6 +53,9 @@ public class Message {
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @Temporal(TemporalType.TIMESTAMP)
   private Date sendDate;
+  
+  @Column(name = "isRead", nullable = false)
+  private boolean isRead = false;
 
   public Integer getId() {
     return id;
@@ -90,6 +95,14 @@ public class Message {
 
   public void setSendDate(Date sendDate) {
     this.sendDate = sendDate;
+  }
+
+  public boolean getIsRead() {
+    return isRead;
+  }
+
+  public void setIsRead(boolean isRead) {
+    this.isRead = isRead;
   }
 
 }
