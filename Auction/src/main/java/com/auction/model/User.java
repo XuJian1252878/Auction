@@ -57,7 +57,7 @@ public class User {
   private Integer sex;
 
   @Column(name = "birthday")
-  @DateTimeFormat(pattern="yyyy-MM-dd")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
   @Temporal(TemporalType.DATE)
   private Date birthday;
 
@@ -82,6 +82,19 @@ public class User {
   @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, mappedBy = "user")
   @JsonBackReference
   private Set<Product> products = new HashSet<Product>();
+
+  /**
+   * 这里的mappedby="sender"，表示这个一对多的关系是由Message方（多的一方）管理，
+   * 具体来说就是有Message方（多的一方）中的sender成员变量来管理，
+   * mappedby 后面跟的名字必须和对应的 多的一方的 对应成员变量名称一致。
+   */
+  @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "sender")
+  @JsonBackReference
+  private Set<Message> sendMsgs = new HashSet<Message>();
+
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "receiver")
+  @JsonBackReference
+  private Set<Message> receiveMsgs = new HashSet<Message>();
 
   public Integer getId() {
     return id;
@@ -193,6 +206,22 @@ public class User {
 
   public void setProducts(Set<Product> products) {
     this.products = products;
+  }
+
+  public Set<Message> getSendMsgs() {
+    return sendMsgs;
+  }
+
+  public void setSendMsgs(Set<Message> sendMsgs) {
+    this.sendMsgs = sendMsgs;
+  }
+
+  public Set<Message> getReceiveMsgs() {
+    return receiveMsgs;
+  }
+
+  public void setReceiveMsgs(Set<Message> receiveMsgs) {
+    this.receiveMsgs = receiveMsgs;
   }
 
 }
