@@ -95,7 +95,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="4dp"
         android:background="#00000000"
-        android:hint="用户名/手机号/常用邮箱"
+        android:hint="用户名/邮箱"
         android:inputType="text"
         android:textColor="#ffffff"
         android:textColorHint="#ffffff"
