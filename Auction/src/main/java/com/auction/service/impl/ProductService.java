@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,13 +64,14 @@ public class ProductService extends BaseService<Product> implements IProductServ
         + " as p where p.user.id = ? and p.endDate > ?";
     List<Product> goingOnProducts = productDao.find(phql, userId, new Date());
     // 然后有可能交易最后期限还没有到，交易就已经成功，要去除这一类的商品。
-    for (Product product : goingOnProducts) {
+    for (Iterator<Product> iterator = goingOnProducts.iterator(); iterator.hasNext();) {
+      Product product = iterator.next();
       int pid = product.getId();
       String bhql = "select count(*) from " + Bid.class.getName() + " as b where b.product.id = " + pid
           + " and b.isSuccess = true";
       int dealBidCount = bidDao.findCount(bhql);
       if (dealBidCount != 0) {
-        goingOnProducts.remove(product);
+        iterator.remove();
       }
     }
     // 再按商品收到竞拍的数量对商品进行降序排序。
@@ -110,6 +112,12 @@ public class ProductService extends BaseService<Product> implements IProductServ
       }
     }
     return pbMap;
+  }
+
+  public boolean updateProduct(Product product) {
+    // TODO Auto-generated method stub
+    productDao.update(product);
+    return true;
   }
 
 }

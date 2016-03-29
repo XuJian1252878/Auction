@@ -6,6 +6,6 @@ import com.auction.model.Category;
 public interface ICategoryDao extends IBaseDao<Category> {
 
   // 获得该商品类别下商品的总数量。
-  public int getProductCount(int categoryId);
+  public int getProductCount(int categoryId, boolean containsBiding);
 
 }

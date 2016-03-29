@@ -43,7 +43,7 @@ public class UserController {
   @Resource(name = "bidService")
   private IBidService bidService;
 
-  @InitBinder
+  @InitBinder("user")
   public void initBinder(DataBinder binder) {
     binder.setValidator(new UserValidator());
   }
@@ -248,6 +248,9 @@ public class UserController {
     Map<Product, Bid> historyProductsMap = productService.getHistoryProductsByUser(loginUser.getId());
     mv.addObject("goingOnProducts", goingOnProducts);
     mv.addObject("historyProductsMap", historyProductsMap);
+    // 用户可能会同意某一个竞价，所以先设置一个modelAttribute。
+    Bid dealBid = new Bid();
+    mv.addObject("bid", dealBid);
     mv.setViewName("/user/product");
     return mv;
   }

@@ -2,6 +2,7 @@ package com.auction.service.impl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -73,5 +74,13 @@ public class BidServiceImpl extends BaseService<Bid> implements IBidService {
     // TODO Auto-generated method stub
     String hql = "from " + Bid.class.getName() + " as b where b.user.id = ? and b.isSuccess = true order by b.dealDate desc";
     return bidDao.find(hql, userId);
+  }
+
+  public boolean setBidDeal(Bid bid) {
+    // TODO Auto-generated method stub
+    bid.setIsSuccess(true);
+    bid.setDealDate(new Date());
+    bidDao.saveOrUpdate(bid);
+    return true;
   }
 }

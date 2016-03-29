@@ -79,7 +79,16 @@
                                 <div class="col-lg-3">${bid.bidDate }</div>
                                 <div class="col-lg-3">${bid.price }</div>
                                 <div class="col-lg-2">
-                                  <a href="#">成交</a>
+                                  <form:form action="bid/deal" modelAttribute="bid" method="post">
+                                    <form:input path="id" value="${bid.id }" type="hidden"/>
+                                    <form:input path="product.id" value="${bid.product.id }" type="hidden"/>
+                                    <form:input path="user.id" value="${bid.user.id }" type="hidden"/>
+                                    <form:input path="price" value="${bid.price }" type="hidden"/>
+                                    <form:input path="bidDate" value="${bid.bidDate }" type="hidden"/>
+                                    <form:input path="isSuccess" value="${bid.isSuccess }" type="hidden"/>
+                                    <form:input path="dealDate" value="${bid.dealDate }" type="hidden"/>
+                                    <input type="submit" value="成交" class="btn btn-sm btn-success"/>
+                                  </form:form>
                                 </div>
                               </div>
                             </c:forEach>

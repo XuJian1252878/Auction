@@ -83,10 +83,14 @@ public class CategoryService extends BaseService<Category> implements ICategoryS
     return categoryDao.update(category);
   }
 
-  public List<Product> loadProducts(int categoryId, int pageNo, int pageSize) {
+  public List<Product> loadProducts(int categoryId, int pageNo, int pageSize, boolean containsBid) {
     // TODO Auto-generated method stub
     List<Product> products = null;
-    String hql = "from " + Product.class.getName() + " as p where p.category.id = ?";
+    String hql = "from " + Product.class.getName() + " as p where p.category.id = ?";  // 取出全部的商品信息。
+    if (!containsBid) {
+      // 仅取出还未拍卖成功的商品信息。
+      hql = "from " + Product.class.getName() + " as p where p.category.id = ? and p.isDeal = false";
+    }
     if (pageNo == -1 && pageSize == -1) {
       products = productDao.find(hql, categoryId);
     } else {
@@ -95,9 +99,9 @@ public class CategoryService extends BaseService<Category> implements ICategoryS
     return products;
   }
 
-  public int getProductCount(int categoryId) {
+  public int getProductCount(int categoryId, boolean containsBiding) {
     // TODO Auto-generated method stub
-    return categoryDao.getProductCount(categoryId);
+    return categoryDao.getProductCount(categoryId, containsBiding);
   }
 
 }

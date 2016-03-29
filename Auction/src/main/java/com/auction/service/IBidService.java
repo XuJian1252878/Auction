@@ -49,4 +49,11 @@ public interface IBidService {
    * @return  若竞价信息存在，那么返回竞价信息实体；若无竞价信息，那么返回空的list。
    */
   public List<Bid> getDealBids(int userId);
+
+  /**
+   * 将相应的bid的竞价状态改为竞价成功。
+   * @param bid  相应的竞价实体信息
+   * @return  如果bid信息更新成功，那么返回true；否则返回false。
+   */
+  public boolean setBidDeal(Bid bid);
 }

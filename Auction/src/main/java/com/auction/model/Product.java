@@ -19,6 +19,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "PRODUCT")
 @Proxy(lazy = true)
+@DynamicInsert(value = true)
 public class Product {
 
   public Product() {
@@ -71,6 +73,9 @@ public class Product {
 
   @Column(name = "imgPath")
   private String imgPath;
+
+  @Column(name = "isDeal", nullable = false)
+  private boolean isDeal = false;
 
   @Transient
   private MultipartFile imgFile;
@@ -158,6 +163,14 @@ public class Product {
 
   public void setImgPath(String imgPath) {
     this.imgPath = imgPath;
+  }
+
+  public boolean getIsDeal() {
+    return isDeal;
+  }
+
+  public void setIsDeal(boolean isDeal) {
+    this.isDeal = isDeal;
   }
 
   public MultipartFile getImgFile() {

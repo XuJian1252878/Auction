@@ -150,7 +150,7 @@ public class CategoryController {
   public ModelAndView listProducts(@PathVariable("categoryId") int categoryId, @PathVariable("pageNo") int pageNo) {
     ModelAndView mv = new ModelAndView();
     Category category = categoryService.getCategory(categoryId);
-    int productCount = categoryService.getProductCount(categoryId);
+    int productCount = categoryService.getProductCount(categoryId, false);
     int pageCount = (int)Math.ceil(productCount / (double)ConstantUtil.PRODUCT_COUNT_PER_PAGE);
     mv.addObject("category", category);  // 当前的商品类别信息。
     mv.addObject("pageNo", pageNo);  // 当前显示的页码。
@@ -177,8 +177,9 @@ public class CategoryController {
       @PathVariable("pageNo") int pageNo, @PathVariable("waterfallIndex") int waterfallIndex) {
     // 获得当前应该改加载哪一部分瀑布流的数据。
     int waterfallCurPart = (pageNo - 1) * ConstantUtil.PRODUCT_WATERFALL_PARTS_PER_PAGE + waterfallIndex;
+    // 加载该类别下的商品，不包含已经完成竞价的商品。
     List<Product> products = categoryService.loadProducts(categoryId, waterfallCurPart,
-        ConstantUtil.PRODUCT_COUNT_PER_WATERFALL_PART);
+        ConstantUtil.PRODUCT_COUNT_PER_WATERFALL_PART, false);
     Map<String, Object> resMap = new HashMap<String, Object>();
     resMap.put("total", products.size());
     resMap.put("result", products);

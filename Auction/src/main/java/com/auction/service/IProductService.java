@@ -44,4 +44,11 @@ public interface IProductService {
    * @return  返回一个包含<商品, 成交竞价>map，如果没有符合条件的商品信息，那么返回一个空的Map。
    */
   public Map<Product, Bid> getHistoryProductsByUser(int userId);
+
+  /**
+   * 更新一个商品的详情信息。
+   * @param product  需要更新的商品实体。
+   * @return  true表示更新成功；false表示更新失败。
+   */
+  public boolean updateProduct(Product product);
 }
