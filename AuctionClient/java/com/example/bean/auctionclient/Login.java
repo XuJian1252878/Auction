@@ -19,7 +19,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
@@ -311,7 +310,7 @@ public class Login extends Activity
                                     startLogin();
                                     Message loMsg;
                                     // 如果登录成功
-                                    if (false) //loginPro
+                                    if (true) //loginPro
                                     {
                                         loMsg = new Message();
                                         loMsg.what = LOGIN_SUCCESS;
