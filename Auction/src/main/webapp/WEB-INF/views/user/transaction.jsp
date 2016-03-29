@@ -37,6 +37,7 @@
                   <th>竞拍日期：</th>
                   <th>成交与否：</th>
                   <th>商品图片：</th>
+                  <th>更多操作：</th>
                 </tr>
                 <c:forEach var="goingOnBid" items="${goingOnBids }">
                   <tr>
@@ -52,8 +53,43 @@
                       </c:choose>
                     </td>
                     <td><img src="${goingOnBid.product.imgPath }" alt="${goingOnBid.product.name }"
-                      title="${goingOnBid.product.name }" class="img-circle" /></td>
+                      title="${goingOnBid.product.name }" class="img-circle" width="100" height="100" /></td>
+                    <td><!-- Large modal -->
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">调整出价</button>
+                    </td>
                   </tr>
+                  <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title" id="gridSystemModalLabel">竞价提示</h4>
+                        </div>
+                        <div class="modal-body">
+                          <div class="row">
+                            <div class="col-md-12">
+                              <h4>该商品的竞拍起价为：<span class="label label-danger">${goingOnBid.product.basicPrice }</span>，您的出价必须高于竞拍起价！</h4>
+                            </div>
+                            <div class="col-md-12">
+                              <h4>您之前的竞拍价为：<span class="label label-danger">${goingOnBid.price }</span>！</h4>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div class="input-group input-group-lg">
+                                  <span class="input-group-addon" id="sizing-addon1">我的竞拍价：</span>
+                                  <input type="text" class="form-control" placeholder="请输入您的竞拍价" aria-describedby="sizing-addon1" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">取消修改</button>
+                          <button type="button" class="btn btn-primary">修改竞价</button>
+                        </div>
+                      </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                  </div><!-- /.modal -->
                 </c:forEach>
               </table>
             </c:otherwise>
