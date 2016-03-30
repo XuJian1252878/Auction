@@ -1,18 +1,19 @@
 package com.auction.service.impl;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
-
 import com.auction.dao.IUserDao;
 import com.auction.model.User;
 import com.auction.service.IUserService;
 import com.auction.service.common.BaseService;
+import com.auction.util.WebConstantUtil;
 
 @Service("userService")
 @Transactional
@@ -77,7 +78,8 @@ public class UserService extends BaseService<User> implements IUserService {
     if (userDao.getUserById(user.getId()) == null) {
       return false;
     }
-    // org.hibernate.NonUniqueObjectException: A different object with the same identifier value was already associated with the session
+    // org.hibernate.NonUniqueObjectException: A different object with the same
+    // identifier value was already associated with the session
     // http://fatkun.com/2011/04/org-hibernate-nonuniqueobjectexception.html
     // http://www.stevideter.com/2008/12/07/saveorupdate-versus-merge-in-hibernate/
     // userDao.update(user);
@@ -86,20 +88,41 @@ public class UserService extends BaseService<User> implements IUserService {
     return true;
   }
 
-  /**
-   * 判断新用户是否符合注册条件，用户名和注册邮箱都唯一。
-   */
-  public boolean existsUser(User user, BindingResult result) {
+  public int existsUser(User user) {
     // TODO Auto-generated method stub
     // 查看数据库中有无相通名称或者注册邮箱的用户，如果有那么返回原页面重新注册
     if (getUserByEmail(user.getEmail()) != null) {
-      // 该用户名称或者用户邮箱已经被注册
-      result.rejectValue("email", "register.user.email.already.exist");
-      return false;
+      // 该用户邮箱已经被注册
+      return 1;
     } else if (getUserByName(user.getUserName()) != null) {
-      result.rejectValue("userName", "register.user.name.already.exist");
-      return false;
+   // 该用户名称已经被注册
+      return 0;
     }
-    return true;
+    return 2;
+  }
+
+  public Map<String, Object> userLogin(String userNameOrEmail, String userPwd) {
+    // TODO Auto-generated method stub
+    Map<String, Object> resMap = new HashMap<String, Object>();
+    resMap.put(WebConstantUtil.USER_LOGIN_OBJECT_FLAG, null);
+    User loginUser = getUserByEmail(userNameOrEmail);
+    if (loginUser == null) {
+      loginUser = getUserByName(userNameOrEmail);
+      if (loginUser == null) {
+        // 用户输入的用户名（登录邮箱）不存在。
+        resMap.put(WebConstantUtil.USER_LOGIN_SUCCESS_FLAG, 0);
+        return resMap;
+      }
+    }
+    // 用户输入的用户名（登录邮箱）存在，下面开始检查密码。
+    if (!userPwd.equals(loginUser.getPassword())) {
+      // 用户密码输入错误。
+      resMap.put(WebConstantUtil.USER_LOGIN_SUCCESS_FLAG, 1);
+      return resMap;
+    }
+    // 用户用户名（用户邮箱）和密码都输入正确，可以登录。
+    resMap.put(WebConstantUtil.USER_LOGIN_SUCCESS_FLAG, 2);
+    resMap.put(WebConstantUtil.USER_LOGIN_OBJECT_FLAG, loginUser);
+    return resMap;
   }
 }

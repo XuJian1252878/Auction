@@ -25,7 +25,7 @@ import com.auction.model.Category;
 import com.auction.model.Product;
 import com.auction.model.validator.CategoryValidator;
 import com.auction.service.ICategoryService;
-import com.auction.util.ConstantUtil;
+import com.auction.util.WebConstantUtil;
 import com.auction.util.ImageUtil;
 
 @Controller
@@ -151,12 +151,12 @@ public class CategoryController {
     ModelAndView mv = new ModelAndView();
     Category category = categoryService.getCategory(categoryId);
     int productCount = categoryService.getProductCount(categoryId, false);
-    int pageCount = (int)Math.ceil(productCount / (double)ConstantUtil.PRODUCT_COUNT_PER_PAGE);
+    int pageCount = (int)Math.ceil(productCount / (double)WebConstantUtil.PRODUCT_COUNT_PER_PAGE);
     mv.addObject("category", category);  // 当前的商品类别信息。
     mv.addObject("pageNo", pageNo);  // 当前显示的页码。
     mv.addObject("productCount", productCount); // 竞价商品的总数。
     mv.addObject("pageCount", pageCount);  // 商品总共占的页数。
-    mv.addObject("maxWaterfallParts", ConstantUtil.PRODUCT_WATERFALL_PARTS_PER_PAGE);  // 每个页面中，瀑布流最多加载的次数。
+    mv.addObject("maxWaterfallParts", WebConstantUtil.PRODUCT_WATERFALL_PARTS_PER_PAGE);  // 每个页面中，瀑布流最多加载的次数。
     mv.setViewName("product/list");
     return mv;
   }
@@ -176,10 +176,10 @@ public class CategoryController {
   public Map<String, Object> getProductsByWaterFallPart(@PathVariable("categoryId") int categoryId,
       @PathVariable("pageNo") int pageNo, @PathVariable("waterfallIndex") int waterfallIndex) {
     // 获得当前应该改加载哪一部分瀑布流的数据。
-    int waterfallCurPart = (pageNo - 1) * ConstantUtil.PRODUCT_WATERFALL_PARTS_PER_PAGE + waterfallIndex;
+    int waterfallCurPart = (pageNo - 1) * WebConstantUtil.PRODUCT_WATERFALL_PARTS_PER_PAGE + waterfallIndex;
     // 加载该类别下的商品，不包含已经完成竞价的商品。
     List<Product> products = categoryService.loadProducts(categoryId, waterfallCurPart,
-        ConstantUtil.PRODUCT_COUNT_PER_WATERFALL_PART, false);
+        WebConstantUtil.PRODUCT_COUNT_PER_WATERFALL_PART, false);
     Map<String, Object> resMap = new HashMap<String, Object>();
     resMap.put("total", products.size());
     resMap.put("result", products);

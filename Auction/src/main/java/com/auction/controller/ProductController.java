@@ -26,7 +26,7 @@ import com.auction.service.IBidService;
 import com.auction.service.ICategoryService;
 import com.auction.service.ICommentService;
 import com.auction.service.IProductService;
-import com.auction.util.ConstantUtil;
+import com.auction.util.WebConstantUtil;
 import com.auction.util.DateTimeUtil;
 import com.auction.util.ImageUtil;
 
@@ -56,7 +56,7 @@ public class ProductController {
   public ModelAndView uploadProduct(HttpSession session) {
     ModelAndView mv = new ModelAndView();
     // 只有登陆了才能到达这个页面，所以不太可能存在loginUser为空的情况。
-    User loginUser = (User) session.getAttribute(ConstantUtil.LOGINUSER);
+    User loginUser = (User) session.getAttribute(WebConstantUtil.LOGINUSER);
     mv.addObject("loginUser", loginUser);
     // 创建一个新的产品实体，用于存储上传的产品信息
     Product product = new Product();
@@ -72,7 +72,7 @@ public class ProductController {
   @RequestMapping(value = "/upload", method = RequestMethod.POST)
   public ModelAndView uploadProduct(@Valid @ModelAttribute("product") Product product, BindingResult result,
       HttpServletRequest request, HttpSession session) {
-    User loginUser = (User) session.getAttribute(ConstantUtil.LOGINUSER);
+    User loginUser = (User) session.getAttribute(WebConstantUtil.LOGINUSER);
     // 选出所有的商品类别信息
     List<Category> categories = CategoryService.loadCategory(-1, -1);
     ModelAndView mv = new ModelAndView();
@@ -90,7 +90,7 @@ public class ProductController {
     product.setOnSaleDate(DateTimeUtil.timeMillisToDate(curTimeMillis));
     product.setEndDate(DateTimeUtil.timeMillisToDate(endTimeMillis));
     // 上传商品图片
-    String imgPath = ImageUtil.genImgFileName(request, ConstantUtil.PRODUCTFOLDER,
+    String imgPath = ImageUtil.genImgFileName(request, WebConstantUtil.PRODUCTFOLDER,
         product.getImgFile().getOriginalFilename());
     product.setImgPath(imgPath);
     ImageUtil.saveImgFile(request, product.getImgFile(), result, imgPath);
@@ -114,13 +114,13 @@ public class ProductController {
   @RequestMapping(value = "/detail/{productId}")
   public ModelAndView getProductDetail(@PathVariable("productId") int productId, HttpSession httpSession) {
     ModelAndView mv = new ModelAndView();
-    User loginUser = (User) httpSession.getAttribute(ConstantUtil.LOGINUSER);
+    User loginUser = (User) httpSession.getAttribute(WebConstantUtil.LOGINUSER);
     Product product = productService.getProductById(productId);
     // 获得商品对应的分类信息。
     mv.addObject("product", product);
     // 用户可能需要竞价，提供竞价实体。
     Bid bid = new Bid();
-    mv.addObject(ConstantUtil.USERBID, bid);
+    mv.addObject(WebConstantUtil.USERBID, bid);
     if (loginUser != null) {
       if (!loginUser.getId().equals(product.getUser().getId())) {
         // 1. 用户之前可能对该商品进行过竞价，如有，那么显示竞价信息。

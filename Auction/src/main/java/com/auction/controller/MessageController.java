@@ -17,7 +17,7 @@ import com.auction.model.User;
 import com.auction.model.validator.BidNotificationValidator;
 import com.auction.model.validator.MessageValidator;
 import com.auction.service.IMessageService;
-import com.auction.util.ConstantUtil;
+import com.auction.util.WebConstantUtil;
 
 @Controller
 @RequestMapping("/message")
@@ -38,7 +38,7 @@ public class MessageController {
 
   @RequestMapping(value = "/list")
   public ModelAndView userMessages(HttpSession httpSession) {
-    User loginUser = (User)httpSession.getAttribute(ConstantUtil.LOGINUSER);
+    User loginUser = (User)httpSession.getAttribute(WebConstantUtil.LOGINUSER);
     ModelAndView mv = new ModelAndView();
     // 获取全部未读的竞价消息。
     List<BidNotification> unreadBidNotifications = messageService.getUnreadBidNotifications(loginUser.getId());

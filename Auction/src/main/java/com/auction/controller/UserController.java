@@ -27,7 +27,7 @@ import com.auction.model.validator.UserValidator;
 import com.auction.service.IBidService;
 import com.auction.service.IProductService;
 import com.auction.service.IUserService;
-import com.auction.util.ConstantUtil;
+import com.auction.util.WebConstantUtil;
 import com.auction.util.ImageUtil;
 
 @Controller
@@ -72,22 +72,28 @@ public class UserController {
       return "/user/register";// 如果注册过程中出现错误，那么返回原来的页面。
     }
     // 首先获得图片将要保存在的路径信息。
-    String avatarFilePath = ImageUtil.genImgFileName(request, ConstantUtil.AVATARFOLDER,
+    String avatarFilePath = ImageUtil.genImgFileName(request, WebConstantUtil.AVATARFOLDER,
         user.getAvatarFile().getOriginalFilename());
     // image 引用的时候要 / 的格式才能引用出来
     user.setAvatarPath(avatarFilePath);
     // 注册信息符合要求，写入数据库
-    if (userService.existsUser(user, result)) {
-      // 此时开始写入图片信息
-      ImageUtil.saveImgFile(request, user.getAvatarFile(), result, avatarFilePath);
-      if (result.hasErrors()) {
-        return "/user/register";// 如果注册过程中出现错误，那么返回原来的页面。
-      }
-      userService.saveUser(user); // 保存用户信息
-      return "redirect:/index";
+    int resFlag = userService.existsUser(user);
+    if (resFlag == 0) {
+      result.rejectValue("userName", "register.user.name.already.exist");
+     // 注册的用户名称已经存在。
+      return "/user/register";
+    } else if (resFlag == 1) {
+     // 注册的用户邮箱已经存在。
+      result.rejectValue("email", "register.user.email.already.exist");
+      return "/user/register";
     }
-    // 注册的用户名称或者是用户信息已经存在。
-    return "/user/register";
+    // 此时开始写入图片信息
+    ImageUtil.saveImgFile(request, user.getAvatarFile(), result, avatarFilePath);
+    if (result.hasErrors()) {
+      return "/user/register";// 如果注册过程中出现错误，那么返回原来的页面。
+    }
+    userService.saveUser(user); // 保存用户信息
+    return "redirect:/index";
   }
 
   /**
@@ -98,20 +104,19 @@ public class UserController {
    */
   @RequestMapping(value = "/login", method = RequestMethod.GET)
   public String Login(Model model) {
-    model.addAttribute(ConstantUtil.LOGINUSER, new User());
+    model.addAttribute(WebConstantUtil.LOGINUSER, new User());
     return "/user/login";
   }
 
   /**
-   * 用户登录函数
-   * 
+   * 用户登录函数。
    * @param user
    * @param result
    * @param httpSession
    * @return
    */
   @RequestMapping(value = "/login", method = RequestMethod.POST)
-  public String Login(@ModelAttribute(ConstantUtil.LOGINUSER) User user, BindingResult result,
+  public String Login(@ModelAttribute(WebConstantUtil.LOGINUSER) User user, BindingResult result,
       HttpSession httpSession) {
     if (result.hasErrors()) {
       System.out.println("raise error");
@@ -119,21 +124,22 @@ public class UserController {
     }
     // 因为前端的html代码中是按照userName传到后台的。
     String userNameOrEmail = user.getUserName();
-    User loginUser = userService.getUserByEmail(userNameOrEmail);
-    if (loginUser == null) {
-      loginUser = userService.getUserByName(userNameOrEmail);
-      if (loginUser == null) {
-        result.rejectValue("userName", "login.user.name.notexist");
-        return "/user/login";
-      }
-    }
-    // 查看登陆密码是否正确
-    if (!user.getPassword().equals(loginUser.getPassword())) {
+    String userPwd = user.getPassword();
+    Map<String, Object> loginResMap = userService.userLogin(userNameOrEmail, userPwd);
+    int loginSuccessFlag = (Integer)loginResMap.get(WebConstantUtil.USER_LOGIN_SUCCESS_FLAG);
+    if (loginSuccessFlag == 0) {
+      // 用户名称（用户邮箱）不存在。
+      result.rejectValue("userName", "login.user.name.notexist");
+      return "/user/login";
+    } else if (loginSuccessFlag == 1) {
+      // 用户输入了错误的密码。
       result.rejectValue("password", "login.user.password.error");
       return "/user/login";
     }
-    // 应该还要在Session中设置User http://www.tuicool.com/articles/m2iimaa
-    httpSession.setAttribute(ConstantUtil.LOGINUSER, loginUser);
+    // 用户的用户名和密码都已输入正确。
+    User loginUser = (User)loginResMap.get(WebConstantUtil.USER_LOGIN_OBJECT_FLAG);
+ // 应该还要在Session中设置User http://www.tuicool.com/articles/m2iimaa
+    httpSession.setAttribute(WebConstantUtil.LOGINUSER, loginUser);
     // 使用redirect可以在当前的controller中跳转到另一个controller中去。
     return "redirect:/index";
   }
@@ -145,8 +151,8 @@ public class UserController {
    */
   @RequestMapping(value = "/logout")
   public String logout(HttpSession httpSession) {
-    if (httpSession.getAttribute(ConstantUtil.LOGINUSER) != null) {
-      httpSession.setAttribute(ConstantUtil.LOGINUSER, null);
+    if (httpSession.getAttribute(WebConstantUtil.LOGINUSER) != null) {
+      httpSession.setAttribute(WebConstantUtil.LOGINUSER, null);
     }
     return "redirect:/index";
   }
@@ -159,23 +165,23 @@ public class UserController {
   @RequestMapping(value = "/profile", method = RequestMethod.GET)
   public ModelAndView userProfile(HttpSession httpSession) {
     ModelAndView mv = new ModelAndView();
-    mv.addObject(ConstantUtil.LOGINUSER, httpSession.getAttribute(ConstantUtil.LOGINUSER));
+    mv.addObject(WebConstantUtil.LOGINUSER, httpSession.getAttribute(WebConstantUtil.LOGINUSER));
     mv.setViewName("/user/profile");
     return mv;
   }
 
   @RequestMapping(value = "/profile", method = RequestMethod.POST)
-  public ModelAndView updateProfile(@Valid @ModelAttribute(ConstantUtil.LOGINUSER) User user, BindingResult result,
+  public ModelAndView updateProfile(@Valid @ModelAttribute(WebConstantUtil.LOGINUSER) User user, BindingResult result,
       HttpSession httpSession, HttpServletRequest request) {
     ModelAndView mv = new ModelAndView();
-    User oriUser = (User) httpSession.getAttribute(ConstantUtil.LOGINUSER);
+    User oriUser = (User) httpSession.getAttribute(WebConstantUtil.LOGINUSER);
     if (result.hasErrors()) {
-      mv.addObject(ConstantUtil.LOGINUSER, oriUser);
+      mv.addObject(WebConstantUtil.LOGINUSER, oriUser);
       return mv;
     }
 
     // 开始更新用户的信息
-    String avatarFilePath = ImageUtil.genImgFileName(request, ConstantUtil.AVATARFOLDER,
+    String avatarFilePath = ImageUtil.genImgFileName(request, WebConstantUtil.AVATARFOLDER,
         user.getAvatarFile().getOriginalFilename());
     if (user.getAvatarFile() != null) { // 说明用户更改了头像信息
       user.setAvatarPath(avatarFilePath);
@@ -183,7 +189,7 @@ public class UserController {
 
     if (userService.updateUser(user) == false) {
       result.rejectValue("id", "profile.user.not.exists");
-      mv.addObject(ConstantUtil.LOGINUSER, oriUser);
+      mv.addObject(WebConstantUtil.LOGINUSER, oriUser);
       return mv;
     }
     if (user.getAvatarFile() != null) {
@@ -199,11 +205,11 @@ public class UserController {
     User newUser = userService.findUserById(user.getId());
     if (newUser == null) {
       result.rejectValue("id", "profile.user.id.not.exist");
-      mv.addObject(ConstantUtil.LOGINUSER, oriUser);
+      mv.addObject(WebConstantUtil.LOGINUSER, oriUser);
       return mv;
     }
-    httpSession.setAttribute(ConstantUtil.LOGINUSER, newUser);
-    mv.addObject(ConstantUtil.LOGINUSER, newUser);
+    httpSession.setAttribute(WebConstantUtil.LOGINUSER, newUser);
+    mv.addObject(WebConstantUtil.LOGINUSER, newUser);
     mv.setViewName("/user/profile");
     return mv;
   }
@@ -219,7 +225,7 @@ public class UserController {
   public ModelAndView userTransaction(HttpSession httpSession) {
     ModelAndView mv = new ModelAndView();
     mv.setViewName("user/transaction");
-    User loginUser = (User) httpSession.getAttribute(ConstantUtil.LOGINUSER);
+    User loginUser = (User) httpSession.getAttribute(WebConstantUtil.LOGINUSER);
     if (loginUser == null) {
       return mv; // 不会走到这一步，用户登录之后才可以看自己相关的交易信息。
     }
@@ -231,7 +237,7 @@ public class UserController {
     List<Bid> dealBids = bidService.getDealBids(loginUser.getId());
     // 用户可能要修改竞价信息，需要提供一个bid的实例供提交表单的使用。
     Bid bid = new Bid();
-    mv.addObject(ConstantUtil.USERBID, bid);
+    mv.addObject(WebConstantUtil.USERBID, bid);
     mv.addObject("goingOnBids", goingOnBids);
     mv.addObject("historyBids", historyBids);
     mv.addObject("dealBids", dealBids);
@@ -247,7 +253,7 @@ public class UserController {
   @RequestMapping(value = "/products")
   public ModelAndView uploadProductsRecords(HttpSession httpSession) {
     ModelAndView mv = new ModelAndView();
-    User loginUser = (User) httpSession.getAttribute(ConstantUtil.LOGINUSER);
+    User loginUser = (User) httpSession.getAttribute(WebConstantUtil.LOGINUSER);
     // 获得用户上传的，并且正在被竞价的商品列表。
     List<Product> goingOnProducts = productService.getGoingOnProductsByUser(loginUser.getId());
     // 获得用户上传的，但是已经结束竞价的商品列表。

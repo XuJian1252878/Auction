@@ -21,7 +21,7 @@ import com.auction.model.validator.BidValidator;
 import com.auction.service.IBidService;
 import com.auction.service.IMessageService;
 import com.auction.service.IProductService;
-import com.auction.util.ConstantUtil;
+import com.auction.util.WebConstantUtil;
 
 @Controller
 @RequestMapping("/bid")
@@ -42,7 +42,7 @@ public class BidController {
   }
 
   @RequestMapping(value = "/commit_{productId}", method = RequestMethod.POST)
-  public ModelAndView commitBidInfo(@Valid @ModelAttribute(ConstantUtil.USERBID) Bid userBid,
+  public ModelAndView commitBidInfo(@Valid @ModelAttribute(WebConstantUtil.USERBID) Bid userBid,
       @PathVariable("productId") int productId) {
     ModelAndView mv = new ModelAndView();
     // 记录用户提出竞价的时间。

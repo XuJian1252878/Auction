@@ -1,7 +1,7 @@
 package com.auction.util;
 
-public class ConstantUtil {
-  // session 存储的User变量索引。
+public class WebConstantUtil {
+  // session 存储的User变量索引（form表单提交user信息的时候）。
   public static final String LOGINUSER = "loginuser";
   // 存储用户的竞价信息的Bid变量索引。
   public static final String USERBID = "userbid";
@@ -18,4 +18,7 @@ public class ConstantUtil {
   // 在类别商品页面中，瀑布流总共需要加载的次数。
   public static final int PRODUCT_WATERFALL_PARTS_PER_PAGE = PRODUCT_COUNT_PER_PAGE / PRODUCT_COUNT_PER_WATERFALL_PART;
   
+  // 用于用户登录时，作为返回map的key使用。
+  public static final String USER_LOGIN_SUCCESS_FLAG = "loginresult";
+  public static final String USER_LOGIN_OBJECT_FLAG = "loginuserobject";
 }

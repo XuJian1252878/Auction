@@ -14,7 +14,7 @@ import com.auction.model.Category;
 import com.auction.model.User;
 import com.auction.service.ICategoryService;
 import com.auction.service.IMessageService;
-import com.auction.util.ConstantUtil;
+import com.auction.util.WebConstantUtil;
 
 @Controller
 @RequestMapping(value="/")
@@ -28,7 +28,7 @@ public class IndexController {
 
   @RequestMapping(value="/index", method=RequestMethod.GET)
   public ModelAndView index(HttpSession httpSession) {
-    User loginUser = (User)httpSession.getAttribute(ConstantUtil.LOGINUSER);
+    User loginUser = (User)httpSession.getAttribute(WebConstantUtil.LOGINUSER);
     ModelAndView mv = new ModelAndView();
     // 获得当前商品类别的列表
     List<Category> categoryList = categoryService.loadCategory(-1, -1);
