@@ -83,4 +83,17 @@ public class BidServiceImpl extends BaseService<Bid> implements IBidService {
     bidDao.saveOrUpdate(bid);
     return true;
   }
+
+  public boolean modifyBidPrice(int bidId, float price) {
+    // TODO Auto-generated method stub
+    Bid bid = bidDao.get(Bid.class, bidId);
+    if (bid == null) {
+      return false;
+    }
+    // 更新竞价的价格信息。
+    bid.setPrice(price);
+    bidDao.save(bid);
+    return true;
+  }
+
 }

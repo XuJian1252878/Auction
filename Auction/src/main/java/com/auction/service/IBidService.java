@@ -56,4 +56,12 @@ public interface IBidService {
    * @return  如果bid信息更新成功，那么返回true；否则返回false。
    */
   public boolean setBidDeal(Bid bid);
+
+  /**
+   * 更新商品的竞价。
+   * @param bidId  需要更新竞价价格的 bid 实体id。
+   * @param price  更改之后的竞价价格值。
+   * @return  竞价价格修改成功，那么返回true，否则返回false。
+   */
+  public boolean modifyBidPrice(int bidId, float price);
 }

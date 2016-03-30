@@ -229,6 +229,9 @@ public class UserController {
     List<Bid> historyBids = bidService.getHistoryBids(loginUser.getId());
     // 取出已经成交的竞价信息。
     List<Bid> dealBids = bidService.getDealBids(loginUser.getId());
+    // 用户可能要修改竞价信息，需要提供一个bid的实例供提交表单的使用。
+    Bid bid = new Bid();
+    mv.addObject(ConstantUtil.USERBID, bid);
     mv.addObject("goingOnBids", goingOnBids);
     mv.addObject("historyBids", historyBids);
     mv.addObject("dealBids", dealBids);

@@ -3,6 +3,7 @@ package com.auction.controller;
 import java.util.Date;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -50,6 +51,17 @@ public class BidController {
     userBid.setIsSuccess(false);
     bidService.saveUserBid(userBid);
     mv.setViewName("redirect:/product/detail/" + productId);
+    return mv;
+  }
+
+  @RequestMapping(value = "/modifyprice", method = RequestMethod.POST)
+  public ModelAndView modifyBidInfo(HttpServletRequest request) {
+    ModelAndView mv = new ModelAndView();
+    // 获得需要竞价的bid 的 id信息以及修改之后的竞价。
+    int bidId = Integer.parseInt(request.getParameter("goingOnBidId"));
+    float price = Float.parseFloat(request.getParameter("goingOnBidPrice"));
+    bidService.modifyBidPrice(bidId, price);
+    mv.setViewName("redirect:/user/transaction");
     return mv;
   }
 

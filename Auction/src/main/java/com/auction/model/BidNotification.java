@@ -29,7 +29,7 @@ public class BidNotification {
   private Integer id;
 
   @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "bid_id", nullable = false)
+  @JoinColumn(name = "bid_id")
   private Bid bid;
 
   @Column(name = "isRead", nullable = false)
