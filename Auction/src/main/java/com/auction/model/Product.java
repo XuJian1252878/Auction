@@ -1,7 +1,9 @@
 package com.auction.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -12,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -59,12 +62,12 @@ public class Product {
   private String describe;
 
   @Column(name = "onSaleDate")
-  @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @Temporal(TemporalType.TIMESTAMP)
   private Date onSaleDate;
 
   @Column(name = "endDate")
-  @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @Temporal(TemporalType.TIMESTAMP)
   private Date endDate;
 
@@ -79,11 +82,11 @@ public class Product {
 
   @Transient
   private MultipartFile imgFile;
-  
+
   // 商品在html页面中的倒计时元素id信息。
   @Transient
   private String countdownId;
-  
+
   // 商品在html页面中的倒计时提示元素的id信息。
   @Transient
   private String countdownAlertId;
@@ -100,6 +103,9 @@ public class Product {
   @JoinColumn(name = "user_id")
   @JsonManagedReference
   private User user;
+
+  @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "products")
+  private List<ProductTag> productTags = new ArrayList<ProductTag>();
 
   public Integer getId() {
     return id;
@@ -216,6 +222,14 @@ public class Product {
 
   public void setUser(User user) {
     this.user = user;
+  }
+
+  public List<ProductTag> getProductTags() {
+    return productTags;
+  }
+
+  public void setProductTags(List<ProductTag> productTags) {
+    this.productTags = productTags;
   }
 
 }
