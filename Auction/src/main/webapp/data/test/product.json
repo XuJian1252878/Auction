@@ -1,0 +1,21 @@
+{
+    "Products": [
+        {   "name": "Pink Floyd",
+            "Album": "The Best Of Pink Floyd: A Foot In The Door",
+            "Label": "EMI UK",
+            "Tracks":"Hey You, See Emily Play, The Happiest Days Of Our Lives, Another Brick in The Wall (Part 2), Have a cigar, Wish You Where Here, Time, The Great Gig in the Sky, Money, Comfortably Numb, High Hopes, Learning to Fly, The Fletcher Memorial Home, Shine On You Crazy Diamond, Brain Damage, Eclipse" ,
+            "Price": "16.40",
+            "Genre": "Rock"
+
+        },
+        {
+            "name": "Depeche Mode",
+            "Album": "A Question Of Time",
+            "Label": "Mute",
+            "Tracks":"A Question Of Time, Black Celebration, Something To Do, Stripped, More Than A Party, A Question Of Time(extended), Black Celebration" ,
+            "Price": "4.68" ,
+            "Genre": "Rock"
+        }
+
+    ]
+}

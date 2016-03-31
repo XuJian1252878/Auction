@@ -105,24 +105,63 @@ Bloodhound is robust, flexible, and offers advanced functionalities such as pref
     <p>Prefetched data is fetched and processed on initialization. If the browser supports local storage, the processed data will be cached there to prevent additional network requests on subsequent page loads.</p>
     <div id="prefetch">
       <input class="typeahead" type="text" placeholder="Countries">
-      <script type="text/javascript">
-        var countries = new Bloodhound({
-          datumTokenizer: Bloodhound.tokenizers.whitespace,
-          queryTokenizer: Bloodhound.tokenizers.whitespace,
-          // url points to a json file that contains an array of country names, see
-          // https://github.com/twitter/typeahead.js/blob/gh-pages/data/countries.json
-          prefetch: 'data/test/countries.json'
-        });
-  
-        // passing in `null` for the `options` arguments will result in the default
-        // options being used
-        $('#prefetch .typeahead').typeahead(null, {
-          name: 'mytest',
-          // 以json中的某一个属性作为值。source后面跟的是json的属性名称。
-          source: mytest
-        });
-      </script>
-    </div><br />
+    </div>
+    <script type="text/javascript">
+      // 参考链接：
+      // http://stackoverflow.com/questions/24560108/typeahead-v0-10-2-bloodhound-working-with-nested-json-objects
+      // http://mycodde.blogspot.com/2014/12/typeaheadjs-autocomplete-suggestion.html
+      var mytest = new Bloodhound({
+        // filter返回的  [ { "identifier" : "itemvalue" }, { "identifier" : "itemvalue" } ] 数据，
+        // 作为datumTokenizer的输入，我们只需要选择我们需要的字段，我们可以通过下面两个方式选择。
+        // datumTokenizer: Bloodhound.tokenizers.obj.whitespace('vval'),
+        datumTokenizer: function (datum) {
+          return Bloodhound.tokenizers.whitespace(datum.vval);
+        },
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        // url points to a json file that contains an array of country names, see
+        // https://github.com/twitter/typeahead.js/blob/gh-pages/data/countries.json
+        prefetch: {
+          // 如果指向本地的url，那么要确定路径是存在的，路径不存在的时候界面上的具体表现为： 
+          // 字符串提示窗中为一片空白。
+          url: '/Auction/data/test/team.json',
+          filter: function(teamdataarray) {
+            return $.map(teamdataarray, function(teaminfo) {
+              // typeahead 只支持 [ { "identifier" : "itemvalue" }, { "identifier" : "itemvalue" } ]
+              // 这种类型的json数据，如果我们的json数据不是这种类型的，那么我们就需要通过filter函数来
+              // 将我们原始的数据转换成 typeahead 支持的形式。
+              return {
+                // 这里是返回了 { "identifier" : "itemvalue" }，多次返回之后形成完整的json数据：[ { "identifier" : "itemvalue" }, { "identifier" : "itemvalue" } ]
+                vval: teaminfo.mytest001
+              };
+            });
+          }
+        }
+      });
+      mytest.initialize();
+      // passing in `null` for the `options` arguments will result in the default
+      // options being used
+      $('#prefetch .typeahead').typeahead(null, {
+        // `ttAdapter` wraps the suggestion engine in an adapter that
+        // is compatible with the typeahead jQuery plugin
+        name: 'vval',
+        displayKey: 'vval',
+        // 直接跟json数据，或者跟获取json数据的函数。
+        source: mytest.ttAdapter()
+      });
+      
+      $('#prefetch .typeahead').on([
+                     'typeahead:initialized',
+                     'typeahead:initialized:err',
+                     'typeahead:selected',
+                     'typeahead:autocompleted',
+                     'typeahead:cursorchanged',
+                     'typeahead:opened',
+                     'typeahead:closed'
+                 ].join(' '), function(x) {
+                     console.log(this.value); 
+                 });
+    </script>
+    <br />
     <p>Remote</p>
     <p></p>
   </div>
