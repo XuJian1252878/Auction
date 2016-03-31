@@ -64,6 +64,7 @@
   </div>
   <br />
   <br />
+  <%-- 商品竞拍时间选择部分 --%>
   <label>竞拍结束时间：</label>
   <input id="endTimeMillis" name="endTimeMillis" type="hidden" />
   <form:errors path="endDate" />
@@ -99,6 +100,7 @@
   </div>
   <br />
   <br />
+  <%-- 裁剪商品图片部分 --%>
   <div id="productImgDiv" style="display: none;">
     <div class="container">
       <div class="row">
@@ -118,6 +120,8 @@
       </div>
     </div>
   </div>
+  <%-- 商品标签选择部分 --%>
+  <%-- 商品信息提交部分 --%>
   <input type="submit" class="btn-success btn-lg" value="上传新商品" />
 </form:form>
 

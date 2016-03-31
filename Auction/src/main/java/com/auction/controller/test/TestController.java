@@ -19,6 +19,7 @@ import com.auction.model.test.ImgTestEntity;
 import com.auction.service.IUserService;
 
 @Controller
+@RequestMapping("/test")
 public class TestController {
 
   private final int IMG_PAGE_COUNT = 20;
@@ -80,6 +81,11 @@ public class TestController {
     return map;
   }
 
+  /**
+   * 返回json数据的测试。
+   * @param page int类型，一般选择值为1，进行测试。
+   * @return
+   */
   @RequestMapping(value = "/imgdatatxt/{page}", method = RequestMethod.GET)
   @ResponseBody
   public Map<String, Object> getImgTestTextEntity(@PathVariable("page") int page) {
@@ -105,6 +111,13 @@ public class TestController {
     return map;
   }
 
+  @RequestMapping(value = "inputtags")
+  public ModelAndView toInputTagPage() {
+    ModelAndView mv = new ModelAndView();
+    mv.setViewName("test/tags");
+    return mv;
+  }
+  
   private String addZeroToNum(int num, int len) {
     if (num < 1) {
       return "001";

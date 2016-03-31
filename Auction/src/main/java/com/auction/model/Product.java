@@ -105,6 +105,7 @@ public class Product {
   private User user;
 
   @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "products")
+  @JsonManagedReference
   private List<ProductTag> productTags = new ArrayList<ProductTag>();
 
   public Integer getId() {

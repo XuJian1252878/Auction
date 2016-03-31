@@ -17,6 +17,8 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "PRODUCTTAG")
 @Proxy(lazy = true)
@@ -40,6 +42,7 @@ public class ProductTag {
   @JoinTable(name = "product_producttag", joinColumns = {
       @JoinColumn(name = "product_id", referencedColumnName = "id") }, inverseJoinColumns = {
           @JoinColumn(name = "producttag_id", referencedColumnName = "id") })
+  @JsonBackReference
   private List<Product> products = new ArrayList<Product>();
 
   public Integer getId() {
