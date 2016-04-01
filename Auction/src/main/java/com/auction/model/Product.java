@@ -104,7 +104,7 @@ public class Product {
   @JsonManagedReference
   private User user;
 
-  @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "products")
+  @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER, mappedBy = "products")
   @JsonManagedReference
   private List<ProductTag> productTags = new ArrayList<ProductTag>();
 

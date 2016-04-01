@@ -31,24 +31,26 @@
             <c:otherwise>
               <div class="row">
                 <div class="col-lg-1 col-lg-offset-1">商品名称</div>
-                <div class="col-lg-2">商品描述</div>
                 <div class="col-lg-1">竞价起价</div>
-                <div class="col-lg-2">上架时间</div>
+                <div class="col-lg-2">竞价期限</div>
                 <div class="col-lg-1">竞价热度</div>
                 <div class="col-lg-2">商品图片</div>
-                <div class="col-lg-1">更多操作</div>
+                <div class="col-lg-2">更多操作</div>
+                <div class="col-lg-1">竞价详情</div>
               </div>
               <div id="accordion" role="tablist" aria-multiselectable="true">
                 <c:forEach var="goingOnProduct" items="${goingOnProducts }">
                   <div class="row">
                     <div class="col-lg-1 col-lg-offset-1">${goingOnProduct.name }</div>
-                    <div class="col-lg-2">${goingOnProduct.describe }</div>
                     <div class="col-lg-1">${goingOnProduct.basicPrice }</div>
-                    <div class="col-lg-2">${goingOnProduct.onSaleDate }</div>
+                    <div class="col-lg-2">${goingOnProduct.endDate }</div>
                     <div class="col-lg-1">${goingOnProduct.bids.size() }</div>
                     <div class="col-lg-2">
                       <img src="${goingOnProduct.imgPath }" alt="${goingOnProduct.name }"
                         title="${goingOnProduct.name }" width="100" height="100" class="img-circle" />
+                    </div>
+                    <div class="col-lg-2">
+                      <a href="product/detail/${goingOnProduct.id }">查看商品详情</a>
                     </div>
                     <div class="panel panel-default">
                       <div class="panel-heading col-lg-1" role="tab" id="heading${goingOnProduct.id }">
@@ -114,7 +116,7 @@
                 <div class="col-lg-1 col-lg-offset-1">商品名称</div>
                 <div class="col-lg-2">商品描述</div>
                 <div class="col-lg-1">竞价起价</div>
-                <div class="col-lg-2">上架时间</div>
+                <div class="col-lg-2">竞拍期限</div>
                 <div class="col-lg-1">竞价热度</div>
                 <div class="col-lg-1">成交价格</div>
                 <div class="col-lg-2">商品图片</div>
@@ -124,7 +126,7 @@
                   <div class="col-lg-1 col-lg-offset-1">${historyProductPair.key.name }</div>
                   <div class="col-lg-2">${historyProductPair.key.describe }</div>
                   <div class="col-lg-1">${historyProductPair.key.basicPrice }</div>
-                  <div class="col-lg-2">${historyProductPair.key.onSaleDate }</div>
+                  <div class="col-lg-2">${historyProductPair.key.endDate }</div>
                   <div class="col-lg-1">${historyProductPair.key.bids.size() }</div>
                   <div class="col-lg-1">
                     <c:choose>

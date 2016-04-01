@@ -14,10 +14,11 @@
   <c:otherwise>
     <label>商品名称：</label><span>${product.name }</span><br />
     <label>商品类别：</label><span>${product.category.name }</span><br />
+    <label>商品标签：</label>
     <div class="row">
       <div class="col-lg-10 col-lg-offset-1">
         <c:forEach var="productTag" items="${productTags }">
-          <h4><span class="label label-success">${productTag.tag }</span></h4>
+          <h3 style="display: inline"><span class="label label-pill label-success">${productTag.tag }</span></h3>
         </c:forEach>
       </div>
     </div>

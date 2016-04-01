@@ -117,11 +117,11 @@
                     <td>
                       <c:choose>
                         <c:when test="${historyBid.isSuccess eq false }">竞价失败</c:when>
-                        <c:otherwise>已成交</c:otherwise>
+                        <c:otherwise>已成交，${historyBid.dealDate }</c:otherwise>
                       </c:choose>
                     </td>
                     <td><img src="${historyBid.product.imgPath }" alt="${historyBid.product.name }"
-                      title="${historyBid.product.name }" class="img-circle" /></td>
+                      title="${historyBid.product.name }" class="img-circle" width="100" height="100" /></td>
                   </tr>
                 </c:forEach>
               </table>

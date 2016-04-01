@@ -92,7 +92,7 @@ public class ProductServiceImpl extends BaseService<Product> implements IProduct
     // TODO Auto-generated method stub
     Map<Product, Bid> pbMap = new LinkedHashMap<Product, Bid>();
     String phql = "from " + Product.class.getName()
-        + " as p where (p.user.id = ? and p.endDate < ?) or (p.isDeal = true) order by p.onSaleDate desc";
+        + " as p where p.user.id = ? and (p.endDate < ? or p.isDeal = true) order by p.onSaleDate desc";
     // 获得用户上传的已经超过竞价期限的物品。
     List<Product> historyProducts = productDao.find(phql, userId, new Date());
     // 查询这些商品是否已经成交、或者是流拍。
