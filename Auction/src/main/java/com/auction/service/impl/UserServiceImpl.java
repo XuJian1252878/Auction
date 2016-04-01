@@ -17,7 +17,7 @@ import com.auction.util.WebConstantUtil;
 
 @Service("userService")
 @Transactional
-public class UserService extends BaseService<User> implements IUserService {
+public class UserServiceImpl extends BaseService<User> implements IUserService {
 
   @Resource(name = "userDao")
   private IUserDao userDao;

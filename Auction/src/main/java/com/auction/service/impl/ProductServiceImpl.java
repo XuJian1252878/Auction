@@ -23,7 +23,7 @@ import com.auction.service.common.BaseService;
 
 @Service("productService")
 @Transactional
-public class ProductService extends BaseService<Product> implements IProductService {
+public class ProductServiceImpl extends BaseService<Product> implements IProductService {
 
   @Resource(name = "bidDao")
   IBidDao bidDao;

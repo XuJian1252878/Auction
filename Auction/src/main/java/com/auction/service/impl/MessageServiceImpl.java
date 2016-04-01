@@ -17,7 +17,7 @@ import com.auction.service.common.BaseService;
 
 @Service("messageService")
 @Transactional
-public class MessageService extends BaseService<Message> implements IMessageService {
+public class MessageServiceImpl extends BaseService<Message> implements IMessageService {
 
   @Resource(name = "messageDao")
   private IMessageDao messageDao;

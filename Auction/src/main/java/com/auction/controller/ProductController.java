@@ -26,6 +26,7 @@ import com.auction.service.IBidService;
 import com.auction.service.ICategoryService;
 import com.auction.service.ICommentService;
 import com.auction.service.IProductService;
+import com.auction.service.IProductTagService;
 import com.auction.util.WebConstantUtil;
 import com.auction.util.DateTimeUtil;
 import com.auction.util.ImageUtil;
@@ -45,6 +46,9 @@ public class ProductController {
   
   @Resource(name = "commentService")
   ICommentService commentService;
+
+  @Resource(name = "productTagService")
+  IProductTagService productTagService;
 
   // http://stackoverflow.com/questions/14533488/addiing-multiple-validators-using-initbinder
   @InitBinder("product") // 注意这里 InitBinder 参数命令 需要为被检测对象的名称。

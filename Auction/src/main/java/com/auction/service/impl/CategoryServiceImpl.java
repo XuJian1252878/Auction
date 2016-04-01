@@ -16,7 +16,7 @@ import com.auction.service.common.BaseService;
 
 @Service("categoryService")
 @Transactional
-public class CategoryService extends BaseService<Category> implements ICategoryService {
+public class CategoryServiceImpl extends BaseService<Category> implements ICategoryService {
 
   @Resource(name = "categoryDao")
   private ICategoryDao categoryDao;
