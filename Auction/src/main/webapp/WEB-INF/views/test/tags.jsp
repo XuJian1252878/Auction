@@ -7,6 +7,12 @@
 <script type="text/javascript" src="template/bootstrap-tagsinput/src/bootstrap-tagsinput.js"></script>
 <script type="text/javascript" src="scripts/typeahead.bundle.js"></script>
 
+<div class="progress">
+  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+    <span class="sr-only">45% Complete</span>
+  </div>
+</div>
+
 <div class="container">
   <div class="row">
     <p>Markup</p>

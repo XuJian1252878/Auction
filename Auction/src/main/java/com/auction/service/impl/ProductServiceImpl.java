@@ -31,13 +31,9 @@ public class ProductServiceImpl extends BaseService<Product> implements IProduct
   @Resource(name = "productDao")
   IProductDao productDao;
 
-  public boolean createProduct(Product product) {
+  public Serializable createProduct(Product product) {
     // TODO Auto-generated method stub
-    Serializable serializable = productDao.save(product);
-    if (serializable == null) {
-      return false;
-    }
-    return true;
+    return productDao.save(product);
   }
 
   public List<Product> loadProduct(int pageNo, int pageSize) {

@@ -81,7 +81,7 @@
   <div class="row">
     <div class="col-lg-3 col-lg-offset-1">商品标签</div>
     <div class="col-lg-7">
-      <input id="producttags" class="typeahead" type="text" value="Amsterdam,Washington,Sydney,Beijing,Cairo" data-role="tagsinput"/>
+      <input id="producttags" name="producttags" class="typeahead" type="text" value="Amsterdam,Washington,Sydney,Beijing,Cairo" data-role="tagsinput"/>
     </div>
     <script type="text/javascript">
       var tagEngine = new Bloodhound({

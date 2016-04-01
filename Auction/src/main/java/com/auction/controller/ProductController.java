@@ -1,5 +1,6 @@
 package com.auction.controller;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -20,6 +21,7 @@ import com.auction.model.Bid;
 import com.auction.model.Category;
 import com.auction.model.Comment;
 import com.auction.model.Product;
+import com.auction.model.ProductTag;
 import com.auction.model.User;
 import com.auction.model.validator.ProductValidator;
 import com.auction.service.IBidService;
@@ -105,13 +107,19 @@ public class ProductController {
       return mv;
     }
     // 保存商品信息
-    if (!productService.createProduct(product)) {
+    Serializable serializable = productService.createProduct(product);
+    if (serializable == null) {
+      // 商品上传失败。
       mv.setViewName("product/upload");
       mv.addObject("loginUser", loginUser);
       mv.addObject("categories", categories);
       return mv;
     }
-    mv.setViewName("redirect:/user/transaction");
+    // 商品上传成功之后，保存对应商品的标签信息。
+    int productId = ((Integer)serializable).intValue();
+    String tags = request.getParameter("producttags");
+    productTagService.saveTags(tags, productId);
+    mv.setViewName("redirect:/user/products");  // 返回我的商品页面，查看刚刚上传的商品信息。
     return mv;
   }
 
@@ -140,6 +148,9 @@ public class ProductController {
       Comment userComment = new Comment();
       mv.addObject("userComment", userComment);
     }
+    // 加载该商品的具体标签信息。
+    List<ProductTag> productTags = productTagService.getTagsByProduct(productId);
+    mv.addObject("productTags", productTags);
     // 加载该商品的相关评论列表。
     List<Comment> productComments = commentService.getProductComments(productId);
     mv.addObject("productComments", productComments);

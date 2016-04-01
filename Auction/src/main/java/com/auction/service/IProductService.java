@@ -1,5 +1,6 @@
 package com.auction.service;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -10,10 +11,10 @@ public interface IProductService {
   
   /**
    * 创建一个新的product实体
-   * @param product
-   * @return
+   * @param product 将要持久化的新创建的product实体。
+   * @return  如果实体创建成功，那么返回该实体的主键Serializable对象，否则就返回null。
    */
-  public boolean createProduct(Product product);
+  public Serializable createProduct(Product product);
 
   /**
    * 根据分页信息存取product实体。

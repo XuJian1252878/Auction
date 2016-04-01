@@ -38,10 +38,11 @@ public class ProductTag {
   @Column(name = "tag", nullable = false)
   private String tag;
 
+  // mappedby 指明的变量名所在的一方即为关系的拥有方。
   @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-  @JoinTable(name = "product_producttag", joinColumns = {
-      @JoinColumn(name = "product_id", referencedColumnName = "id") }, inverseJoinColumns = {
-          @JoinColumn(name = "producttag_id", referencedColumnName = "id") })
+  @JoinTable(name = "product_tag", 
+    joinColumns = { @JoinColumn(name = "producttag_id", referencedColumnName = "id") }, // owner side 管理这个关系（拥有这个关系）一方的id，name可以随意起名。
+    inverseJoinColumns = { @JoinColumn(name = "product_id", referencedColumnName = "id") }) // 不拥有这个关系一方的id。name可以随意起名。
   @JsonBackReference
   private List<Product> products = new ArrayList<Product>();
 

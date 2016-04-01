@@ -14,6 +14,13 @@
   <c:otherwise>
     <label>商品名称：</label><span>${product.name }</span><br />
     <label>商品类别：</label><span>${product.category.name }</span><br />
+    <div class="row">
+      <div class="col-lg-10 col-lg-offset-1">
+        <c:forEach var="productTag" items="${productTags }">
+          <h4><span class="label label-success">${productTag.tag }</span></h4>
+        </c:forEach>
+      </div>
+    </div>
     <label>商品描述：</label><span>${product.describe }</span><br />
     <label>商品上传时间：</label><span>${product.onSaleDate }</span><br />
     <label>结束竞拍时间：</label><span>${product.endDate }</span><br />

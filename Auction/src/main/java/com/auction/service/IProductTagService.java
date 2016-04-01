@@ -1,6 +1,10 @@
 package com.auction.service;
 
+import java.io.Serializable;
 import java.util.List;
+
+import com.auction.model.Product;
+import com.auction.model.ProductTag;
 
 public interface IProductTagService {
 
@@ -17,8 +21,23 @@ public interface IProductTagService {
   /**
    * 向数据库中存储一个新的tag，当对应的商品下存在该tag时，save操作自动忽略。
    * @param tag  需要存储如数据库的tag内容（字符串）。
-   * @param productId  tag是属于哪一个商品下的。
+   * @param product  tag是属于哪一个商品下的。新建商品的实体信息。
    * @return 当tag信息存储成功的时候返回true，存储失败的时候返回false。
    */
-  public boolean saveTag(String tag, int productId);
+  public Serializable saveTag(String tag, Product product);
+
+  /**
+   * 存储新建的producttag对象。当对应的商品下存在该tag时，save操作自动忽略。
+   * @param tags  以分隔符分割的tag字符串。
+   * @param productId  这些tag所属的商品的id信息。
+   * @return  如储存操作都成功那么返回true，一旦有某一个数据库操作失败，就返回false。
+   */
+  public boolean saveTags(String tags, int productId);
+
+  /**
+   * 获得某一个商品的所有标签信息。
+   * @param productId
+   * @return  返回一个包含ProductTag对象的list列表，如果没有tag对象，那么返回一个空的list。
+   */
+  public List<ProductTag> getTagsByProduct(int productId);
 }

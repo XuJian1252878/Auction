@@ -21,7 +21,13 @@ public interface IBaseDao<T> {
   // 查询满足条件的实体总个数。
   int findCount(String hql);
 
-  // 保存一个实体
+  /**
+   * Persist the given transient instance, first assigning a generated identifier. 
+   * (Or using the current value of the identifier property if the assigned generator is used.) 
+   * This operation cascades to associated instances if the association is mapped with cascade="save-update"
+   * @param entity  a transient instance of a persistent class
+   * @return  the generated identifier
+   */
   Serializable save(T entity);
 
   // 更新一个实体

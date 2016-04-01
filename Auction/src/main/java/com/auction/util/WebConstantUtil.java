@@ -21,4 +21,7 @@ public class WebConstantUtil {
   // 用于用户登录时，作为返回map的key使用。
   public static final String USER_LOGIN_SUCCESS_FLAG = "loginresult";
   public static final String USER_LOGIN_OBJECT_FLAG = "loginuserobject";
+  
+  // 商品标签的默认分隔符。
+  public static final String PRODUCT_TAG_DELIMETER = ",";
 }
