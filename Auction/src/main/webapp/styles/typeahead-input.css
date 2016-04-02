@@ -1,5 +1,5 @@
-@CHARSET "UTF-8";
-
+/* site theme */
+/* ---------- */
 .typeahead,
 .tt-query,
 .tt-hint {
@@ -33,9 +33,9 @@
   color: #999
 }
 
-.tt-dropdown-menu {
+.tt-menu {
   width: 422px;
-  margin-top: 12px;
+  margin: 12px 0;
   padding: 8px 0;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -54,6 +54,12 @@
   line-height: 24px;
 }
 
+.tt-suggestion:hover {
+  cursor: pointer;
+  color: #fff;
+  background-color: #0097cf;
+}
+
 .tt-suggestion.tt-cursor {
   color: #fff;
   background-color: #0097cf;
@@ -63,6 +69,7 @@
 .tt-suggestion p {
   margin: 0;
 }
-tt-highlight{
-    color:red;
+
+.gist {
+  font-size: 14px;
 }

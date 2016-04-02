@@ -80,7 +80,7 @@
   <div class="row">
     <div class="col-lg-3 col-lg-offset-1">商品标签</div>
     <div class="col-lg-7">
-      <input id="producttags" name="producttags" type="text" data-role="tagsinput" />
+      <input id="producttags" name="producttags" class="typeahead" type="text" data-role="tagsinput"/>
     </div>
     <script type="text/javascript">
       var tagEngine = new Bloodhound({
@@ -90,6 +90,7 @@
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         prefetch: {
           url: 'producttag/prefetch',  // 获得预先缓存的json数据。
+          ttl: 0,  // 不使用cache。
           filter: function(tags) {
             return $.map(tags.result, function(tagPair) {
               return {
@@ -100,6 +101,7 @@
           }
         }
       });
+      tagEngine.clearPrefetchCache();  // 清除缓存信息，保证每一次的结果都能输出。
       // 初始化缓存的engine。
       tagEngine.initialize();
       $('#producttags').tagsinput({

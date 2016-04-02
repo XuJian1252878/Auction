@@ -110,6 +110,7 @@ Bloodhound is robust, flexible, and offers advanced functionalities such as pref
           // 如果指向本地的url，那么要确定路径是存在的，路径不存在的时候界面上的具体表现为： 
           // 字符串提示窗中为一片空白。
           url: 'producttag/prefetch',
+          ttl: 0,  // 不使用cache。
           // 另外这个组件只支持pretty print的json数据，不是pretty格式的json数据不支持。
           filter: function(teamdataarray) {
             console.log(teamdataarray);
@@ -125,6 +126,7 @@ Bloodhound is robust, flexible, and offers advanced functionalities such as pref
           }
         }
       });
+      mytest.clearPrefetchCache();  // 先清除缓存，当缓存数据存储在本地的时候，可能导致无法出结果。
       mytest.initialize();
       // passing in `null` for the `options` arguments will result in the default
       // options being used
