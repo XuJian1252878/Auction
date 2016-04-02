@@ -52,4 +52,20 @@ public interface IProductService {
    * @return  true表示更新成功；false表示更新失败。
    */
   public boolean updateProduct(Product product);
+
+  /**
+   * 根据标签的内容找到被该标签标注的商品的信息。
+   * @param tags  传入的标签信息，是一个字符串，以某一个delimeter分割。
+   * @param pageNo  显示第几页的查询结果。
+   * @param pageSize  每一页显示多少个查询结果。
+   * @return  返回一个包含商品信息的list列表，如果没有符合条件的商品信息，那么返回一个空的list。
+   */
+  public List<Product> getProductByTags(String tags, int pageNo, int pageSize);
+
+  /**
+   * 统计出被tags标签标注的商品的总数。
+   * @param tags  传入的标签信息，是一个字符串，以某一个delimeter分割。
+   * @return  返回被tags标签标注的商品的总数。
+   */
+  public int getProductCountByTags(String tags);
 }

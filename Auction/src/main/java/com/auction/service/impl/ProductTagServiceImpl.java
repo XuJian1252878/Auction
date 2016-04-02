@@ -1,11 +1,7 @@
 package com.auction.service.impl;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.regex.PatternSyntaxException;
-
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
@@ -29,22 +25,6 @@ public class ProductTagServiceImpl extends BaseService<ProductTag> implements IP
   @Resource(name = "productTagDao")
   IProductTagDao productTagDao;
 
-  public List<String> splitTags(String tags, String delimiter) {
-    // TODO Auto-generated method stub
-    List<String> tagList = new ArrayList<String>();
-    if (tags == null) {
-      tagList.add(tags);
-      return tagList;
-    }
-    try{
-      tagList = Arrays.asList(tags.split(delimiter));
-    } catch (PatternSyntaxException e) {
-      tagList.add(tags);
-      e.printStackTrace();
-    }
-    return tagList;
-  }
-
   public Serializable saveTag(String tag, Product product) {
     // TODO Auto-generated method stub
     ProductTag productTag = new ProductTag();
@@ -60,7 +40,7 @@ public class ProductTagServiceImpl extends BaseService<ProductTag> implements IP
     if (product == null) {
       return false;
     }
-    List<String> tagList = splitTags(tags, WebConstantUtil.PRODUCT_TAG_DELIMETER);
+    List<String> tagList = productTagDao.splitTags(tags, WebConstantUtil.PRODUCT_TAG_DELIMETER);
     for (String tag: tagList) {
       ProductTag productTag = new ProductTag();
       productTag.setTag(tag);

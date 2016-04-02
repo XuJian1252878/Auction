@@ -60,7 +60,7 @@ public interface ICategoryService {
    * @param categoryId 商品类别的id信息。
    * @param pageNo 要取出的是哪一页的数据
    * @param pageSize 每一页数据的数量是多少。如果pageNo值和pageSize的值同时为-1， 那么表示返回全部的结果。
-   * @param containsBid true表示返回的结果中包含已竞价完成的商品；false 表示返回的结果中斤包含还未成交的商品。
+   * @param containsBid true表示返回的结果中包含已竞价完成的商品以及未竞价完成的商品；false 表示返回的结果中仅包含还未成交的商品。
    * @return
    */
   public List<Product> loadProducts(int categoryId, int pageNo, int pageSize, boolean containsBid);

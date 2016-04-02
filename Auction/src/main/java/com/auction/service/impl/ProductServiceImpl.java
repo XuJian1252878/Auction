@@ -16,10 +16,13 @@ import org.springframework.stereotype.Service;
 
 import com.auction.dao.IBidDao;
 import com.auction.dao.IProductDao;
+import com.auction.dao.IProductTagDao;
 import com.auction.model.Bid;
 import com.auction.model.Product;
+import com.auction.model.ProductTag;
 import com.auction.service.IProductService;
 import com.auction.service.common.BaseService;
+import com.auction.util.WebConstantUtil;
 
 @Service("productService")
 @Transactional
@@ -30,6 +33,9 @@ public class ProductServiceImpl extends BaseService<Product> implements IProduct
 
   @Resource(name = "productDao")
   IProductDao productDao;
+
+  @Resource(name = "productTagDao")
+  IProductTagDao productTagDao;
 
   public Serializable createProduct(Product product) {
     // TODO Auto-generated method stub
@@ -114,6 +120,34 @@ public class ProductServiceImpl extends BaseService<Product> implements IProduct
     // TODO Auto-generated method stub
     productDao.update(product);
     return true;
+  }
+
+  public List<Product> getProductByTags(String tags, int pageNo, int pageSize) {
+    // TODO Auto-generated method stub
+    List<String> tagList = productTagDao.splitTags(tags, WebConstantUtil.PRODUCT_TAG_DELIMETER);
+    String hql = "select p1 from " + Product.class.getName() + " as p1 where p1.id in ( select p2.id from " + ProductTag.class.getName() + " as pt inner join pt.products as p2 where pt.tag = '' ";
+    // String hql = "select pt.products from " + ProductTag.class.getName() + " as pt where pt.tag = '' ";
+    // 开始构建根据tag查询商品的sql语句。
+    for (String tag: tagList) {
+      hql += ("or pt.tg like '%" + tag + "%' ");
+    }
+    hql += (")");
+    List<Product> products = productDao.listPart(pageNo, pageSize, hql);
+    return products;
+  }
+
+  public int getProductCountByTags(String tags) {
+    // TODO Auto-generated method stub
+    List<String> tagList = productTagDao.splitTags(tags, WebConstantUtil.PRODUCT_TAG_DELIMETER);
+    // hql语句参考链接：http://stackoverflow.com/questions/13350858/count-the-number-of-rows-in-many-to-many-relationships-in-hibernate
+    String hql = "select count(*) from " + Product.class.getName() + " as p1 where p1.id in ( select p2.id from " + ProductTag.class.getName() + " as pt inner join pt.products as p2 where pt.tag = '' ";
+    // 开始构建查询商品总数的sql语句。
+    for (String tag: tagList) {
+      hql += ("or pt.tag like '%" + tag + "%' ");
+    }
+    hql += ")";
+    int productCount = productDao.findCount(hql);
+    return productCount;
   }
 
 }

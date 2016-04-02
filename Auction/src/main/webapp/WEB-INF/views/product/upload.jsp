@@ -105,6 +105,9 @@
       // 初始化缓存的engine。
       tagEngine.initialize();
       $('#producttags').tagsinput({
+        tagClass: function(item) {
+          return 'label label-success';
+        },
         typeaheadjs: {
           name: 'tags',
           displayKey: 'tag',

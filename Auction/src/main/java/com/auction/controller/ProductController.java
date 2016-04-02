@@ -1,7 +1,9 @@
 package com.auction.controller;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +47,7 @@ public class ProductController {
 
   @Resource(name = "bidService")
   IBidService bidService;
-  
+
   @Resource(name = "commentService")
   ICommentService commentService;
 
@@ -116,10 +118,10 @@ public class ProductController {
       return mv;
     }
     // 商品上传成功之后，保存对应商品的标签信息。
-    int productId = ((Integer)serializable).intValue();
+    int productId = ((Integer) serializable).intValue();
     String tags = request.getParameter("producttags");
     productTagService.saveTags(tags, productId);
-    mv.setViewName("redirect:/user/products");  // 返回我的商品页面，查看刚刚上传的商品信息。
+    mv.setViewName("redirect:/user/products"); // 返回我的商品页面，查看刚刚上传的商品信息。
     return mv;
   }
 
@@ -156,5 +158,49 @@ public class ProductController {
     mv.addObject("productComments", productComments);
     mv.setViewName("/product/detail");
     return mv;
+  }
+
+  /**
+   * 跳转到商品搜索界面。
+   * 
+   * @return
+   */
+  @RequestMapping(value = "/search", method = RequestMethod.GET)
+  public ModelAndView searchProductByTag() {
+    ModelAndView mv = new ModelAndView();
+    mv.setViewName("/product/searchhome");
+    return mv;
+  }
+
+  @RequestMapping(value = "/search/{pageNo}", method = RequestMethod.POST)
+  public ModelAndView searchProductByTag(@PathVariable("pageNo") int pageNo, HttpServletRequest request) {
+    ModelAndView mv = new ModelAndView();
+    // 获得需要搜索的商品标签信息。
+    String tags = request.getParameter("producttags");
+    // 统计符合搜索条件商品总数。
+    int productCount = productService.getProductCountByTags(tags);
+    int pageCount = (int) Math.ceil(productCount / (double) WebConstantUtil.PRODUCT_COUNT_PER_PAGE);
+    mv.addObject("pageCount", pageCount); // 显示当前的搜索结果总共有多少页。
+    mv.addObject("productCount", productCount); // 符合条件的商品总数。
+    mv.addObject("pageNo", pageNo); // 当前的页码数。
+    mv.addObject("searchTags", tags); // 当前用于搜索商品的标签。
+    mv.addObject("maxWaterfallParts", WebConstantUtil.PRODUCT_WATERFALL_PARTS_PER_PAGE); // 每个商品列表页面中，瀑布流最多加载的次数。
+    // 跳转到商品搜索结果界面。
+    mv.setViewName("/product/searchresult");
+    return mv;
+  }
+
+  @RequestMapping(value = "/search/{pageNo:\\d+}_{waterfallIndex:\\d+}/{searchTags}")
+  public Map<String, Object> getSearchProductsByWaterFallPart(@PathVariable("pageNo") int pageNo,
+      @PathVariable("waterfallIndex") int waterfallIndex, @PathVariable("searchTags") String searchTags) {
+    // 获得当前应该改加载哪一部分瀑布流的数据。
+    int waterfallCurPart = (pageNo - 1) * WebConstantUtil.PRODUCT_WATERFALL_PARTS_PER_PAGE + waterfallIndex;
+    // 按照瀑布流来加载商品信息。
+    List<Product> products = productService.getProductByTags(searchTags, waterfallCurPart,
+        WebConstantUtil.PRODUCT_COUNT_PER_WATERFALL_PART);
+    Map<String, Object> resMap = new HashMap<String, Object>();
+    resMap.put("total", products.size());
+    resMap.put("result", products);
+    return resMap;
   }
 }

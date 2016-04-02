@@ -162,7 +162,7 @@ public class CategoryController {
   }
 
   /**
-   * 返回前端瀑布流所需要的json数据。
+   * 返回前端瀑布流所需要的json数据（商品列表数据）。
    * 
    * @param categoryId
    * @param pageNo
