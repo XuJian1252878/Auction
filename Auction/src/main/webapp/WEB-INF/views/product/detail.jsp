@@ -127,26 +127,33 @@
       </c:otherwise>
     </c:choose>
     <%-- 用户发表评论区域 --%>
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2">
-        <form:form action="comment/pub" modelAttribute="userComment" method="post">
-          <form:input type="hidden" path="user.id" value="${sessionScope.loginuser.id }" />
-          <form:input type="hidden" path="product.id" value="${product.id }" />
-          <form:textarea id="commentEditor" name="commentEditor" path="commentText" rows="5" cols="80" ></form:textarea><br />
-          <script type="text/javascript">
-            // Replace the <textarea id="commentEditor"> with a CKEditor
-            // instance, using default configuration.
-            CKEDITOR.replace('commentEditor');
-          </script>
-          <form:errors path="commentText"></form:errors><br />
-          <div class="row">
-            <div class="col-lg-2 col-lg-offset-10">
-              <input type="submit" class="btn btn-lg btn-success" value="提交评论" />
-            </div>
+    <c:choose>
+      <c:when test="${sessionScope.loginuser == null }">
+        <h4>未登陆用户不能发表评论信息！赶快<a href="user/login"><span class="label label-success">登陆</span></a>或者<a href="user/register"><span class="label label-success">注册</span>吧！</a></h4>
+      </c:when>
+      <c:otherwise>
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <form:form action="comment/pub" modelAttribute="userComment" method="post">
+              <form:input type="hidden" path="user.id" value="${sessionScope.loginuser.id }" />
+              <form:input type="hidden" path="product.id" value="${product.id }" />
+              <form:textarea id="commentEditor" name="commentEditor" path="commentText" rows="5" cols="80" ></form:textarea><br />
+              <script type="text/javascript">
+                // Replace the <textarea id="commentEditor"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace('commentEditor');
+              </script>
+              <form:errors path="commentText"></form:errors><br />
+              <div class="row">
+                <div class="col-lg-2 col-lg-offset-10">
+                  <input type="submit" class="btn btn-lg btn-success" value="提交评论" />
+                </div>
+              </div>
+            </form:form>
           </div>
-        </form:form>
-      </div>
-    </div>
+        </div>
+      </c:otherwise>
+    </c:choose>
   </c:otherwise>
 </c:choose>
 

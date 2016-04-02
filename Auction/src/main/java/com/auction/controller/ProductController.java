@@ -1,6 +1,8 @@
 package com.auction.controller;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.auction.model.Bid;
@@ -183,7 +186,8 @@ public class ProductController {
     mv.addObject("pageCount", pageCount); // 显示当前的搜索结果总共有多少页。
     mv.addObject("productCount", productCount); // 符合条件的商品总数。
     mv.addObject("pageNo", pageNo); // 当前的页码数。
-    mv.addObject("searchTags", tags); // 当前用于搜索商品的标签。
+    mv.addObject("searchTags", tags);
+    // 当前用于搜索商品的标签。
     mv.addObject("maxWaterfallParts", WebConstantUtil.PRODUCT_WATERFALL_PARTS_PER_PAGE); // 每个商品列表页面中，瀑布流最多加载的次数。
     // 跳转到商品搜索结果界面。
     mv.setViewName("/product/searchresult");
@@ -191,8 +195,11 @@ public class ProductController {
   }
 
   @RequestMapping(value = "/search/{pageNo:\\d+}_{waterfallIndex:\\d+}/{searchTags}")
+  @ResponseBody
   public Map<String, Object> getSearchProductsByWaterFallPart(@PathVariable("pageNo") int pageNo,
-      @PathVariable("waterfallIndex") int waterfallIndex, @PathVariable("searchTags") String searchTags) {
+      @PathVariable("waterfallIndex") int waterfallIndex, @PathVariable("searchTags") String searchTags) throws UnsupportedEncodingException {
+    // 对编码之后的的searchTags参数进行解码。
+    searchTags = URLDecoder.decode(searchTags, "UTF-8");
     // 获得当前应该改加载哪一部分瀑布流的数据。
     int waterfallCurPart = (pageNo - 1) * WebConstantUtil.PRODUCT_WATERFALL_PARTS_PER_PAGE + waterfallIndex;
     // 按照瀑布流来加载商品信息。

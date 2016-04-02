@@ -62,8 +62,7 @@ public class ProductServiceImpl extends BaseService<Product> implements IProduct
 
   public List<Product> getGoingOnProductsByUser(int userId) {
     // TODO Auto-generated method stub
-    String phql = "from " + Product.class.getName()
-        + " as p where p.user.id = ? and p.endDate > ?";
+    String phql = "from " + Product.class.getName() + " as p where p.user.id = ? and p.endDate > ?";
     List<Product> goingOnProducts = productDao.find(phql, userId, new Date());
     // 然后有可能交易最后期限还没有到，交易就已经成功，要去除这一类的商品。
     for (Iterator<Product> iterator = goingOnProducts.iterator(); iterator.hasNext();) {
@@ -125,11 +124,13 @@ public class ProductServiceImpl extends BaseService<Product> implements IProduct
   public List<Product> getProductByTags(String tags, int pageNo, int pageSize) {
     // TODO Auto-generated method stub
     List<String> tagList = productTagDao.splitTags(tags, WebConstantUtil.PRODUCT_TAG_DELIMETER);
-    String hql = "select p1 from " + Product.class.getName() + " as p1 where p1.id in ( select p2.id from " + ProductTag.class.getName() + " as pt inner join pt.products as p2 where pt.tag = '' ";
-    // String hql = "select pt.products from " + ProductTag.class.getName() + " as pt where pt.tag = '' ";
+    String hql = "select p1 from " + Product.class.getName() + " as p1 where p1.id in ( select p2.id from "
+        + ProductTag.class.getName() + " as pt inner join pt.products as p2 where pt.tag = '' ";
+    // String hql = "select pt.products from " + ProductTag.class.getName() + "
+    // as pt where pt.tag = '' ";
     // 开始构建根据tag查询商品的sql语句。
-    for (String tag: tagList) {
-      hql += ("or pt.tg like '%" + tag + "%' ");
+    for (String tag : tagList) {
+      hql += ("or pt.tag like '%" + tag + "%' ");
     }
     hql += (")");
     List<Product> products = productDao.listPart(pageNo, pageSize, hql);
@@ -140,9 +141,10 @@ public class ProductServiceImpl extends BaseService<Product> implements IProduct
     // TODO Auto-generated method stub
     List<String> tagList = productTagDao.splitTags(tags, WebConstantUtil.PRODUCT_TAG_DELIMETER);
     // hql语句参考链接：http://stackoverflow.com/questions/13350858/count-the-number-of-rows-in-many-to-many-relationships-in-hibernate
-    String hql = "select count(*) from " + Product.class.getName() + " as p1 where p1.id in ( select p2.id from " + ProductTag.class.getName() + " as pt inner join pt.products as p2 where pt.tag = '' ";
+    String hql = "select count(*) from " + Product.class.getName() + " as p1 where p1.id in ( select p2.id from "
+        + ProductTag.class.getName() + " as pt inner join pt.products as p2 where pt.tag = '' ";
     // 开始构建查询商品总数的sql语句。
-    for (String tag: tagList) {
+    for (String tag : tagList) {
       hql += ("or pt.tag like '%" + tag + "%' ");
     }
     hql += ")";
