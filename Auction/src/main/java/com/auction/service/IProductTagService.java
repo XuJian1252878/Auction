@@ -40,4 +40,13 @@ public interface IProductTagService {
    * @return  返回一个包含ProductTag对象的list列表，如果没有tag对象，那么返回一个空的list。
    */
   public List<ProductTag> getTagsByProduct(int productId);
+
+  /**
+   * 取出部分的商品标签信息（在所有的标签记录的范围内）。
+   * @param pageNo  要取出的是第几部分的标签。
+   * @param pageSize  每一部分中标签的个数。
+   * @return  返回一个包含ProductTag实体的list列表，当pageNo和pageSize都为-1的时候
+   * 函数返回当前的所有ProductTag记录。如果所选范围的标签不存在，那么返回一个空的list。
+   */
+  public List<ProductTag> getTagsByPart(int pageNo, int pageSize);
 }

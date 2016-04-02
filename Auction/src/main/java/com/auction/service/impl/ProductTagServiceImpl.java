@@ -81,4 +81,16 @@ public class ProductTagServiceImpl extends BaseService<ProductTag> implements IP
     List<ProductTag> pTags = productTagDao.find(hql, productId);
     return pTags;
   }
+
+  public List<ProductTag> getTagsByPart(int pageNo, int pageSize) {
+    // TODO Auto-generated method stub
+    String hql = "from " + ProductTag.class.getName();
+    List<ProductTag> ptList = null;
+    if (pageNo == -1 && pageSize == -1) {
+      ptList = productTagDao.findAll(ProductTag.class);
+    } else {
+      ptList = productTagDao.listPart(pageNo, pageSize, hql);
+    }
+    return ptList;
+  }
 }

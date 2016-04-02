@@ -15,27 +15,6 @@
 
 <div class="container">
   <div class="row">
-    <p>Markup</p>
-    <div class="col-lg-10 col-lg-offset-1">
-      <input type="text" value="Amsterdam,Washington,Sydney,Beijing,Cairo" data-role="tagsinput" />
-    </div><br />
-    <p>True multi value</p>
-    <div class="col-lg-10 col-lg-offset-1">
-      <select multiple data-role="tagsinput">
-        <option value="Amsterdam">Amsterdam</option>
-        <option value="Washington">Washington</option>
-        <option value="Sydney">Sydney</option>
-        <option value="Beijing">Beijing</option>
-        <option value="Cairo">Cairo</option>
-      </select>
-    </div><br />
-    <p>Typeahead</p>
-    <div class="col-lg-10 col-lg-offset-1">
-      <input type="text" value="Amsterdam,Washington" data-role="tagsinput" />
-      <script type="text/javascript">
-        
-      </script>
-    </div><br />
     <p> typeahead js 测试</p>
     <p>When initializing a typeahead using the typeahead.js jQuery plugin, you pass the plugin method one or more datasets. The source of a dataset is responsible for computing a set of suggestions for a given query.</p>
     <div class="col-lg-10 col-lg-offset-1">
@@ -121,6 +100,7 @@ Bloodhound is robust, flexible, and offers advanced functionalities such as pref
         // 作为datumTokenizer的输入，我们只需要选择我们需要的字段，我们可以通过下面两个方式选择。
         // datumTokenizer: Bloodhound.tokenizers.obj.whitespace('vval'),
         datumTokenizer: function (datum) {
+          console.log(Bloodhound.tokenizers.whitespace(datum.vval));
           return Bloodhound.tokenizers.whitespace(datum.vval);
         },
         queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -129,15 +109,17 @@ Bloodhound is robust, flexible, and offers advanced functionalities such as pref
         prefetch: {
           // 如果指向本地的url，那么要确定路径是存在的，路径不存在的时候界面上的具体表现为： 
           // 字符串提示窗中为一片空白。
-          url: '/Auction/data/test/team.json',
+          url: 'producttag/prefetch',
+          // 另外这个组件只支持pretty print的json数据，不是pretty格式的json数据不支持。
           filter: function(teamdataarray) {
-            return $.map(teamdataarray, function(teaminfo) {
+            console.log(teamdataarray);
+            return $.map(teamdataarray.result, function(teaminfo) {
               // typeahead 只支持 [ { "identifier" : "itemvalue" }, { "identifier" : "itemvalue" } ]
               // 这种类型的json数据，如果我们的json数据不是这种类型的，那么我们就需要通过filter函数来
               // 将我们原始的数据转换成 typeahead 支持的形式。
               return {
                 // 这里是返回了 { "identifier" : "itemvalue" }，多次返回之后形成完整的json数据：[ { "identifier" : "itemvalue" }, { "identifier" : "itemvalue" } ]
-                vval: teaminfo.mytest001
+                vval: teaminfo.tag
               };
             });
           }

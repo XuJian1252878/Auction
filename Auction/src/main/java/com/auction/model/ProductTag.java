@@ -26,7 +26,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class ProductTag {
 
   public ProductTag() {
-
   }
 
   @Id

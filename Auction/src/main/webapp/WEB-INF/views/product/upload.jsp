@@ -1,11 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ include file="../../../template/header.jsp"%>
 
-
-<!-- Bootstarp input tags -->
-<link href="template/bootstrap-tagsinput/src/bootstrap-tagsinput.css" rel="stylesheet">
-<link href="styles/typeahead-input.css" rel="stylesheet">
-
 <script type="text/javascript" src="template/bootstrap-tagsinput/src/bootstrap-tagsinput.js"></script>
 <script type="text/javascript" src="scripts/typeahead.bundle.js"></script>
 
@@ -13,11 +8,15 @@
 <script src="template/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" type="text/css"
   href="template/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+<link href="styles/typeahead-input.css" rel="stylesheet" type="text/css" />
 
 <!-- Bootstarp ImgSelect -->
 <link rel="stylesheet" type="text/css" href="template/imgareaselect/css/imgareaselect-default.css" />
 <script type="text/javascript" src="template/imgareaselect/scripts/jquery.imgareaselect.pack.js"></script>
 <script type="text/javascript" src="scripts/cutimg.js"></script>
+
+<!-- Bootstarp input tags -->
+<link href="template/bootstrap-tagsinput/src/bootstrap-tagsinput.css" rel="stylesheet">
 
 <!-- Bootstarp File Input -->
 <script type="text/javascript" src="scripts/bootstrap.file-input.js"></script>
@@ -81,7 +80,7 @@
   <div class="row">
     <div class="col-lg-3 col-lg-offset-1">商品标签</div>
     <div class="col-lg-7">
-      <input id="producttags" name="producttags" class="typeahead" type="text" value="Amsterdam,Washington,Sydney,Beijing,Cairo" data-role="tagsinput"/>
+      <input id="producttags" name="producttags" type="text" data-role="tagsinput" />
     </div>
     <script type="text/javascript">
       var tagEngine = new Bloodhound({
@@ -90,10 +89,11 @@
         },
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         prefetch: {
-          url: '',  // 获得预先缓存的json数据。
+          url: 'producttag/prefetch',  // 获得预先缓存的json数据。
           filter: function(tags) {
-            return $.map(tags, function(tagPair) {
+            return $.map(tags.result, function(tagPair) {
               return {
+                id: tagPair.id,
                 tag: tagPair.tag
               };
             });
@@ -102,29 +102,14 @@
       });
       // 初始化缓存的engine。
       tagEngine.initialize();
-      $('#producttags').typeahead({
-        hint: true,
-        highlight: true,
-        minLength: 1
-      },
-      {
-        name: 'tags',
-        displayKey: 'tag',
-        limit: 10,
-        source: tagEngine.ttAdapter()
+      $('#producttags').tagsinput({
+        typeaheadjs: {
+          name: 'tags',
+          displayKey: 'tag',
+          valueKey: 'tag',
+          source: tagEngine.ttAdapter()
+        }
       })
-      // 用于调试，看标签是否加载成功。
-      $('#producttags').on([
-                     'typeahead:initialized',
-                     'typeahead:initialized:err',
-                     'typeahead:selected',
-                     'typeahead:autocompleted',
-                     'typeahead:cursorchanged',
-                     'typeahead:opened',
-                     'typeahead:closed'
-                 ].join(' '), function(x) {
-                     console.log(this.value); 
-                 });
     </script>
   </div>
   <br />
