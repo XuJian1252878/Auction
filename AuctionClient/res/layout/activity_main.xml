@@ -1,23 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:gravity="center"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-    >
-    <TextView
-        android:text="@string/welcome"
-        android:id="@+id/TextView"
-        android:textSize="@dimen/label_font_size"
-        android:layout_width="fill_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="@dimen/title_padding"
-        />
-    <ListView
-        android:id="@+id/mainMenu"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:entries="@array/mainMenu"
-        />
+        android:background="@drawable/top_theme_white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dip">
+
+            <ImageView
+                android:id="@+id/headImage"
+                android:layout_width="36dip"
+                android:layout_height="36dip"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dip"
+                android:src="@drawable/headimg"/>
+
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dip"
+                android:text="无敌风火轮"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vPager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1.0"
+            android:background="#000000"
+            android:flipInterval="30"
+            android:persistentDrawingCache="animation"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:orientation="vertical"
+            android:paddingBottom="3dip">
+
+            <ImageView
+                android:id="@+id/iv_bottom_line"
+                android:layout_width="60dip"
+                android:layout_height="2dip"
+                android:layout_marginLeft="30dip"
+                android:scaleType="matrix"
+                android:src="#FF4500"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip">
+
+            <TextView
+                android:id="@+id/tv_tab_activity"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:text="@string/tab_1"
+                android:textColor="@color/red"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/tv_tab_groups"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:text="@string/tab_2"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/tv_tab_friends"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:text="@string/tab_3"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </LinearLayout>

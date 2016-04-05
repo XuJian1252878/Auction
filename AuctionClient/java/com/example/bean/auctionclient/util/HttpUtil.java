@@ -35,7 +35,7 @@ public class HttpUtil
     // 创建HttpClient对象
     public static HttpClient httpClient = new DefaultHttpClient();
     public static final String BASE_URL =
-            "http://192.168.1.20:8808/auction/android/";
+            "http://xjauction.nat123.net/Auction/mobile/user/";
 
     /**
      * @param url 发送请求的URL

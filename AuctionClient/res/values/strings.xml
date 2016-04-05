@@ -34,4 +34,8 @@
     <string name="kind_desc">种类描述：</string>
     <string name="item_detail_title">物品详情</string>
     <string name="you_bid">您的竞价：</string>
+
+    <string name="tab_1">好物</string>
+    <string name="tab_2">寻宝</string>
+    <string name="tab_3">我的</string>
 </resources>

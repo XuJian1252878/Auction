@@ -5,11 +5,13 @@ import java.util.Map;
 
 import com.example.bean.auctionclient.util.DialogUtil;
 import com.example.bean.auctionclient.util.HttpUtil;
+
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -30,10 +32,10 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 
-/****
+/**
  * @author Bean
  *         时间：2016年3月29日
- *         内容：登录主界面
+ *         内容：登录界面
  */
 public class Login extends Activity
 {
@@ -69,6 +71,9 @@ public class Login extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        //强行在UI线程里发送网络请求，本该用一个新的子线程来发送请求，日后再做修改
+        //StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
+        //StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
 
         setHandler();
         initMembers();
@@ -300,28 +305,29 @@ public class Login extends Activity
                             if (miLastX == miSliderMaxX)
                             {
                                 // startRotateImg();
-                                String lsUsername = moEditUsername.getText()
-                                        .toString();
-                                String lsPassword = moEditPassword.getText()
-                                        .toString();
-                                // 执行输入校验
-                                if (validate())
+                                startLogin();
+
+                                //创建了一个新线程来发送网络请求，如此页面便不会卡顿
+                                new Thread(new Runnable()
                                 {
-                                    startLogin();
-                                    Message loMsg;
-                                    // 如果登录成功
-                                    if (true) //loginPro
+                                    @Override
+                                    public void run()
                                     {
-                                        loMsg = new Message();
-                                        loMsg.what = LOGIN_SUCCESS;
-                                        moHandler.sendMessage(loMsg);
-                                    } else
-                                    {
-                                        loMsg = new Message();
-                                        loMsg.what = LOGIN_FAILED;
-                                        moHandler.sendMessage(loMsg);
+                                        Message loMsg;
+                                        // 如果登录成功
+                                        if (true) //loginPro
+                                        {
+                                            loMsg = new Message();
+                                            loMsg.what = LOGIN_SUCCESS;
+                                            moHandler.sendMessage(loMsg);
+                                        } else
+                                        {
+                                            loMsg = new Message();
+                                            loMsg.what = LOGIN_FAILED;
+                                            moHandler.sendMessage(loMsg);
+                                        }
                                     }
-                                }
+                                }).start();
                             }
                         }
                         break;
@@ -463,6 +469,7 @@ public class Login extends Activity
         moLayoutWelcome.setVisibility(View.GONE);
     }
 
+    /*
     // 对用户输入的用户名、密码进行校验
     private boolean validate()
     {
@@ -479,7 +486,7 @@ public class Login extends Activity
             return false;
         }
         return true;
-    }
+    }*/
 
     private boolean loginPro()
     {
@@ -490,8 +497,8 @@ public class Login extends Activity
         try
         {
             jsonObj = query(username, pwd);
-            // 如果userId 大于0
-            if (jsonObj.getInt("userId") > 0)
+            // 如果loginreult等于2时表示登录成功
+            if (jsonObj.getInt("loginresult") == 2)
             {
                 return true;
             }
@@ -510,12 +517,12 @@ public class Login extends Activity
     {
         // 使用Map封装请求参数
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user", username);
-        map.put("pass", password);
+        map.put("userName", username);
+        map.put("userPwd", password);
         // 定义发送请求的URL
-        String url = HttpUtil.BASE_URL + "processLogin.action";
+        String url = HttpUtil.BASE_URL + "login";
         // 发送请求
-        return new JSONObject(HttpUtil.postRequest(url, map));
+        return new JSONObject(HttpUtil.postRequest(url,map));
     }
 
     private void showToast(String strToast)
