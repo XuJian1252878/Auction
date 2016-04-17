@@ -22,13 +22,13 @@
 </script>
 
 <c:choose>
-  <c:when test="${loginuser == null}">
+  <c:when test="${registerUser == null}">
     <h2>暂无登陆用户的个人信息</h2>
   </c:when>
   <c:otherwise>
     <div class="container">
       <div class="row">
-        <form:form modelAttribute="loginuser" action="user/profile" enctype="multipart/form-data" method="post">
+        <form:form modelAttribute="registerUser" action="user/profile" enctype="multipart/form-data" method="post">
           <div class="well well-lg">
             <div class="row container">
               <div class="col-xs-12 col-sm-8 col-md-8">
@@ -37,6 +37,7 @@
                 <form:errors path="id" />
                 <form:input path="birthday" type="hidden" />
                 <form:input path="password" type="hidden" />
+                <form:input path="avatarPath" type="hidden" />
                 <div class="row">
                   <div class="col-md-6">
                     <strong>用户名: </strong>
@@ -76,7 +77,7 @@
               </div>
               <div class="col-xs-12 col-sm-4 col-md-4 text-center">
                 <figure>
-                  <img src="${loginuser.avatarPath }" alt="用户头像" class="img-circle img-responsive">
+                  <img src="${registerUser.avatarPath }" alt="用户头像" class="img-circle img-responsive">
                 </figure>
               </div>
             </div>
@@ -93,7 +94,7 @@
                   <div class="container">
                     <div class="row">
                       <div id="uploadImgDiv" class="col-md-8">
-                        <img id="uploadImg" src="#" alt="头像图片" /> <br />
+                        <img id="uploadImg" src="" alt="头像图片" /> <br />
                         <button id="cutImgBtn" style="display: none;" class="btn-info btn-sm" value="裁剪"
                           onclick="cutImg()" type="button">裁剪</button>
                         <input type="hidden" name="x1" value="-1" /> <input type="hidden" name="y1" value="-1" /> <input
@@ -102,7 +103,7 @@
                       </div>
                       <label for="previewImgDiv">图片预览</label>
                       <div id="previewImgDiv" class="col-md-4">
-                        <img id="previewImg" src="#" style="poition: relative;" />
+                        <img id="previewImg" src="" style="poition: relative;" />
                       </div>
                     </div>
                   </div>

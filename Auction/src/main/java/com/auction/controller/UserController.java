@@ -43,7 +43,9 @@ public class UserController {
   @Resource(name = "bidService")
   private IBidService bidService;
 
-  @InitBinder("user")
+  // 这里的名称是同modelattribute的名称相对应的。如果不对应那么无法对实体进行检查。
+  // 如果不指定名称，那么将会对所有的valid标签标注的对象进行检查，容易发生错误。
+  @InitBinder("registerUser")
   public void initBinder(DataBinder binder) {
     binder.setValidator(new UserValidator());
   }
@@ -158,41 +160,46 @@ public class UserController {
   }
 
   /**
-   * 
+   * 这里采用 registerUser 来作为valid参数的名称，是为了与initBinder指定的名称对应，能对用户实体信息进行检查。
    * @param httpSession
    * @return
    */
   @RequestMapping(value = "/profile", method = RequestMethod.GET)
   public ModelAndView userProfile(HttpSession httpSession) {
     ModelAndView mv = new ModelAndView();
-    mv.addObject(WebConstantUtil.LOGINUSER, httpSession.getAttribute(WebConstantUtil.LOGINUSER));
+    mv.addObject("registerUser", httpSession.getAttribute(WebConstantUtil.LOGINUSER));
     mv.setViewName("/user/profile");
     return mv;
   }
 
   @RequestMapping(value = "/profile", method = RequestMethod.POST)
-  public ModelAndView updateProfile(@Valid @ModelAttribute(WebConstantUtil.LOGINUSER) User user, BindingResult result,
+  public ModelAndView updateProfile(@Valid @ModelAttribute("registerUser") User user, BindingResult result,
       HttpSession httpSession, HttpServletRequest request) {
+    // merge方式更新用户的信息，正常的域信息需要在表当中声明出来，比如input ...，外键的域不用在表单中声明出来，
+    // 不会受merge更新的影响。
     ModelAndView mv = new ModelAndView();
     User oriUser = (User) httpSession.getAttribute(WebConstantUtil.LOGINUSER);
     if (result.hasErrors()) {
-      mv.addObject(WebConstantUtil.LOGINUSER, oriUser);
+      mv.addObject("registerUser", oriUser);
       return mv;
     }
 
     // 开始更新用户的信息
     String avatarFilePath = ImageUtil.genImgFileName(request, WebConstantUtil.AVATARFOLDER,
-        user.getAvatarFile().getOriginalFilename());
-    if (user.getAvatarFile() != null) { // 说明用户更改了头像信息
+        user.getAvatarFile().getOriginalFilename());  // 获取新的头像文件的名称，文件名称若无后缀，那么会返回null。
+    if (user.getAvatarFile().getSize() != 0) { // 说明用户更改了头像信息
+      // the size of the file, or 0 if empty 如果 MultipartFile 的size为0，那么说明用户根本没上传头像信息。
       user.setAvatarPath(avatarFilePath);
     }
 
     if (userService.updateUser(user) == false) {
       result.rejectValue("id", "profile.user.not.exists");
-      mv.addObject(WebConstantUtil.LOGINUSER, oriUser);
+      mv.addObject("registerUser", oriUser);
       return mv;
     }
-    if (user.getAvatarFile() != null) {
+    if (user.getAvatarFile().getSize() != 0) {
+      // 虽然没上传头像，但是 MultipartFile 对象还是不为null。
+      // the size of the file, or 0 if empty 如果 MultipartFile 的size为0，那么说明用户根本没上传头像信息。
       // 删除原来的头像文件
       String oriAvatarPath = request.getSession().getServletContext().getRealPath("/") + oriUser.getAvatarPath();
       File avatarFile = new File(oriAvatarPath);
@@ -205,11 +212,11 @@ public class UserController {
     User newUser = userService.findUserById(user.getId());
     if (newUser == null) {
       result.rejectValue("id", "profile.user.id.not.exist");
-      mv.addObject(WebConstantUtil.LOGINUSER, oriUser);
+      mv.addObject("registerUser", oriUser);
       return mv;
     }
     httpSession.setAttribute(WebConstantUtil.LOGINUSER, newUser);
-    mv.addObject(WebConstantUtil.LOGINUSER, newUser);
+    mv.addObject("registerUser", newUser);
     mv.setViewName("/user/profile");
     return mv;
   }

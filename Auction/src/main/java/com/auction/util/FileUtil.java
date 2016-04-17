@@ -38,9 +38,12 @@ public class FileUtil {
    * @return
    */
   public static String getFileSuffix(String fileName) {
+    String suffix = null;
+    if (fileName == null) {
+      return suffix;
+    }
     // 获得文件的后缀名称。
     String[] fileNameSplitInfo = fileName.split("\\.");
-    String suffix = null;
     if (fileNameSplitInfo.length >= 1) {
       suffix = fileNameSplitInfo[fileNameSplitInfo.length - 1];
     }

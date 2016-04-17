@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="wrap">
-        <p class="form-title">Sign In</p>
+        <p class="form-title">用户登录</p>
         <form:form class="login" action="user/login" modelAttribute="loginuser" method="post">
           <form:input type="text" placeholder="Username" path="userName" />
           <form:errors path="userName" />

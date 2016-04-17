@@ -1,14 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ include file="../../../template/header.jsp"%>
 
-<link rel="stylesheet" type="text/css" href="template/imgareaselect/css/imgareaselect-default.css" />
-<script type="text/javascript" src="template/imgareaselect/scripts/jquery.imgareaselect.pack.js"></script>
-<link href="/styles/register.css" rel="stylesheet">
 <script type="text/javascript" src="scripts/cutimg.js"></script>
 <script type="text/javascript" src="scripts/register.js"></script>
 <script type="text/javascript" src="scripts/bootstrap.file-input.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?signed_in=true&libraries=places&callback=initAutocomplete" async
   defer></script>
+<link rel="stylesheet" type="text/css" href="template/imgareaselect/css/imgareaselect-default.css" />
+<link rel="stylesheet" type="text/css" href="styles/register.css" />
+<script type="text/javascript" src="template/imgareaselect/scripts/jquery.imgareaselect.pack.js"></script>
 
 <script type="text/javascript">
   var activeEl = 2;
@@ -34,46 +34,9 @@
   }
 </script>
 
-<%-- 
-  <!-- 用户注册表单 -->
-  <form:form modelAttribute="registerUser" action="register"
-    enctype="multipart/form-data" method="post">
-    <form:label for="userName" path="userName">注册用户名：</form:label>
-    <form:input path="userName" type="text" />
-    <form:errors path="userName" />
-    <br />
-    <form:label for="email" path="email">注册邮箱:</form:label>
-    <form:input path="email" type="text" />
-    <form:errors path="email" />
-    <br />
-    <form:label for="password" path="password">密码：</form:label>
-    <form:input path="password" type="password" />
-    <form:errors path="password" />
-    <br />
-    <form:label for="confirmPassword" path="confirmPassword">确认密码：</form:label>
-    <form:input path="confirmPassword" type="password" />
-    <form:errors path="confirmPassword" />
-    <br />
-    <form:label for="age" path="age">年龄：</form:label>
-    <form:input path="age" type="text" />
-    <form:errors path="age" />
-    <br />
-    <form:label for="address" path="address">用户地址：</form:label>
-    <form:input path="address" type="text" />
-    <form:errors path="address" />
-    <br />
-    <form:label path="avatarFile">请选择头像图片：</form:label>
-    <form:input type="file" path="avatarFile" />
-    <form:errors path="avatarFile" />
-    <br />
-    <input type="submit" value="注册新用户" />
-  </form:form>
- --%>
-<br>
-<br>
-
 <div class="container-fluid">
   <div class="row">
+
     <div class="col-xs-2 col-md-2" style="padding-left: 40px">
       <br>
       <div style="text-align: left;">
@@ -130,22 +93,19 @@
       <form:form modelAttribute="registerUser" action="user/register" enctype="multipart/form-data" method="post"
         role="form" class="form-inline col-md-10 go-right"
         style="color: Green; background-color: #FAFAFF; border-radius: 0px 22px 22px 22px;">
-        <h2>Profile</h2>
-        <p>Please update your profile for more security.</p>
+        <h2>新用户注册</h2>
+        <br />
         <div class="form-group">
-          <form:label for="userName" path="userName">用户名<span class="glyphicon glyphicon-user"> </span>
-          </form:label>
-          <form:input path="userName" id="userName" name="userName" type="text" class="form-control" />
+          <form:input path="userName" id="userName" name="userName" type="text" class="form-control" placeholder="用户名" />
+          <form:label for="userName" path="userName" class="my-form-label" >用户名<span class="glyphicon glyphicon-user"> </span></form:label>
           <form:errors path="userName"></form:errors>
         </div>
         <div class="form-group">
-          <form:label for="email" path="email">注册邮箱<span class="glyphicon glyphicon-user"> </span>
+          <form:input path="email" id="email" name="email" type="text" class="form-control" placeholder="用户邮箱" />
+          <form:label for="email" path="email" class="my-form-label" >注册邮箱<span class="glyphicon glyphicon-user"> </span>
           </form:label>
-          <form:input path="email" id="email" name="email" type="text" class="form-control" />
           <form:errors path="email"></form:errors>
         </div>
-        <br>
-        <br>
         <div class="form-group">
           <form:select id="sex" path="sex" class="form-control">
             <form:option id="Male" value="0" style="color: red">Male</form:option>
@@ -154,27 +114,29 @@
               interested</form:option>
           </form:select>
         </div>
+        <br />
+        <br />
         <div class="form-group">
-          <form:label for="age" path="age">年龄<span class="glyphicon glyphicon-user"> </span>
+          <form:input path="age" id="age" name="age" type="text" class="form-control" placeholder="年龄" />
+          <form:label for="age" path="age" class="my-form-label" >年龄<span class="glyphicon glyphicon-user"> </span>
           </form:label>
-          <form:input path="age" id="age" name="age" type="text" class="form-control" />
           <form:errors path="age"></form:errors>
         </div>
         <div class="form-group">
-          <form:label for="birthday" path="birthday">DOB<span class="glyphicon glyphicon-calendar"></span>
-          </form:label>
           <form:input id="birthday" name="birthday" path="birthday" type="date" class="form-control" />
+          <form:label for="birthday" path="birthday" class="my-form-label" >DOB<span class="glyphicon glyphicon-calendar"></span>
+          </form:label>
         </div>
         <br />
         <br />
         <div class="form-group">
-          <form:label for="password" path="password">密码：</form:label>
-          <form:input path="password" type="password" />
+          <form:input path="password" type="password" placeholder="密码" />
+          <form:label for="password" path="password" class="my-form-label" >密码：<span class="glyphicon glyphicon-fire"></span></form:label>
           <form:errors path="password" />
         </div>
         <div class="form-group">
-          <form:label for="confirmPassword" path="confirmPassword">确认密码：</form:label>
-          <form:input path="confirmPassword" type="password" />
+          <form:input path="confirmPassword" type="password" placeholder="确认密码" />
+          <form:label for="confirmPassword" path="confirmPassword" class="my-form-label" >确认密码：<span class="glyphicon glyphicon-fire"></span></form:label>
           <form:errors path="confirmPassword" />
         </div>
         <br />
@@ -182,7 +144,7 @@
         <div class="form-group">
           <textarea id="message" name="phone" class="form-control" style="width: 400px; height: 100px"
             placeholder="Short Description"></textarea>
-          <label for="message">Short Description <span class="glyphicon glyphicon-align-justify"></span></label>
+          <label for="message" class="my-form-label" >Short Description <span class="glyphicon glyphicon-align-justify"></span></label>
         </div>
         <br>
         <br>
@@ -191,37 +153,37 @@
         <br>
         <div class="form-group" style="width: 600px">
           <input id="autocomplete" name="address" type="tel" onFocus="geolocate()"
-            style="moz-border-radius: 22px; border-radius: 7px;"> <label for="address">Location Picker</label>
+            style="moz-border-radius: 22px; border-radius: 7px;"> <label for="address" class="my-form-label" >Location Picker</label>
         </div>
         <br>
         <br>
         <div class="form-group">
           <input id="route" name="route" type="tel" class="form-control" required disabled="true"> <label
-            for="route">Route/Locality</label>
+            for="route" class="my-form-label" >Route/Locality</label>
         </div>
         <div class="form-group">
           <input id="locality" name="locality" type="tel" class="form-control" required disabled="true"> <label
-            for="locality">City/Town</label>
+            for="locality" class="my-form-label" >City/Town</label>
         </div>
         <br />
         <br />
         <div class="form-group">
           <input id="administrative_area_level_2" name="administrative_area_level_2" type="tel" class="form-control"
-            required disabled="true"> <label for="administrative_area_level_2">District</label>
+            required disabled="true"> <label for="administrative_area_level_2" class="my-form-label" >District</label>
         </div>
         <div class="form-group">
           <input id="administrative_area_level_1" name="administrative_area_level_1" type="tel" class="form-control"
-            required disabled="true"> <label for="administrative_area_level_1">State</label>
+            required disabled="true"> <label for="administrative_area_level_1" class="my-form-label" >State</label>
         </div>
         <br />
         <br />
         <div class="form-group">
           <input id="country" name="country" type="text" class="form-control" required disabled="true"> <label
-            for="country">Country</label>
+            for="country" class="my-form-label" >Country</label>
         </div>
         <div class="form-group">
           <input id="postal_code" name="postal_code" type="tel" class="form-control" required disabled="true"> <label
-            for="postal_code">Pin Code</label>
+            for="postal_code" class="my-form-label" >Pin Code</label>
         </div>
         <br />
         <br />
@@ -236,7 +198,7 @@
             <div class="container">
               <div class="row">
                 <div id="uploadImgDiv" class="col-md-6">
-                  <img id="uploadImg" src="#" alt="测试预览图片"> <br /> <br />
+                  <img id="uploadImg" src="" alt="测试预览图片"> <br /> <br />
                   <!-- 加上type="button" ，可以防止点击button的时候自动提交。 -->
                   <button id="cutImgBtn" class="btn-info btn-sm" style="display: none;" value="裁剪" onclick="cutImg()"
                     type="button">裁剪</button>
@@ -247,7 +209,7 @@
                 </div>
                 <label for="previewImgDiv">图片预览</label>
                 <div id="previewImgDiv" class="col-md-6">
-                  <img id="previewImg" src="#" style="position: relative;" />
+                  <img id="previewImg" src="" style="position: relative;" />
                 </div>
               </div>
             </div>
@@ -257,8 +219,8 @@
         <br />
         <div class="container-fluid">
           <div class="row">
-            <div class="col-xs-col-3 col-xs-offset-5 col-md-col-3 col-md-offset-5">
-              <input type="submit" class="btn-success btn-lg" value="Register" />
+            <div class="col-xs-col-1 col-md-col-1">
+              <input type="submit" style="color:black;" class="btn-success btn-lg" value="新用户注册" />
             </div>
           </div>
         </div>

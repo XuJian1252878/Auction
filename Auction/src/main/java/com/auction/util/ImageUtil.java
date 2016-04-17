@@ -47,14 +47,14 @@ public class ImageUtil extends FileUtil {
   }
 
   /**
-   * 获得图片文件的后缀名。如果获取图片文件的后缀名称失败，那么默认返回"jpg"。
+   * 获得图片文件的后缀名。如果获取图片文件的后缀名称失败，那么返回 null。
    * 
    * @param imgFileName
    * @return
    */
   public static String getImgSuffix(String imgFileName) {
     String suffix = getFileSuffix(imgFileName);
-    return (suffix == null) ? "jpg" : suffix;
+    return (suffix == null) ? null : suffix;
   }
 
   /**
@@ -107,6 +107,9 @@ public class ImageUtil extends FileUtil {
     StringBuilder stringBuilder = new StringBuilder();
     // 获得文件的后缀名称。
     String suffix = getImgSuffix(oriFileName);
+    if (suffix == null) {
+      return null;
+    }
     // 获得格式化的文件名称
     stringBuilder.append(DateTimeUtil.getIpTimeRand(request.getRemoteAddr()));
     stringBuilder.append("." + suffix);
