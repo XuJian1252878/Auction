@@ -52,15 +52,16 @@ public class UserValidator implements Validator {
         errors.rejectValue("avatarFile", "register.user.avatar.file.suffix.error");
       }
     } else {
-      // 检查图片文件的后缀名信息
-      if (FileUtil.getFileSuffix(user.getAvatarPath()) == null) {
-        errors.rejectValue("avatarFile", "register.user.no.avatar.file");
-        return; // 后缀名称都没有，那就没有检查后缀名称合法性的必要。
-      }
-      // 检查图片类型的合法性
-      if (!ImageUtil.checkImgType(user.getAvatarPath())) {
-        errors.rejectValue("avatarFile", "register.user.avatar.file.suffix.error");
-      }
+      // 用户在更新个人信息的情况下。下面的代码是多余代码，更新头像以及头像路径的工作在user controller中进行。
+//      // 检查图片文件的后缀名信息
+//      if (FileUtil.getFileSuffix(user.getAvatarPath()) == null) {
+//        errors.rejectValue("avatarFile", "register.user.no.avatar.file");
+//        return; // 后缀名称都没有，那就没有检查后缀名称合法性的必要。
+//      }
+//      // 检查图片类型的合法性
+//      if (!ImageUtil.checkImgType(user.getAvatarPath())) {
+//        errors.rejectValue("avatarFile", "register.user.avatar.file.suffix.error");
+//      }
     }
 
     if (!FileUtil.meetSizeRestrict(user.getAvatarFile(), 1024 * 1024)) {
