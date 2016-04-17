@@ -38,6 +38,11 @@ public class TestController {
     return "test/countdown";
   }
 
+  @RequestMapping(value = "/countdownpart")
+  public String countDownPart() {
+    return "test/countdown-part";
+  }
+
   @RequestMapping(value = "json", method = RequestMethod.GET)
   public ModelAndView transferJson() {
     ModelAndView mv = new ModelAndView();

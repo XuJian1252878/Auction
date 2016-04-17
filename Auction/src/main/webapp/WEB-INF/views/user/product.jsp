@@ -9,11 +9,12 @@
     <div class="col-lg-12">
       <div class="title">
         <h2>
-          <span>我上传的物品</span>
+          <span>我上传的竞价商品</span>
         </h2>
       </div>
     </div>
   </div>
+  <br />
   <div class="row">
     <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
       <ul class="nav nav-pills nav-justified">
@@ -22,8 +23,8 @@
       </ul>
       <div class="tab-content">
         <div id="tab_a" class="tab-pane fade in active">
-          <h4>我的正在竞价商品</h4>
-          <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+          <h4>正在竞价</h4>
+          <br />
           <c:choose>
             <c:when test="${goingOnProducts == null || fn:length(goingOnProducts) == 0}">
               <label>您没有上传任何商品。</label>
@@ -38,6 +39,7 @@
                 <div class="col-lg-2">更多操作</div>
                 <div class="col-lg-1">竞价详情</div>
               </div>
+              <br />
               <div id="accordion" role="tablist" aria-multiselectable="true">
                 <c:forEach var="goingOnProduct" items="${goingOnProducts }">
                   <div class="row">
@@ -56,7 +58,7 @@
                       <div class="panel-heading col-lg-1" role="tab" id="heading${goingOnProduct.id }">
                         <h4 class="panel-title">
                           <a data-toggle="collapse" data-parent="#accordion" href="#collapse${goingOnProduct.id }"
-                            aria-expanded="false" aria-controls="collapse${goingOnProduct.id }">竞价详情</a>
+                            aria-expanded="false" aria-controls="collapse${goingOnProduct.id }" >竞价详情</a>
                         </h4>
                       </div>
                       <div id="collapse${goingOnProduct.id }" class="panel-collapse collapse col-lg-10 col-lg-offset-1"
@@ -105,8 +107,8 @@
           </c:choose>
         </div>
         <div id="tab_b" class="tab-pane fade">
-          <h4>我的已完成竞价商品</h4>
-          <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+          <h4>完成竞价</h4>
+          <br />
           <c:choose>
             <c:when test="${historyProductsMap == null || fn:length(historyProductsMap) == 0}">
               <label>您还没有任何历史纪录！</label>
@@ -121,6 +123,7 @@
                 <div class="col-lg-1">成交价格</div>
                 <div class="col-lg-2">商品图片</div>
               </div>
+              <hr />
               <c:forEach var="historyProductPair" items="${historyProductsMap }">
                 <div class="row">
                   <div class="col-lg-1 col-lg-offset-1">${historyProductPair.key.name }</div>
@@ -139,6 +142,7 @@
                       width="100" height="100" class="img-circle" />
                   </div>
                 </div>
+                <hr />
               </c:forEach>
             </c:otherwise>
           </c:choose>

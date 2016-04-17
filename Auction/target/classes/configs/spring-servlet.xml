@@ -47,6 +47,7 @@
   <mvc:resources location="/scripts/" mapping="/scripts/**"></mvc:resources>
   <mvc:resources location="/images/" mapping="/images/**"></mvc:resources>
   <mvc:resources location="/template/" mapping="/template/**"></mvc:resources>
+  <mvc:resources location="/test/" mapping="/test/**"></mvc:resources>
   <!-- 定义视图解析器 -->
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
     <property name="prefix" value="/WEB-INF/views/"></property>

@@ -19,6 +19,7 @@
         <li class="active"><a href="#tab_a" data-toggle="pill">未读消息</a></li>
         <li><a href="#tab_b" data-toggle="pill">已读消息</a></li>
       </ul>
+      <br />
       <div class="tab-content">
         <div id="tab_a" class="tab-pane fade in active">
           <c:choose>
