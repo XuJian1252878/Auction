@@ -1,7 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ include file="../../../template/header.jsp"%>
 
-<link rel="stylesheet" href="styles/loading.css">
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster">
 <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Lato:400,700'>
 <link rel="stylesheet" href="styles/product-detail-countdown.css">
@@ -348,22 +347,5 @@
     </section>
   </c:otherwise>
 </c:choose>
-
-<div id="contentDiv">
-  <h2>我的测试文字</h2>
-</div>
-<button id="btn001" type="button">ChangeContent</button>
-<br />
-<br />
-
-<script type="text/javascript">
-  $('#btn001').click(function() {
-    htmlobj = $.ajax({
-      url : "test/imgdatatxt/1",
-      async : false
-    });
-    $('#contentDiv').html(htmlobj.responseText);
-  })
-</script>
 
 <%@ include file="../../../template/footer.jsp"%>

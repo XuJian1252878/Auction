@@ -10,7 +10,7 @@
  *
  */
 body {
-  background: #f8f8f8 url(images/temp/pattern.jpg);
+  background: #f8f8f8 url(../images/temp/pattern.jpg);
   text-align: left;
   font-family: 'Lato', Arial, sans-serif;
   color: #555;
@@ -87,7 +87,7 @@ a:hover {
 
 .inner-bg {
   padding: 55px 0 60px 0;
-  background: url(images/temp/pattern-3.png);
+  background: url(../images/temp/pattern-3.png);
   -moz-box-shadow: 0 1px 5px 0 rgba(0, 0, 0, .3) inset;
   -webkit-box-shadow: 0 1px 5px 0 rgba(0, 0, 0, .3) inset;
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, .3) inset;
@@ -127,7 +127,7 @@ a:hover {
 }
 
 .timer .days-wrapper:hover, .timer .hours-wrapper:hover, .timer .minutes-wrapper:hover, .timer .seconds-wrapper:hover {
-  background: #e75967 url(images/temp/pattern-2.png);
+  background: #e75967 url(../images/temp/pattern-2.png);
   text-shadow: none;
 }
 
@@ -239,43 +239,6 @@ a:hover {
 
 .error-message {
   color: #e75967;
-}
-
-.social {
-  margin-top: 30px;
-  padding-bottom: 30px;
-  text-align: center;
-}
-
-.social a {
-  display: inline-block;
-  width: 48px;
-  height: 48px;
-  margin: 3px;
-}
-
-.social a.facebook {
-  background: url(images/temp/social-icons/facebook.png);
-}
-
-.social a.twitter {
-  background: url(images/temp/social-icons/twitter.png);
-}
-
-.social a.dribbble {
-  background: url(images/temp/social-icons/dribbble.png);
-}
-
-.social a.googleplus {
-  background: url(images/temp/social-icons/googleplus.png);
-}
-
-.social a.pinterest {
-  background: url(images/temp/social-icons/pinterest.png);
-}
-
-.social a.flickr {
-  background: url(images/temp/social-icons/flickr.png);
 }
 
 /***** Media Queries *****/
