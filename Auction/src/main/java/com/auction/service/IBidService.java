@@ -1,7 +1,7 @@
 package com.auction.service;
 
-import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import com.auction.model.Bid;
 
@@ -10,9 +10,10 @@ public interface IBidService {
   /**
    * 为竞价用户创建一个新的竞价信息，如果用户在该商品下有过竞价，那么将原有的竞价信息替换。
    * @param bid  竞价信息的实体
-   * @return  若创建成功，那么返回新建实体的id信息。否则返回null。
+   * @return  返回一个包含处理结果信息的map，key:result 处理结果是否成功（value：0 处理成功；1 处理失败，用户出价低于
+   * 最低竞拍价；2 处理失败，数据库错误）
    */
-  public Serializable saveUserBid(Bid bid);
+  public Map<String, Object> saveUserBid(Bid bid);
 
   /**
    * 取出用户之前对某个商品的竞价信息。

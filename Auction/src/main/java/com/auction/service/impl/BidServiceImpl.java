@@ -3,7 +3,9 @@ package com.auction.service.impl;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
@@ -11,7 +13,9 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.auction.dao.IBidDao;
+import com.auction.dao.IProductDao;
 import com.auction.model.Bid;
+import com.auction.model.Product;
 import com.auction.service.IBidService;
 import com.auction.service.common.BaseService;
 import com.auction.util.DateTimeUtil;
@@ -22,20 +26,37 @@ public class BidServiceImpl extends BaseService<Bid> implements IBidService {
 
   @Resource(name = "bidDao")
   IBidDao bidDao;
+  @Resource(name = "productDao")
+  IProductDao productDao;
 
-  public Serializable saveUserBid(Bid bid) {
+  public Map<String, Object> saveUserBid(Bid bid) {
     // TODO Auto-generated method stub
+    Map<String, Object> resMap = new HashMap<String, Object>();
+    // 首先检查用户的出价是否低于商品的最低竞价。
+    Product product = productDao.loadModel("from " + Product.class.getName() + " as p where p.id = ?", bid.getProduct().getId());
+    if (product == null || product.getBasicPrice() > bid.getPrice()) {
+      // 用户的出价信息低于商品的最低竞拍价。
+      resMap.put("result", 1);
+      return resMap;
+    }
+    Serializable serializable = null;
     Bid oldBid = getBid(bid.getUser().getId(), bid.getProduct().getId());
     if (oldBid == null) {
       // 说明用户对该商品之前没有出过竞价。
-      return bidDao.save(bid);
+      serializable = bidDao.save(bid);
     } else {
       // 说明用户对该商品之前出过竞价。
       oldBid.setBidDate(bid.getBidDate());
       oldBid.setPrice(bid.getPrice());
       bidDao.update(oldBid);
-      return oldBid.getId();
+      serializable = oldBid.getId();
     }
+    if (serializable == null) {
+      resMap.put("result", 2);  // 数据库操作失败。
+    } else {
+      resMap.put("result", 0);  // 数据库操作成功。
+    }
+    return resMap;
   }
 
   public Bid getBid(int userId, int productId) {

@@ -135,9 +135,6 @@ public class ProductController {
     Product product = productService.getProductById(productId);
     // 获得商品对应的分类信息。
     mv.addObject("product", product);
-    // 用户可能需要竞价，提供竞价实体。
-    Bid bid = new Bid();
-    mv.addObject(WebConstantUtil.USERBID, bid);
     if (loginUser != null) {
       if (!loginUser.getId().equals(product.getUser().getId())) {
         // 1. 用户之前可能对该商品进行过竞价，如有，那么显示竞价信息。

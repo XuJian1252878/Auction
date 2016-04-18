@@ -48,7 +48,12 @@ public interface IBaseDao<T> {
   // 保存或者更新实体
   boolean saveOrUpdate(T entity);
 
-  // 取出唯一的一个符合条件的实体
+  /**
+   * 取出符合查询条件的唯一实体。
+   * @param hql  指定条件的hql语句。
+   * @param params  hql语句中的参数信息。
+   * @return
+   */
   public T loadModel(String hql, Object... params);
 
   /**

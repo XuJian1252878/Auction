@@ -1,9 +1,11 @@
 package com.auction.controller;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.auction.model.Bid;
@@ -41,17 +44,22 @@ public class BidController {
     binder.addValidators(new BidValidator());
   }
 
+  /**
+   * 处理用户在提交竞价时的ajax回传信息。返回一个包含处理结果的map。
+   * @param userBid
+   * @param productId
+   * @return
+   */
   @RequestMapping(value = "/commit_{productId}", method = RequestMethod.POST)
-  public ModelAndView commitBidInfo(@Valid @ModelAttribute(WebConstantUtil.USERBID) Bid userBid,
-      @PathVariable("productId") int productId) {
-    ModelAndView mv = new ModelAndView();
+  @ResponseBody
+  public Map<String, Object> commitBidInfo(@Valid @ModelAttribute(WebConstantUtil.USERBID) Bid userBid,
+      @PathVariable("productId") int productId, HttpSession httpSession) {
     // 记录用户提出竞价的时间。
     userBid.setBidDate(new Date());
     // 刚开始的时候竞价还没有成交。
     userBid.setIsSuccess(false);
-    bidService.saveUserBid(userBid);
-    mv.setViewName("redirect:/product/detail/" + productId);
-    return mv;
+    Map<String, Object> resMap = bidService.saveUserBid(userBid);
+    return resMap;
   }
 
   @RequestMapping(value = "/modifyprice", method = RequestMethod.POST)
