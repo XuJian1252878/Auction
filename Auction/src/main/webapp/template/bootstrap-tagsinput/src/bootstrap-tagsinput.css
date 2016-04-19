@@ -8,7 +8,9 @@
   vertical-align: middle;
   border-radius: 4px;
   max-width: 100%;
-  line-height: 22px;
+  
+  height: 40px;  /* 输入框的高度。 */
+  line-height: 30px;  /* 标签输入框的宽度 22px */
   cursor: text;
 }
 .bootstrap-tagsinput input {

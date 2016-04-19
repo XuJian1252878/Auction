@@ -6,13 +6,14 @@
   width: 396px;
   height: 30px;
   padding: 8px 12px;
-  font-size: 24px;
+  font-size: 24px;  /* 提示文字的字体大小。 */
   line-height: 30px;
   border: 2px solid #ccc;
   -webkit-border-radius: 8px;
      -moz-border-radius: 8px;
           border-radius: 8px;
   outline: none;
+  margin-bottom: 0;  /* 提示文字与输入框底部的位置。 */
 }
 
 .typeahead {
@@ -37,6 +38,7 @@
   width: 422px;
   margin: 12px 0;
   padding: 8px 0;
+  margin: 2px 0 0;
   background-color: #fff;
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.2);

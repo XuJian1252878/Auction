@@ -75,7 +75,7 @@
     <div id="navbar" class="navbar-collapse collapse navbar-right">
       <ul class="nav navbar-nav">
         <li class="active"><a href="index#home">主页</a></li>
-        <li><a href="index#home">关于</a></li>
+        <li><a href="about">关于</a></li>
         <li><a href="product/search">搜索商品</a></li>
         <c:choose>
           <c:when test="${sessionScope.loginuser != null }">

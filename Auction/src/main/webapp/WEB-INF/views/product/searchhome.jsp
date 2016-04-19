@@ -16,7 +16,7 @@
   <br />
   <div class="row">
     <form:form action="product/search/1" method="post">
-      <div class="col-lg-2 col-lg-offset-1">
+      <div class="col-lg-3 col-lg-offset-1">
         <h4>输入商品标签搜索商品：</h4>
       </div>
       <div class="col-lg-6">

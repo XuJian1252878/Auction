@@ -41,4 +41,15 @@ public class IndexController {
     mv.setViewName("index");
     return mv;
   }
+
+  /**
+   * 跳转入项目关于界面。
+   * @return
+   */
+  @RequestMapping("/about")
+  public ModelAndView aboutProject() {
+    ModelAndView mv = new ModelAndView();
+    mv.setViewName("about");
+    return mv;
+  }
 }

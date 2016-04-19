@@ -63,14 +63,12 @@ public class BidController {
   }
 
   @RequestMapping(value = "/modifyprice", method = RequestMethod.POST)
-  public ModelAndView modifyBidInfo(HttpServletRequest request) {
-    ModelAndView mv = new ModelAndView();
+  public String modifyBidInfo(HttpServletRequest request) {
     // 获得需要竞价的bid 的 id信息以及修改之后的竞价。
     int bidId = Integer.parseInt(request.getParameter("goingOnBidId"));
     float price = Float.parseFloat(request.getParameter("goingOnBidPrice"));
     bidService.modifyBidPrice(bidId, price);
-    mv.setViewName("redirect:/user/transaction");
-    return mv;
+    return "redirect:/user/transaction";
   }
 
   @RequestMapping(value = "/deal", method = RequestMethod.POST)
