@@ -64,6 +64,7 @@ public class Bid implements Comparable<Bid> {
   private Date dealDate; // 记录交易成功的时间，如果交易没有成功，那么这个字段为NULL。
 
   @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "bid")
+  @JsonBackReference
   private BidNotification bidNotification;
 
   public Integer getId() {

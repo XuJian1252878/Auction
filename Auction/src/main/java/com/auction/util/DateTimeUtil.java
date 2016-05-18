@@ -1,5 +1,6 @@
 package com.auction.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -101,5 +102,17 @@ public class DateTimeUtil {
    */
   public static long dateToTimeMillis(Date date) {
     return date.getTime();
+  }
+
+  public static Date stringToDate(String dateStr, String dateFormat){
+    sdf = new SimpleDateFormat(dateFormat);
+    try {
+      Date date = sdf.parse(dateStr);
+      return date;
+    } catch (ParseException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+      return null;
+    }
   }
 }

@@ -79,7 +79,7 @@
         <li><a href="product/search">搜索商品</a></li>
         <c:choose>
           <c:when test="${sessionScope.loginuser != null }">
-            <li><img src="images/avatar/001.jpg" wigth="50px" height="50px"
+            <li><img src="${sessionScope.loginuser.avatarPath }" wigth="50px" height="50px"
               alt="${sessionScope.loginuser.userName }" title="${sessionScope.loginuser.userName }" class="img-circle"></li>
             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
               aria-haspopup="true" aria-expanded="false">信息中心 <span class="caret"></span>
@@ -87,9 +87,7 @@
               <ul class="dropdown-menu">
                 <li><a href="user/profile"><i class="glyphicon glyphicon-cog"></i> 个人信息</a></li>
                 <li><a href="message/list"><i class="glyphicon glyphicon-circle-arrow-down"></i>我的消息 <span class="badge">${unreadMessageCount }</span></a></li>
-                <li><a href="#">Something else here</a></li>
                 <li role="separator" class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
                 <li><a href="user/products"><i class="glyphicon glyphicon-shopping-cart"></i> 我的商品</a></li>
                 <li><a href="user/transaction"><i class="fa fa-credit-card-alt"></i> 我的竞价记录</a></li>
                 <li role="seperator" class="divider"></li>

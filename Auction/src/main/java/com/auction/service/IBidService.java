@@ -43,13 +43,20 @@ public interface IBidService {
    * @return 若竞价信息存在，那么返回竞价信息实体；若无竞价信息，那么返回空的list。
    */
   public List<Bid> getHistoryBids(int userId);
-  
+
   /**
    * 获取某用户已经成交的竞价信息，竞价信息以时间顺序降序排列。
    * @param userId  用户实体的id信息。
    * @return  若竞价信息存在，那么返回竞价信息实体；若无竞价信息，那么返回空的list。
    */
   public List<Bid> getDealBids(int userId);
+
+  /**
+   * 获取某用户竞价失败的竞价信息，竞价信息以时间顺序降序排列。
+   * @param userId  用户实体的id信息。
+   * @return  若竞价信息存在，那么返回竞价信息实体；若无竞价信息，那么返回空的list。
+   */
+  public List<Bid> getFailedBids(int userId);
 
   /**
    * 将相应的bid的竞价状态改为竞价成功。

@@ -12,6 +12,8 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "BIDNOTIFICATION")
 @Proxy(lazy = true)
@@ -30,6 +32,7 @@ public class BidNotification {
 
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "bid_id")
+  @JsonManagedReference
   private Bid bid;
 
   @Column(name = "isRead", nullable = false)

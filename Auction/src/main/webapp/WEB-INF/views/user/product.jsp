@@ -18,12 +18,11 @@
   <div class="row">
     <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
       <ul class="nav nav-pills nav-justified">
-        <li class="active"><a href="#tab_a" data-toggle="pill">正在进行</a></li>
-        <li><a href="#tab_b" data-toggle="pill">已经完成</a></li>
+        <li class="active"><a href="#tab_a" data-toggle="pill">正在竞价</a></li>
+        <li><a href="#tab_b" data-toggle="pill">竞价完成</a></li>
       </ul>
       <div class="tab-content">
         <div id="tab_a" class="tab-pane fade in active">
-          <h4>正在竞价</h4>
           <br />
           <c:choose>
             <c:when test="${goingOnProducts == null || fn:length(goingOnProducts) == 0}">
@@ -31,13 +30,13 @@
             </c:when>
             <c:otherwise>
               <div class="row">
-                <div class="col-lg-1 col-lg-offset-1">商品名称</div>
-                <div class="col-lg-1">竞价起价</div>
-                <div class="col-lg-2">竞价期限</div>
-                <div class="col-lg-1">竞价热度</div>
-                <div class="col-lg-2">商品图片</div>
-                <div class="col-lg-2">更多操作</div>
-                <div class="col-lg-1">竞价详情</div>
+                <div class="col-lg-1 col-lg-offset-1">名称</div>
+                <div class="col-lg-1">底价</div>
+                <div class="col-lg-2">期限</div>
+                <div class="col-lg-1">热度</div>
+                <div class="col-lg-2">图片</div>
+                <div class="col-lg-2">操作</div>
+                <div class="col-lg-1">详情</div>
               </div>
               <br />
               <div id="accordion" role="tablist" aria-multiselectable="true">
@@ -107,7 +106,6 @@
           </c:choose>
         </div>
         <div id="tab_b" class="tab-pane fade">
-          <h4>完成竞价</h4>
           <br />
           <c:choose>
             <c:when test="${historyProductsMap == null || fn:length(historyProductsMap) == 0}">
@@ -115,13 +113,13 @@
             </c:when>
             <c:otherwise>
               <div class="row">
-                <div class="col-lg-1 col-lg-offset-1">商品名称</div>
-                <div class="col-lg-2">商品描述</div>
-                <div class="col-lg-1">竞价起价</div>
-                <div class="col-lg-2">竞拍期限</div>
-                <div class="col-lg-1">竞价热度</div>
-                <div class="col-lg-1">成交价格</div>
-                <div class="col-lg-2">商品图片</div>
+                <div class="col-lg-1 col-lg-offset-1">名称</div>
+                <div class="col-lg-2">描述</div>
+                <div class="col-lg-1">底价</div>
+                <div class="col-lg-2">期限</div>
+                <div class="col-lg-1">热度</div>
+                <div class="col-lg-1">成交价</div>
+                <div class="col-lg-2">图片</div>
               </div>
               <hr />
               <c:forEach var="historyProductPair" items="${historyProductsMap }">

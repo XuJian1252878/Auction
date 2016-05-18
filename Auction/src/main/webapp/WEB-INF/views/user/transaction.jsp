@@ -15,13 +15,12 @@
   <div class="row">
     <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
       <ul class="nav nav-pills nav-justified">
-        <li class="active"><a href="#tab_a" data-toggle="pill">正在进行</a></li>
+        <li class="active"><a href="#tab_a" data-toggle="pill">正在竞价</a></li>
         <li><a href="#tab_b" data-toggle="pill">竞价时限已到</a></li>
         <li><a href="#tab_c" data-toggle="pill">成交记录</a></li>
       </ul>
       <div class="tab-content">
         <div id="tab_a" class="tab-pane fade in active">
-          <h4>正在进行的竞价信息</h4>
           <br />
           <c:choose>
             <c:when test="${goingOnBids == null || fn:length(goingOnBids) == 0 }">
@@ -29,14 +28,14 @@
             </c:when>
             <c:otherwise>
               <div class="row">
-                <div class="col-lg-1">商品名称：</div>
-                <div class="col-lg-2">商品描述：</div>
-                <div class="col-lg-1">竞拍起价：</div>
+                <div class="col-lg-1">名称：</div>
+                <div class="col-lg-2">描述：</div>
+                <div class="col-lg-1">起价：</div>
                 <div class="col-lg-1">我的竞拍价：</div>
                 <div class="col-lg-3">竞拍日期：</div>
-                <div class="col-lg-1">竞拍期限：</div>
-                <div class="col-lg-2">商品图片：</div>
-                <div class="col-lg-1">更多操作：</div>
+                <div class="col-lg-1">期限：</div>
+                <div class="col-lg-2">图片：</div>
+                <div class="col-lg-1">操作：</div>
               </div>
               <c:forEach var="goingOnBid" items="${goingOnBids }">
                 <div class="row">
@@ -126,7 +125,6 @@
           </c:choose>
         </div>
         <div id="tab_b" class="tab-pane fade">
-          <h4>已经完成的竞价信息</h4>
           <br />
           <c:choose>
             <c:when test="${historyBids == null || fn:length(historyBids) == 0}">
@@ -134,13 +132,13 @@
             </c:when>
             <c:otherwise>
               <div class="row">
-                <div class="col-md-1">商品名称</div>
-                <div class="col-md-3">商品描述</div>
-                <div class="col-md-1">竞拍起价</div>
+                <div class="col-md-1">名称</div>
+                <div class="col-md-3">描述</div>
+                <div class="col-md-1">起价</div>
                 <div class="col-md-1">我的竞拍价</div>
-                <div class="col-md-3">竞拍日期</div>
+                <div class="col-md-3">日期</div>
                 <div class="col-md-1">成交与否</div>
-                <div class="col-md-2">商品图片</div>
+                <div class="col-md-2">图片</div>
               </div>
               <c:forEach var="historyBid" items="${historyBids }">
                 <div class="row">
@@ -165,7 +163,6 @@
           </c:choose>
         </div>
         <div id="tab_c" class="tab-pane fade">
-          <h4>已成交的竞价信息</h4>
           <br />
           <c:choose>
             <c:when test="${dealBids == null || fn:length(dealBids) == 0 }">
@@ -173,13 +170,13 @@
             </c:when>
             <c:otherwise>
               <div class="row">
-                <div class="col-md-1">商品名称</div>
-                <div class="col-md-3">商品描述</div>
-                <div class="col-md-1">竞拍起价</div>
+                <div class="col-md-1">名称</div>
+                <div class="col-md-3">描述</div>
+                <div class="col-md-1">起价</div>
                 <div class="col-md-1">我的竞拍价</div>
                 <div class="col-md-2">竞拍日期</div>
                 <div class="col-md-2">成交日期</div>
-                <div class="col-md-2">商品图片</div>
+                <div class="col-md-2">图片</div>
               </div>
               <c:forEach var="dealBid" items="${dealBids }">
                 <div class="row">

@@ -97,6 +97,11 @@ public class BidServiceImpl extends BaseService<Bid> implements IBidService {
     return bidDao.find(hql, userId);
   }
 
+  public List<Bid> getFailedBids(int userId) {
+    String hql = "from " + Bid.class.getName() + " as b where b.user.id = ? and b.isSuccess = false order by b.dealDate desc";
+    return bidDao.find(hql, userId);
+  }
+
   public boolean setBidDeal(Bid bid) {
     // TODO Auto-generated method stub
     bid.setIsSuccess(true);
