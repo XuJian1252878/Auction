@@ -42,6 +42,8 @@ public class MobileBidController {
     // 刚开始的时候竞价还没有成交。
     bid.setIsSuccess(false);
     bid.setPrice(bidPrice);
+    bid.setProduct(product);
+    bid.setUser(user);
     Map<String, Object> resMap = bidService.saveUserBid(bid);
     return resMap;
   }

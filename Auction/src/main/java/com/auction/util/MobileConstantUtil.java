@@ -73,5 +73,7 @@ public class MobileConstantUtil {
    * 用户交易的用户id。
    */
   public static final String MOBILE_TRANSACTION_USER_ID = "userID";
+  
+  public static final String MOBILE_UPLOAD_PRODUCT_BID_BASIC_PRICE = "basicPrice";
 
 }

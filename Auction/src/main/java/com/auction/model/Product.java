@@ -233,4 +233,32 @@ public class Product {
     this.productTags = productTags;
   }
 
+  /**
+   * 获得当前商品的最大竞拍价信息。
+   */
+  public float getMaxBidPrice() {
+    float maxBidPrice = 0;
+    for (Bid bid : this.bids) {
+      if (bid.getPrice() > maxBidPrice) {
+        maxBidPrice = bid.getPrice();
+      }
+    }
+    return maxBidPrice;
+  }
+
+  /**
+   * 获得当前成交的商品信息。
+   * @return
+   */
+  public float getDealBidPrice() {
+    float dealPrice = -1;
+    for (Bid bid : this.bids) {
+      if (bid.getIsSuccess()) {
+        dealPrice = bid.getPrice();
+        break;
+      }
+    }
+    return dealPrice;
+  }
+
 }

@@ -16,21 +16,21 @@
       <div class="wrap">
         <p class="form-title">用户登录</p>
         <form:form class="login" action="user/login" modelAttribute="loginuser" method="post">
-          <form:input type="text" placeholder="Username" path="userName" />
+          <form:input type="text" placeholder="用户名" path="userName" />
           <form:errors path="userName" />
-          <form:input type="password" placeholder="Password" path="password" />
+          <form:input type="password" placeholder="密码" path="password" />
           <form:errors path="password" />
-          <input type="submit" value="Sign In" class="btn btn-success btn-sm" />
+          <input type="submit" value="登陆" class="btn btn-success btn-sm" />
           <div class="remember-forgot">
             <div class="row">
               <div class="col-md-6">
                 <div class="checkbox">
-                  <label> <input type="checkbox" /> Remember Me
+                  <label> <input type="checkbox" /> 记住密码
                   </label>
                 </div>
               </div>
               <div class="col-md-6 forgot-pass-content">
-                <a href="javascription:void(0)" class="forgot-pass">Forgot Password</a>
+                <a href="javascription:void(0)" class="forgot-pass">忘记密码</a>
               </div>
             </div>
           </div>

@@ -20,7 +20,10 @@
 
 <!-- Bootstarp File Input -->
 <script type="text/javascript" src="scripts/bootstrap.file-input.js"></script>
-
+<!-- Latest compiled and minified JavaScript -->
+<script src="template/bootstrap-select/js/bootstrap-select.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="template/bootstrap-select/css/bootstrap-select.min.css">
 <script type="text/javascript">
   $(document).ready(function() {
     $('input[type=file]').bootstrapFileInput();
@@ -52,17 +55,15 @@
             <br />
             <div class="form-group">
               <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-6">
                   <form:label path="category.id">请选择商品类别：</form:label>
-                </div>
-                <div class="col-md-3">
-                  <form:select path="category.id">
+                  <form:select path="category.id" class="selectpicker" data-style="btn-primary">
                     <c:choose>
                       <c:when test="${categories == null || fn:length(categories) == 0 }">
                         <form:option value="-1" label="暂无商品类别可选"></form:option>
                       </c:when>
                       <c:otherwise>
-                        <form:option value="-1" label="请选择商品类别："></form:option>
+                        <form:option value="-1" label="请选择商品类别"></form:option>
                         <c:forEach var="mycategory" items="${categories }">
                           <form:option value="${mycategory.id }" label="${mycategory.name }"></form:option>
                         </c:forEach>
@@ -71,10 +72,8 @@
                   </form:select>
                   <form:errors path="category.id" />
                 </div>
-                <div class="col-md-2 col-md-offset-1">
+                <div class="col-md-6">
                   <form:label path="name">商品名称：</form:label>
-                </div>
-                <div class="col-md-3">
                   <form:input path="name" />
                   <form:errors path="name" />
                 </div>
@@ -82,23 +81,23 @@
             </div>
             <form:input path="user.id" type="hidden" value="${loginUser.id }" />
             <br /> <br />
-            <div class="form-group">
-              <form:label path="describe">商品描述信息：</form:label>
-              <form:textarea path="describe" />
-              <form:errors path="describe" />
-            </div>
-            <br /> <br />
-            <div class="form-group">
-              <form:label path="basicPrice">拍卖基价：</form:label>
-              <form:input path="basicPrice" />
-              <form:errors path="basicPrice" />
+            <div class="row">
+              <div class="form-group col-md-8">
+                <form:label path="describe">商品描述信息：</form:label>
+                <form:textarea path="describe" rows="3" cols="100"/>
+                <form:errors path="describe" />
+              </div>
+              <br /> <br />
+              <div class="form-group col-md-offset-2">
+                <form:label path="basicPrice">拍卖基价：</form:label>
+                <form:input path="basicPrice" />
+                <form:errors path="basicPrice" />
+              </div>
             </div>
             <br /> <br />
             <div class="row">
-              <div class="col-lg-2">
+              <div class="col-lg-12">
                 <label>商品标签:</label>
-              </div>
-              <div class="col-lg-7">
                 <input id="producttags" name="producttags" class="typeahead" type="text" data-role="tagsinput" />
               </div>
               <script type="text/javascript">

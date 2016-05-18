@@ -53,8 +53,9 @@
           <br />
           <div class="row">
             <div class="col-sm-12 col-sm-offset-4">
-              <a href="product/detail/{{id}}">查看商品链接</a>
-              <br/>
+              <a href="product/detail/{{id}}">查看商品详情</a>
+            </div>
+            <div class="col-sm-12 col-sm-offset-3">
               <div id="{{countdownId}}" data-countdown="{{endDate}}"></div>
               <div id="{{countdownAlertId}}"></div>
             </div>
@@ -91,7 +92,7 @@
             $('[data-countdown]').each(function() {
               var $this = $(this), finalDate = $(this).data('countdown');
               $this.countdown(finalDate, function(event) {
-                $this.html(event.strftime('%D days %H:%M:%S'));
+                $this.html('竞拍倒计时：' + event.strftime('%D 天 %H:%M:%S'));
               }).on('finish.countdown', function(event) {
                 var colckId = $(this).attr('id');
                 var expireId = "#productexpirealert" + colckId.replace(/[^0-9]/ig,"");
