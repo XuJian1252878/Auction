@@ -44,7 +44,8 @@
                         <span>亲爱的${sessionScope.loginuser.userName }：</span>
                         <p>您好！恭喜您以
                         <span class="label label-danger">￥${unreadBidNotification.bid.price }</span>的价格拍下
-                        <span class="label label-danger">${unreadBidNotification.bid.product.name }</span>，成交日期为：${unreadBidNotification.bid.dealDate }。
+                        <span class="label label-danger">${unreadBidNotification.bid.product.name }</span>，成交日期为：${unreadBidNotification.bid.dealDate }。请您及时联系
+                        <span class="label label-danger">${unreadBidNotification.bid.product.user.userName }（${unreadBidNotification.bid.product.user.email }）</span>进行线下交易。
                         </p>
                         <span><a href="message/markread/${unreadBidNotification.id }">标为已读</a></span>
                       </div>
