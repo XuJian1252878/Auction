@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="@color/darkslategrey"
+              android:gravity="center"
+              android:orientation="vertical"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/title_padding"
+        android:text="@string/manage_item"
+        android:textSize="@dimen/label_font_size"
+        />
+    <!-- 添加物品的按钮 -->
+    <Button
+        android:id="@+id/bnAdd"
+        android:layout_width="70dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:background="@drawable/add_item"
+        android:padding="@dimen/title_padding"
+        />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="5pt"
+        />
+    <!-- 显示物品列表的ListView -->
+    <ListView
+        android:id="@+id/itemList"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        />
+
+</LinearLayout>

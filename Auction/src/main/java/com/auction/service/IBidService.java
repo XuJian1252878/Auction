@@ -8,6 +8,13 @@ import com.auction.model.Bid;
 public interface IBidService {
 
   /**
+   * 根据bid的id信息获取bid的实体。
+   * @param bidId
+   * @return
+   */
+  public Bid getBidById(int bidId);
+
+  /**
    * 为竞价用户创建一个新的竞价信息，如果用户在该商品下有过竞价，那么将原有的竞价信息替换。
    * @param bid  竞价信息的实体
    * @return  返回一个包含处理结果信息的map，key:result 处理结果是否成功（value：0 处理成功；1 处理失败，用户出价低于

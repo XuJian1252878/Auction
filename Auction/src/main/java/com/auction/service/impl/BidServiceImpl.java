@@ -122,4 +122,10 @@ public class BidServiceImpl extends BaseService<Bid> implements IBidService {
     return true;
   }
 
+  public Bid getBidById(int bidId) {
+    // TODO Auto-generated method stub
+    Bid bid = bidDao.get(Bid.class, bidId);
+    return bid;
+  }
+
 }

@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.auction.mobile.model.BidInfo;
+import com.auction.mobile.model.ProductBidInfo;
 import com.auction.mobile.model.ProductDetail;
 import com.auction.mobile.model.ProductInfo;
 import com.auction.model.Bid;
@@ -201,5 +203,26 @@ public class MobileProductController {
       productInfos.add(pInfo);
     }
     return productInfos;
+  }
+
+  @RequestMapping(value = "/all_bid_{productId}", method = RequestMethod.GET)
+  @ResponseBody
+  public List<Object> loadProductBidInfo(@PathVariable int productId) {
+    Product product = productService.getProductById(productId);
+    Set<Bid> bids = product.getBids();
+    List<Object> pbInfos = new ArrayList<Object>();
+    for (Bid bid : bids) {
+      ProductBidInfo pbInfo = new ProductBidInfo();
+      pbInfo.setBidId(bid.getId());
+      pbInfo.setUserInfo(bid.getUser().getUserName() + ":" + bid.getPrice());
+      pbInfo.setName(product.getName());
+      pbInfo.setKindName(product.getCategory().getName());
+      pbInfo.setMaxPrice(product.getMaxBidPrice());
+      pbInfo.setDescribe(product.getDescribe());
+      pbInfo.setEndDate(product.getEndDate().getTime());
+      pbInfo.setBasicPrice(product.getBasicPrice());
+      pbInfos.add(pbInfo);
+    }
+    return pbInfos;
   }
 }

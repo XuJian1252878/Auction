@@ -1,6 +1,7 @@
 package com.auction.mobile.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -37,7 +38,7 @@ public class MobileBidController {
     product.setId(productId);
 
     Bid bid = new Bid();
- // 记录用户提出竞价的时间。
+    // 记录用户提出竞价的时间。
     bid.setBidDate(new Date());
     // 刚开始的时候竞价还没有成交。
     bid.setIsSuccess(false);
@@ -47,6 +48,14 @@ public class MobileBidController {
     Map<String, Object> resMap = bidService.saveUserBid(bid);
     return resMap;
   }
-  
+
+  @RequestMapping(value = "/deal", method = RequestMethod.POST)
+  @ResponseBody
+  public boolean bidDeal(HttpServletRequest request) {
+    int bidId = Integer.parseInt(request.getParameter(MobileConstantUtil.MOBILE_BID_ID));
+    Bid bid = bidService.getBidById(bidId);
+    boolean isSuccess = bidService.setBidDeal(bid);
+    return isSuccess;
+  }
 
 }

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:stretchColumns="1">
+
+    <TableRow>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/item_name"
+            android:textSize="@dimen/label_font_size"/>
+
+        <EditText
+            android:id="@+id/itemName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:editable="false"
+            android:textColor="@color/black"
+            />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bid_price"
+            android:textSize="@dimen/label_font_size"/>
+
+        <EditText
+            android:id="@+id/bidPrice"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:editable="false"
+            android:textColor="@color/black"
+            />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bid_time"
+            android:textSize="@dimen/label_font_size"/>
+
+        <EditText
+            android:id="@+id/bidTime"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:editable="false"
+            android:textColor="@color/black"
+            />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="结束时间："
+            android:textSize="@dimen/label_font_size"/>
+
+        <EditText
+            android:id="@+id/bidUser"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:editable="false"
+            android:textColor="@color/black"
+            />
+    </TableRow>
+    <!--
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="新的价格："
+                android:textSize="@dimen/label_font_size"/>
+
+            <EditText
+                android:id="@+id/bidNewPrice"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:editable="true"
+                android:textColor="@color/black"
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_gravity="center">
+
+            <Button
+                android:id="@+id/bnAdd"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:text="再次竞价"
+                android:textSize="20dp"
+                />
+        </TableRow>-->
+
+</TableLayout>

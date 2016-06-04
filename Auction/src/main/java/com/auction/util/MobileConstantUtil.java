@@ -76,4 +76,6 @@ public class MobileConstantUtil {
   
   public static final String MOBILE_UPLOAD_PRODUCT_BID_BASIC_PRICE = "basicPrice";
 
+  public static final String MOBILE_BID_ID = "bidId";
+
 }

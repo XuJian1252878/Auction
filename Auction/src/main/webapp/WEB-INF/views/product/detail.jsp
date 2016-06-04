@@ -79,9 +79,7 @@
             <h2 class="section-heading">商品详情</h2>
             <p class="lead section-lead">${product.name }</p>
             <p class="section-paragraph">${product.describe }</p>
-            <p class="section-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid,
-              suscipit, rerum quos facilis repellat architecto commodi officia atque nemo facere eum non illo voluptatem
-              quae delectus odit vel itaque amet.</p>
+            <p class="section-paragraph"></p>
             <label>商品类别：</label> <span>${product.category.name }</span> <br />
             <div class="row">
               <div class="col-lg-2 col-md-2">
@@ -282,9 +280,7 @@
         <div class="row">
           <div class="col-lg-12">
             <h1 class="section-heading">商品评价</h1>
-            <p class="section-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid,
-              suscipit, rerum quos facilis repellat architecto commodi officia atque nemo facere eum non illo voluptatem
-              quae delectus odit vel itaque amet.</p>
+            <p class="section-paragraph"></p>
             <c:choose>
               <c:when test="${productComments == null || fn:length(productComments) == 0}">
                 <p class="lead section-lead">暂无该商品的评价信息！</p>
